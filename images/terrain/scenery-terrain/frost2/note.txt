@@ -1,0 +1,3 @@
+to shift the transparency, used ImageMagick:
+
+mogrify -channel Alpha -evaluate Divide 2 frost*.png

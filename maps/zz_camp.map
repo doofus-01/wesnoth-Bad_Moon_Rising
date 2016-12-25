@@ -1,0 +1,16 @@
+border_size=1
+usage=map
+
+Ha^Fpa      , Ha          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa^Fpa      , Aa^Fpa      
+Aa^Fpa      , Ha          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          
+Aa          , Aa          , Aa          , Aa          , Aa          , Rb          , Rb          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          
+Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Rb          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          
+Ha          , Aa          , Aa          , Aa          , Aa          , Aa          , Cea         , Aa          , Aa          , Aa          , Rb          , Aa          , Aa          
+Ha^Fpa      , Ha          , Aa          , Aa          , Aa          , Aa          , Cea         , Cea         , Cea         , Aa          , Aa          , Aa          , Aa          
+Ha^Fpa      , Ha          , Aa          , Aa          , Aa          , Aa          , Cea         , 1 Kea       , Cea         , Cea         , Aa          , Aa          , Aa          
+Ha          , Ha          , Aa          , Aa          , Aa          , Aa          , Cea         , Cea         , Aa          , Aa          , Aa          , Aa          , Aa          
+Ha          , Aa          , Aa          , Aa          , Aa          , Aa          , Rb          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          
+Aa          , Aa          , Aa          , Aa          , Aa          , Rb          , Rb          , Aa          , Aa          , Aa          , Aa          , Aa          , Ha^Fpa      
+Aa          , Aa          , Aa          , Rb          , Aa          , Rb          , Aa          , Aa          , Aa          , Aa          , Ha          , Ha          , Ha          
+Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Aa          , Ha          , Ha          , Ha^Fpa      
+Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa^Fpa      , Aa          , Aa          , Ha          , Ha          , Ha^Fpa      , Ha^Fpa      

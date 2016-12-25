@@ -1,0 +1,9 @@
+border_size=1
+usage=map
+
+_f          , _f          , _f          , _f          , _f          , _f          
+_f          , Ms          , Chr         , Ms          , Ms          , _f          
+_f          , Chr         , Khr         , Chr         , Ms          , _f          
+_f          , Chr         , Chr         , Chr         , Ms          , _f          
+_f          , Ms          , Ms          , Ms          , Ms          , _f          
+_f          , _f          , _f          , _f          , _f          , _f          

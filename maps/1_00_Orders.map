@@ -1,0 +1,15 @@
+border_size=1
+usage=map
+
+Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
+Xos         , Xos         , Xol         , Xos         , Xos         , Xos         , Xos         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xol         , Xos         , Xos         
+Xos         , Xol         , Rrc         , Rrc         , Xol         , Xos         , Xos         , Rrc         , Xol         , Xos         , Xol         , Rrc         , Rrc         , Xol         , Xos         
+Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , 3 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
+Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rr^Yrug     , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
+Xos         , Xos         , Rrc         , Rrc         , 4 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
+Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , 1 Rrc       , Rrc         , 2 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
+Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         
+Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         
+Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
+Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
+Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
