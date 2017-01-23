@@ -1431,8 +1431,8 @@ table.insert(the_list, {
         id = "leather_vest",
         tooltip = _ "these vests are body armor for dogs",
         text = _ "This vest is body armor for dogs, it offers some protection without restricting movement.   Bonus: +5 blade, +5 pierce, +5 impact resistance, +5 HP",
-        image = "icons/vest_leather.png",
-        icon = "items/vest_leather.png",
+        image = "icons/leather_vest.png",
+        icon = "items/leather_vest.png",
 	cost = 38,
 	usage = "dog",
 	position = "torso"	
@@ -1444,8 +1444,8 @@ table.insert(the_list, {
         id = "brigandine_vest",
         tooltip = _ "these vests are body armor for dogs",
         text = _ "This vest is body armor for dogs, it offers some protection without restricting movement.   Bonus: +5 blade, +10 pierce, +10 impact resistance, +10 HP",
-        image = "icons/vest_brigandine.png",
-        icon = "items/vest_brigandine.png",
+        image = "icons/brigandine_vest.png",
+        icon = "items/brigandine_vest.png",
 	cost = 75,
 	usage = "dog",
 	position = "torso"	
