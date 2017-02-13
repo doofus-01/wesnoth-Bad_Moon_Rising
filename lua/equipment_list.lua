@@ -21,11 +21,14 @@ table.insert(list_usage, {
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Orcish Raider", "Orcish Terror",
     "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Juggernaught",
     "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2",
+    "Rat Rider", "Rat Lancer", "Rat Dragoon",
     "Spearman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Thug", "Sergeant","Lieutenant","General",
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Heavy Infantryman","Shock Trooper","Iron Mauler",
-    "Revenant", "Draug", "Death Knight",
+    "Skeleton", "Revenant", "Draug", "Death Knight",
     "Skeleton Archer", "Bone Shooter", "Banebow",
+    "Walking Corpse", "Soulless",
+    "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
     "Bowman", "Longbowman", "Master Bowman",
     "Scarrion_Spearman", "Therion", "Russle", "Altos",
     "Thief","Rogue","Assassin",
@@ -71,6 +74,7 @@ table.insert(list_usage, {
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Bowman", "Longbowman", "Master Bowman",
     "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Raider", "Orcish Terror",
+    "Rat Rider", "Rat Lancer", "Rat Dragoon",
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
     "Royal Spotter", "Royal Herdsman", "Royal Rider", "Royal Thrower", "Royal FireKnight",
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
@@ -79,8 +83,9 @@ table.insert(list_usage, {
     "Primeval Cutter", "Primeval Ironwheel", "Primeval Aerowheel", "Primeval Firewheel", "Primeval Sunwheel",
     "Primeval Dogface", "Primeval Warrior", "Primeval Titan",
     "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier",
-    "Walking Corpse", "Soulless", "Skeleton",
-    "Revenant", "Draug", "Death Knight",
+    "Walking Corpse", "Soulless",
+    "Skeleton", "Revenant", "Draug", "Death Knight",
+    "Skeleton Archer", "Bone Shooter", "Banebow",
     "Scarrion_Spearman", "Therion", "Altos",
     "Carusoe", "Carusoe2", "Bad Raenna", "Raenna", "Dark Messiah", "Huric"
     },
@@ -94,6 +99,7 @@ table.insert(list_usage, {
     "Orcish SnowWalker", "Orcish IceStalker", "Great Orc",
     "Heavy Infantryman","Shock Trooper","Iron Mauler",
     "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
+    "Revenant", "Draug", "Death Knight",
     "Scarrion_Spearman", "Altos",
     "Royal Guard", "Halberdier","Huric"},
     usage = "heavy_armor"
@@ -130,6 +136,7 @@ table.insert(list_usage, {
 table.insert(list_usage, {
     types = {"Ukian Signalman", "Ukian Flareman", "Orcish Serf", "Orcish Foreman", 
     "Primeval Dogface", "Primeval Warrior", "Primeval Titan",
+    "Skeleton", "Revenant", "Draug", "Death Knight",
     "Altos",
     "Orcish Overseer", "Orcish Fireline", "Orcish Firebreather", "Great Orc"},
     usage = "axe"
@@ -139,6 +146,7 @@ table.insert(list_usage, {
     "Spearman", "Javelineer", "Pikeman", "Halberdier", 
     "Carusoe", "Carusoe2", 
     "Scarrion_Spearman",
+    "Rat Rider", "Rat Lancer", "Rat Dragoon",
     "Orcish SnowWalker", "Orcish IceStalker"},
     usage = "spear"
 })
@@ -152,21 +160,25 @@ table.insert(list_usage, {
 })
 
 
+-- ability effects that may be used in different items
+
+local selfheal_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=2, id= "selfheal", name= _ "self-heals", female_name= _ "female^self-heals", description= _ "The unit will heal itself 2 HP per turn. If it is poisoned, it will neither heal nor suffer the poison, but it must seek a cure elsewhere.", affect_self="yes", poison= "slowed" }}}}}}
+
 local regenerate_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=8, id= "regenerates", name= _ "regenerates", female_name= _ "female^regenerates", description= _ "The unit will heal itself 8 HP per turn. If it is poisoned, it will remove the poison instead of healing.", affect_self="yes", poison= "cured" }}}}}}
-local regenerate_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"regenerate", { id = "regenerates"}}}}}}
+-- local regenerate_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"regenerate", { id = "regenerates"}}}}}}
 
 local skirmisher_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "skirmisher", { id= "skirmisher", name= _ "skirmisher", female_name= _ "female^skirmisher", description= _ "This unit is skilled in moving past enemies quickly, and ignores all enemy Zones of Control.", affect_self="yes"}}}}}}
-local skirmisher_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"skirmisher", { id = "skirmisher"}}}}}}
+-- local skirmisher_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"skirmisher", { id = "skirmisher"}}}}}}
 
 local unpoison_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "heals", { id= "curing", name= _ "cures", female_name= _ "female^cures", description= _ "A curer can cure a unit of poison.", affect_enemies = "yes", affect_allies = "yes", affect_self="yes", poison = "cured", {"affect_adjacent", { adjacent = "n,ne,se,s,sw,nw" }} }}}}}}
-local unpoison_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"heals", { id = "curing"}}}}}}
+-- local unpoison_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"heals", { id = "curing"}}}}}}
 
 local unpoison_effect2 = {"effect", { apply_to = "new_ability",  {"abilities", { { "heals", { id= "lesser_curing", name= _ "self-cures", female_name= _ "female^self-cures", description= _ "A self-curer can cure a self of poison.", affect_enemies = "no", affect_allies = "no", affect_self="yes", poison = "cured"  }}}}}}
-local unpoison_neg_effect2 = {"effect", {apply_to = "remove_ability", {"abilities", {{"heals", { id = "lesser_curing"}}}}}}
+-- local unpoison_neg_effect2 = {"effect", {apply_to = "remove_ability", {"abilities", {{"heals", { id = "lesser_curing"}}}}}}
 
 local shadow_effect = {"effect", { apply_to = "new_ability", {"abilities", { { "hides", { id="nightstalk", name= _ "nightstalk", female_name= _ "female^nightstalk", description= _ "The unit becomes invisible during night. Enemy units cannot see this unit at night, except if they have units next to it. Any enemy unit that first discovers this unit immediately loses all its remaining movement.", 
 	name_inactive= _ "nightstalk", female_name_inactive= _ "female^nightstalk", description_inactive= _ "The unit becomes invisible during night.  Enemy units cannot see this unit at night, except if they have units next to it. Any enemy unit that first discovers this unit immediately loses all its remaining movement.", affect_self="yes", {"filter", {{ "filter_location", {time_of_day="chaotic"}}}} }}}}}}
-local shadow_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"hides", { id = "nightstalk"}}}}}}
+-- local shadow_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"hides", { id = "nightstalk"}}}}}}
 	
                                 
                 
@@ -178,6 +190,39 @@ there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 
 
 ------------ helmets--------------
 -- 20161105 removing the anti-effects, changing eq_effect.name to eq_effect.id for using [remove_object]
+table.insert(the_list, {
+	eq_effect = { id = "black_cowl", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -2, impact = -2}}}}, 
+	              {"effect", { apply_to = "alignment", set = "chaotic"}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "Black Cowl",
+	id = "black_cowl",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This is a black hood that has some dark, otherworldly essence.  Anyone can wear it, but why would one want to? Bonus: + 2 each impact and cold resistance, sets alignment to chaotic, + 1 HP",
+        image = "icons/helmet_black_cowl.png",
+        icon = "items/black_cowl.png",
+	cost = 35,
+	usage = "all",
+	position = "head"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "white_ribbon", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -5, impact = -1}}}}, 
+	              {"effect", { apply_to = "alignment", set = "lawful"}},
+	              selfheal_effect, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "White Ribbon",
+	id = "white_ribbon",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This ribbon has been blessed by some benign spirits. While it offers only minimal physical protection, it is not cumbersome, and it brings the wearer into a certain frame of mind. Bonus: + 5 arcane and +1 impact resistance, sets alignment to lawful, provides a weak regeneration ability, + 1 HP",
+        image = "icons/white_ribbon.png",
+        icon = "items/white_ribbon.png",
+	cost = 30,
+	usage = "all",
+	position = "head"
+	
+})
 table.insert(the_list, {
 	eq_effect = { id = "cap_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
@@ -223,6 +268,21 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "rusty_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -1, arcane = -5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
+	            },
+        name = _ "Rusty Helmet",
+	id = "rusty_helmet",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This helmet has been left out in the elements for too long.  The metal is rusted, the leather and padding are rotted.  But for the undead, it provides some mundane protection against the arcane attacks.  Bonus: + 1 impact and +5 arcane resistance, + 2 HP",
+        image = "icons/helmet_rusty.png",
+        icon = "items/helmet3.png~CS(-20,-10,-60)",
+	cost = 25,
+	usage = "light_armor",
+	position = "head"
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "steel_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
         name = _ "Steel Helmet",
@@ -245,6 +305,19 @@ table.insert(the_list, {
         image = "icons/helmet_chain-coif.png",
         icon = "items/coif.png",
 	cost = 95,
+	usage = "light_armor",
+	position = "head"
+})
+table.insert(the_list, {
+	eq_effect = { id = "bone_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, pierce = -12, arcane = 5, fire = 5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
+        name = _ "Bone Helmet",
+	id = "bone_helmet",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This grisly helmet is made of bone, and has some otherworldly essence that imparts some undead characteristics to the wearer.  Penalty: -5 each fire and arcane resistance; Bonus: + 2 impact resistance, +12 pierce resistance, + 4 HP",
+        image = "icons/helmet_bone.png",
+        icon = "items/bone_helmet.png",
+	cost = 75,
 	usage = "light_armor",
 	position = "head"
 })
@@ -310,6 +383,30 @@ table.insert(the_list, {
 	position = "head"
 })
 ------------------shields-----------------------------
+table.insert(the_list, {
+	eq_effect = { id = "hide_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, blade = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
+        name = _ "Hide Buckler",
+	id = "hide_buckler",
+        tooltip = _ "all shields offer impact resistance",
+        text = _ "This very small shield is made from animal hides and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 2 each impact and blade resistance, + 2 HP",
+        image = "icons/buckler_hide.png",
+        icon = "items/buckler.png~CS(0,0,-50)",
+	cost = 15,
+	usage = "all",
+	position = "shield"
+})
+table.insert(the_list, {
+	eq_effect = { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
+        name = _ "Bronze Buckler",
+	id = "bronze_buckler",
+        tooltip = _ "all shields offer impact resistance",
+        text = _ "This very small shield is made from bronze and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 5 each impact and blade resistance, + 4 HP",
+        image = "icons/buckler_bronze.png",
+        icon = "items/buckler.png~CS(0,20,-20)",
+	cost = 65,
+	usage = "all",
+	position = "shield"
+})
 table.insert(the_list, {
 	eq_effect = { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
         name = _ "Ancient Targe",
@@ -812,11 +909,35 @@ table.insert(the_list, {
 	position = "torso"	
 })
 table.insert(the_list, {
-	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -6, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Mage Tunic",
+        id = "mage_tunic",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "This tunic is made by mages, for mages.  They know their own weaknesses and have tried to address them with this charmed fabric.  Bonus: +5 each impact, blade, and pierce resistances, +5 arcane resistance, +3 HP",
+        image = "icons/tunic_mage.png",
+        icon = "items/mage_tunic.png",
+	cost = 120,
+	usage = "all",
+	position = "torso"	
+})
+table.insert(the_list, {
+	eq_effect = { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Shaman Tunic",
+        id = "shaman_tunic",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "Orcish shamans have sewn charmed little stones and bones into a coarse animal hair tunic.  Though not stylish, it does offer some protection for those who cannot take advantage of heavier armor.  Bonus: +2 each impact and blade resistance, +6 pierce resistances, +8 arcane resistance, +2 HP",
+        image = "icons/tunic_shaman.png",
+        icon = "items/shaman_tunic.png",
+	cost = 80,
+	usage = "all",
+	position = "torso"	
+})
+table.insert(the_list, {
+	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Padded Coat",
         id = "padded_coat",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This heavy coat has padding and thick cloth that softens impacts, keeps out the cold, and even offers some slight protection against cuts from fangs and blades.  It offers no protection against punctures, and can get quite uncomfortable in hot environments.  Bonus: +6 impact resistance, +4 blade resistance, +5 cold resistance, -5 fire resistance, +3 HP",
+        text = _ "This heavy coat has padding and thick cloth that softens impacts, keeps out the cold, and even offers some slight protection against cuts from fangs and blades.  It offers no protection against punctures, and can get quite uncomfortable in hot environments.  Bonus: +8 impact resistance, +4 blade resistance, +5 cold resistance, -5 fire resistance, +3 HP",
         image = "icons/padded_coat.png",
         icon = "items/padded_coat.png",
 	cost = 50,
@@ -832,6 +953,19 @@ table.insert(the_list, {
         image = "icons/armor_leather.png",
         icon = "items/armor-leather.png",
 	cost = 35,
+	usage = "light_armor",
+	position = "torso"	
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "rusty_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -7, blade = -4, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+        name = _ "Rusty Armor",
+        id = "rusty_armor",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "This armor is rusted, rotten, and ruined.  It doesn't offer the same protection it once did, and it is especially easy to pierce the corrupted material, but the armor does still give some mundane barrier to arcane attacks.  Bonus: +7 impact, +4 blade, and +10 arcane resistances, +2 HP",
+        image = "icons/armor_rusty.png",
+        icon = "items/armor-rusty.png",
+	cost = 15,
 	usage = "light_armor",
 	position = "torso"	
 	
@@ -1088,6 +1222,36 @@ table.insert(the_list, {
 })
 ----------------------------axes-------------------------------------------------------------------
 table.insert(the_list, {
+	eq_effect = { id = "rusty_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", {"set_specials", {mode = "replace", 							
+							{"poison", {id="poison", name= _ "poison", 
+							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
+							}} 
+							}} }}}, 
+        name = _ "Rusty Axe",
+        id = "rusty_axe",
+        tooltip = _ "Supplements for the axe attacks",
+        text = _ "This axe blade covered in rust and filth.  Imparts poison weapon special",
+        image = "icons/axe-rusty.png",
+        icon = "items/axe.png~CS(-10,-25,-30)",
+	cost = 10,
+	usage = "axe",
+	position = "weapon"	
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "obsidian_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1", increase_parry = "5"}} },
+        name = _ "Obsidian Axe",
+        id = "obsidian_axe",
+        tooltip = _ "Supplements for the axe attacks",
+        text = _ "This axe is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases axe damage by 1, increase parry by 5 percent",
+        image = "icons/axe-obsidian.png",
+        icon = "items/obsidian_axe.png",
+	cost = 60,
+	usage = "axe",
+	position = "weapon"	
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "steel_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
         name = _ "Steel Edge",
         id = "steel_axe",
@@ -1234,6 +1398,19 @@ table.insert(the_list, {
 	
 })
 ----------------------------spears-------------------------------------------------------------------
+table.insert(the_list, {
+	eq_effect = { id = "obsidian_spear", {"effect", { apply_to = "attack", range = "melee", type = "pierce", increase_damage = "1", increase_parry = "5"}} },
+        name = _ "Obsidian Spear",
+        id = "obsidian_axe",
+        tooltip = _ "Supplements for the spear attacks",
+        text = _ "This spear is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases axe damage by 1, increase parry by 5 percent",
+        image = "icons/spear-obsidian.png",
+        icon = "items/obsidian_spear.png",
+	cost = 60,
+	usage = "spear",
+	position = "weapon"	
+	
+})
 table.insert(the_list, {
 	eq_effect = { id = "steel_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "2"}} },
         name = _ "Steelpoint Spear",
