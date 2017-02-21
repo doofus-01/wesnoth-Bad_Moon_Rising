@@ -12,6 +12,7 @@ equipment_list.list_usage = list_usage
 table.insert(list_usage, {
     types = {
     "Walking Corpse", "Soulless", "Skeleton",
+    "Archaic_Goblin", "Frost Goblin", "Goblin Impaler",
     "Ukian Runner", "Ukian Courrier", "Ukian Commando", 
     "Orcish Slinger", "Orcish Hunter", "Orcish Stalker", "Orcish Drifter", "Orcish Wanderer", "Orcish Vagrant", "Orcish Vagrant2", "Orcish Traveler", "Ukian Seeress", "Ukian Witch", 
     "Ukian Regular", "Ukian Veteran", "Ukian Signalman", "Ukian Subcommander", "Ukian Commander", "Ukian Flareman", "Ukian Officer", "Belleros", "Belleros_Officer", 
@@ -28,6 +29,8 @@ table.insert(list_usage, {
     "Skeleton", "Revenant", "Draug", "Death Knight",
     "Skeleton Archer", "Bone Shooter", "Banebow",
     "Walking Corpse", "Soulless",
+    "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", 
+    "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider",
     "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
     "Bowman", "Longbowman", "Master Bowman",
     "Scarrion_Spearman", "Therion", "Russle", "Altos",
@@ -146,12 +149,17 @@ table.insert(list_usage, {
     "Spearman", "Javelineer", "Pikeman", "Halberdier", 
     "Carusoe", "Carusoe2", 
     "Scarrion_Spearman",
+    "Archaic_Goblin", "Frost Goblin", "Goblin Impaler",
     "Rat Rider", "Rat Lancer", "Rat Dragoon",
     "Orcish SnowWalker", "Orcish IceStalker"},
     usage = "spear"
 })
 table.insert(list_usage, {
-    types = {"Farm Dog", "Ukian Dog", "Ukian Harrier", "Ukian War Hound", "Ukian Attack Dog", "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", "Hunting_Hound", "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider"},
+    types = {"Farm Dog", "Ukian Dog", "Ukian Harrier", "Ukian War Hound", "Ukian Attack Dog", 
+    "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", 
+    "Hunting_Hound", 
+    "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider"
+    },
     usage = "dog"
 })
 table.insert(list_usage, {
@@ -180,6 +188,17 @@ local shadow_effect = {"effect", { apply_to = "new_ability", {"abilities", { { "
 	name_inactive= _ "nightstalk", female_name_inactive= _ "female^nightstalk", description_inactive= _ "The unit becomes invisible during night.  Enemy units cannot see this unit at night, except if they have units next to it. Any enemy unit that first discovers this unit immediately loses all its remaining movement.", affect_self="yes", {"filter", {{ "filter_location", {time_of_day="chaotic"}}}} }}}}}}
 -- local shadow_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"hides", { id = "nightstalk"}}}}}}
 	
+local poison_special = {"set_specials", {{"poison", {id="poison", name= _ "poison", 
+							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
+							}}}}
+
+local drains_special = {"set_specials", {{"drains", {id="drains", name= _ "drains", 
+							description= _ "This unit drains health from living units, healing itself for half the amount of damage it deals (rounded down)."
+							}}}}
+                                
+local firststrike_special = {"set_specials", {{"firststrike", {id="firststrike", name= _ "first strike", 
+							description= _ "This unit always strikes first with this attack, even if they are defending."
+							}}}}
                                 
                 
 --[[ 
@@ -402,8 +421,20 @@ table.insert(the_list, {
         tooltip = _ "all shields offer impact resistance",
         text = _ "This very small shield is made from bronze and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 5 each impact and blade resistance, + 4 HP",
         image = "icons/buckler_bronze.png",
-        icon = "items/buckler.png~CS(0,20,-20)",
+        icon = "items/bronze_buckler.png",
 	cost = 65,
+	usage = "all",
+	position = "shield"
+})
+table.insert(the_list, {
+	eq_effect = { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
+        name = _ "Iron Buckler",
+	id = "iron_buckler",
+        tooltip = _ "all shields offer impact resistance",
+        text = _ "This very small shield is made from iron and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 8 each impact and blade resistance, + 6 HP",
+        image = "icons/buckler_iron.png",
+        icon = "items/iron_buckler.png",
+	cost = 95,
 	usage = "all",
 	position = "shield"
 })
@@ -412,11 +443,11 @@ table.insert(the_list, {
         name = _ "Ancient Targe",
 	id = "rusty_targ",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This ancient shield is of a type that can frequently be found in the northlands.  It's not clear who made them, but all scavengers find them useful.  Bonus: + 5 impact resistance, + 5 blade resistance, -10 arcane resistance, + 5 fire resistance, + 2 HP",
+        text = _ "This small, ancient shield is of a type that can frequently be found in the northlands.  It's not clear who made them, but all scavengers find them useful.  Bonus: + 5 impact resistance, + 5 blade resistance, -10 arcane resistance, + 5 fire resistance, + 2 HP",
         image = "icons/rusty_targ.png",
         icon = "items/buckler.png~CS(-30,-10,-10)",
 	cost = 15,
-	usage = "shield",
+	usage = "all",
 	position = "shield"
 })
 table.insert(the_list, {
@@ -726,9 +757,25 @@ table.insert(the_list, {
         name = _ "White Gloves",
         id = "white_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These white, silken gloves seem to be woven with supernatural threads.  Bonus: +10 arcane, +3 fire resistances;  +3 hitpoints.",
+        text = _ "These white, silken gloves seem to be woven with supernatural threads.  Bonus: +10 arcane, +3 cold resistances;  +3 hitpoints.",
         image = "icons/white_gloves.png",
         icon = "items/white_gloves.png",
+	cost = 55,
+	usage = "all",
+	position = "ring"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "black_gloves", 
+	{"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -5}}}}, 
+	{"effect", { apply_to = "hitpoints", increase_total = "5"}}, 
+	{"effect", { apply_to = "attack", range = "melee", drains_special}} },
+        name = _ "Black Gloves",
+        id = "black_gloves",
+        tooltip = _ "protection for the hands",
+        text = _ "These black, silken gloves seem to be woven with supernatural threads.  Bonus: +10 arcane, +5 cold resistances;  +5 hitpoints; Drain capability for melee attack",
+        image = "icons/black_gloves.png",
+        icon = "items/black_gloves.png",
 	cost = 55,
 	usage = "all",
 	position = "ring"
@@ -1115,6 +1162,19 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "wooden_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+        name = _ "Wooden Shinguards",
+        id = "wooden_greaves",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "These wooden shin-guards offer some rigid protection for the legs, and while it isn't the best armor, it is something.  Bonus: +5 blade, impact resistance, +2 pierce resistance, +2 HP",
+        image = "icons/greaves_woodden.png",
+        icon = "items/greaves-wooden.png",
+	cost = 29,
+	usage = "light_armor",
+	position = "foot"	
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "serpent_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -2}}}} , {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {shallow_water = -1, swamp_water = -1}}}}, {"effect", { apply_to = "hitpoints", increase_total = "1"}} },
         name = _ "Sea-Serpent Skins",
         id = "serpent_greaves",
@@ -1135,7 +1195,7 @@ table.insert(the_list, {
         text = _ "Easily crafted and not particularly heavy, these leg-guards can be worn by anyone with some physical strength without being a hinderance.  Bonus: +3 impact, +6 blade, +5 pierce resistances; +2 HP",
         image = "icons/greaves_brass.png",
         icon = "items/greaves-brass.png",
-	cost = 35,
+	cost = 39,
 	usage = "light_armor",
 	position = "foot"	
 	
@@ -1401,7 +1461,7 @@ table.insert(the_list, {
 table.insert(the_list, {
 	eq_effect = { id = "obsidian_spear", {"effect", { apply_to = "attack", range = "melee", type = "pierce", increase_damage = "1", increase_parry = "5"}} },
         name = _ "Obsidian Spear",
-        id = "obsidian_axe",
+        id = "obsidian_spear",
         tooltip = _ "Supplements for the spear attacks",
         text = _ "This spear is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases axe damage by 1, increase parry by 5 percent",
         image = "icons/spear-obsidian.png",
@@ -1452,6 +1512,19 @@ table.insert(the_list, {
 })
 ----------------------------bows-------------------------------------------------------------------
 table.insert(the_list, {
+	eq_effect = { id = "poison_arrows", {"effect", { apply_to = "attack", name = "bow", poison_special}} },
+        name = _ "Poison Arrows",
+        id = "poison_arrows",
+        tooltip = _ "Supplements for the bow attacks",
+        text = _ "These arrows have small feather barbs nea the head, and have been soaked in the toxin commonly used by orcs.  Bonus: Grants poison ability",
+        image = "icons/bow-poison.png",
+        icon = "items/bow.png",
+	cost = 100,
+	usage = "bow",
+	position = "weapon"	
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "steel_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "2"}} },
         name = _ "Steel Arrows",
         id = "steel_arrows",
@@ -1473,6 +1546,19 @@ table.insert(the_list, {
         image = "attacks/bow-short-reinforced.png~GS()",
         icon = "items/bow.png~CS(20,30,30)",
 	cost = 160,
+	usage = "bow",
+	position = "weapon"	
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "2", firststrike_special}} },
+        name = _ "Sky Arrows",
+        id = "sky_arrows",
+        tooltip = _ "Supplements for the bow attacks",
+        text = "These odd crystalline arrows are well balanced, but they the special thing about them is that they seem to be less affected by the wind, extending their effective range.  Bonus:  Increases bow damage by 2, Grants First Strike ability.",
+        image = "attacks/bow-short-reinforced.png~CS(-10,20,50)",
+        icon = "items/bow.png~CS(-10,20,50)",
+	cost = 120,
 	usage = "bow",
 	position = "weapon"	
 	
