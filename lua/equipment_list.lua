@@ -409,7 +409,7 @@ table.insert(the_list, {
         tooltip = _ "all shields offer impact resistance",
         text = _ "This very small shield is made from animal hides and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 2 each impact and blade resistance, + 2 HP",
         image = "icons/buckler_hide.png",
-        icon = "items/buckler.png~CS(0,0,-50)",
+        icon = "items/hide_buckler.png",
 	cost = 15,
 	usage = "all",
 	position = "shield"
@@ -1606,13 +1606,13 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_dagger", {"effect", { apply_to = "new_attack", name = "orc_dagger", description = "orcish dagger", range = "melee", type = "blade", damage = 6, number = 2, icon = "attacks/dagger-orcish.png"}} },
+	eq_effect = { id = "orc_dagger", {"effect", { apply_to = "new_attack", name = "orc_dagger", description = "orcish dagger", range = "melee", type = "blade", damage = 7, number = 2, icon = "attacks/dagger-orcish.png"}} },
         name = _ "Orcish Dagger",
         id = "orc_dagger",
         tooltip = _ "Weapon for anyone to use",
         text = _ "A crude, but vicious weapon that can be used by almost anyone with a free hand.  Grants a new blade attack.",
         image = "attacks/dagger-orcish.png",
-        icon = "items/dagger~CS(-10,0,-20).png",
+        icon = "items/dagger.png~CS(-10,0,-20)",
 	cost = 30,
 	usage = "all",
 	position = "weapon"	
