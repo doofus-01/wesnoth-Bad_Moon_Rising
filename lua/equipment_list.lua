@@ -33,9 +33,10 @@ table.insert(list_usage, {
     "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider",
     "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
     "Bowman", "Longbowman", "Master Bowman",
+    "Fencer","Duelist","Master at Arms",
     "Scarrion_Spearman", "Therion", "Russle", "Altos",
     "Thief","Rogue","Assassin",
-    "Thug","Bandit","Highwayman",
+    "Thug","Bandit","Highwayman","Resurrectionist",
     "Red Mage", "Arch Mage", "Silver Mage", "Great Mage", 
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
     "Royal Spotter", "Royal Herdsman", "Royal Rider", "Royal Thrower", "Royal FireKnight",
@@ -89,6 +90,7 @@ table.insert(list_usage, {
     "Walking Corpse", "Soulless",
     "Skeleton", "Revenant", "Draug", "Death Knight",
     "Skeleton Archer", "Bone Shooter", "Banebow",
+    "Thug","Bandit","Highwayman","Resurrectionist",
     "Scarrion_Spearman", "Therion", "Altos",
     "Carusoe", "Carusoe2", "Bad Raenna", "Raenna", "Dark Messiah", "Huric"
     },
@@ -295,7 +297,7 @@ table.insert(the_list, {
         tooltip = _ "all helmets offer impact resistance",
         text = _ "This helmet has been left out in the elements for too long.  The metal is rusted, the leather and padding are rotted.  But for the undead, it provides some mundane protection against the arcane attacks.  Bonus: + 1 impact and +5 arcane resistance, + 2 HP",
         image = "icons/helmet_rusty.png",
-        icon = "items/helmet3.png~CS(-20,-10,-60)",
+        icon = "items/helmet_rusty.png",
 	cost = 25,
 	usage = "light_armor",
 	position = "head"
