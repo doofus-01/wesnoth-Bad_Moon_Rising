@@ -220,7 +220,7 @@ table.insert(the_list, {
 	id = "black_cowl",
         tooltip = _ "all helmets offer impact resistance",
         text = _ "This is a black hood that has some dark, otherworldly essence.  Anyone can wear it, but why would one want to? Bonus: + 2 each impact and cold resistance, sets alignment to chaotic, + 1 HP",
-        image = "icons/helmet_black_cowl.png",
+        image = "icons/black_cowl.png",
         icon = "items/black_cowl.png",
 	cost = 35,
 	usage = "all",
