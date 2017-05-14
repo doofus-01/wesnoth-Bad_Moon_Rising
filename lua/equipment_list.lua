@@ -1169,7 +1169,7 @@ table.insert(the_list, {
         id = "wooden_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
         text = _ "These wooden shin-guards offer some rigid protection for the legs, and while it isn't the best armor, it is something.  Bonus: +5 blade, impact resistance, +2 pierce resistance, +2 HP",
-        image = "icons/greaves_woodden.png",
+        image = "icons/greaves_wooden.png",
         icon = "items/greaves-wooden.png",
 	cost = 29,
 	usage = "light_armor",
