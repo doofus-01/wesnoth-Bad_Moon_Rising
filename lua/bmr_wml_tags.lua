@@ -105,7 +105,26 @@ end
 --  Interface tags
 ------------------------------------------
 
+-- WML tag for the pop-up dialog
+
+-- local _ = wesnoth.textdomain "wesnoth-Bad_Moon_Rising"
+-- need to figure out how to deal with translations on the "message"
+
+function wesnoth.wml_actions.center_message(cfg)
+        local message = cfg.message
+        if message == nil then message = "No message available..." end
+        local title = cfg.title
+        if title == nil then title = "" end
+        local image = cfg.image
+        if image == nil then image = "wesnoth-icon.png" end
+
+	wesnoth.show_popup_dialog(title,message,image)
+end
+
+
+
 -- is this needed?  maybe it should be removed
+--[[
 -- simple GUI dialog, adapted from top_message.lua in After_the_Storm
 
 -- Displays a simple transient message at the top, without any
@@ -241,4 +260,4 @@ function wesnoth.wml_actions.top_message_spacer(cfg)
         wesnoth.show_dialog(ddst, preshow, nil)
 end
 
-
+]]
