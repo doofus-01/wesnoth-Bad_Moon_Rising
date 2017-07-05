@@ -837,7 +837,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "tooth_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = { id = "fang_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Fang Charm",
         id = "fang_charm",
         tooltip = _ "amulets can have special effects",
@@ -1634,7 +1634,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { name = "poison_dagger", {"effect", { apply_to = "new_attack", name = "poison_dagger", description = "posion dagger", range = "melee", type = "blade", damage = 3, number = 2, icon = "attacks/dagger-undead.png",
+	eq_effect = { id = "poison_dagger", {"effect", { apply_to = "new_attack", name = "poison_dagger", description = "posion dagger", range = "melee", type = "blade", damage = 3, number = 2, icon = "attacks/dagger-undead.png",
 							{"specials", {{"poison", {id="poison", name= _ "poison", 
 							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
 							}}}}

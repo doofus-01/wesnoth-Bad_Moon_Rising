@@ -233,6 +233,17 @@ bmr_equipment.remove = function(unit_id, gear_id)
           wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 --	  wesnoth.add_modification(units[1], "object", neq_eff)
           wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
+-- a hack to fix what may be a core bug with remove_object?
+-- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
+
+	  local hack_HP_fix_pre = wesnoth.get_variable("my_unit.hitpoints")
+	  local hack_u = wesnoth.get_units({id = unit_id})[1]
+	  if hack_u.max_hitpoints < hack_HP_fix_pre then
+	      hack_u.hitpoints = hack_u.max_hitpoints
+	  else
+	      hack_u.hitpoints = hack_HP_fix_pre
+	  end
+	  helper.modify_unit({ id = unit_id }, { hitpoints = hack_u.hitpoints })
 
 -- then remove the object and anti-object, storing unit again
 --[[ no longer needed
