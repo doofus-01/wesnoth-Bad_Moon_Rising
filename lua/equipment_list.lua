@@ -1593,6 +1593,19 @@ table.insert(the_list, {
 	position = "weapon"	
 	
 })
+table.insert(the_list, {
+	eq_effect = { id = "club_found", {"effect", { apply_to = "new_attack", name = "club_found", description = "club", range = "melee", type = "impact", damage = 8, number = 2, icon = "attacks/club-found.png"}} },
+        name = _ "Club",
+        id = "club_found",
+        tooltip = _ "Weapon for anyone to use",
+        text = _ "A small, but effective weapon that can be used by almost anyone, with a little practice.  Grants a new melee impact attack.",
+        image = "attacks/club-found.png",
+        icon = "items/club-found.png",
+	cost = 15,
+	usage = "all",
+	position = "weapon"	
+	
+})
 -----------------------------daggers--------------------------------------------------------------
 table.insert(the_list, {
 	eq_effect = { id = "small_dagger", {"effect", { apply_to = "new_attack", name = "small_dagger", description = "small dagger", range = "melee", type = "blade", damage = 4, number = 3, icon = "attacks/dagger-curved.png"}} },
