@@ -111,10 +111,8 @@ end
 -- need to figure out how to deal with translations on the "message"
 
 function wesnoth.wml_actions.center_message(cfg)
-        local message = cfg.message
-        if message == nil then message = "No message available..." end
-        local title = cfg.title
-        if title == nil then title = "" end
+	local message = tostring(cfg.message or "No message available")
+	local title = tostring(cfg.title or "")
         local image = cfg.image
         if image == nil then image = "wesnoth-icon.png" end
 
