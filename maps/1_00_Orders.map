@@ -1,15 +1,12 @@
-border_size=1
-usage=map
-
-Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
-Xos         , Xos         , Xol         , Xos         , Xos         , Xos         , Xos         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xol         , Xos         , Xos         
-Xos         , Xol         , Rrc         , Rrc         , Xol         , Xos         , Xos         , Rrc         , Xol         , Xos         , Xol         , Rrc         , Rrc         , Xol         , Xos         
-Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , 3 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
-Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rr^Yrug     , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
-Xos         , Xos         , Rrc         , Rrc         , 4 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
-Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , 1 Rrc       , Rrc         , 2 Rrc       , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         
-Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         
-Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         
-Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
-Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
-Xos         , Xos         , Xos         , Xos         , Xos         , Xos         , Rrc         , Rrc         , Rrc         , Xos         , Xos         , Xos         , Xos         , Xos         , Xos         
+Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc
+Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Icr, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc
+Xoc, Xoc, Irs, Irs, Xoc^Efs, Xoc, Xoc, Icr, Xoc, Xoc, Xoc^Efs, Irs, Irs, Xoc, Xoc
+Xoc, Xoc, Irs, Irs, Irs, Irs, Icr, 3 Icr, Icr, Irs, Irs, Irs, Irs, Xoc, Xoc
+Xoc, Xoc, Irs, Irs, Irs, Irs, Icr, Icr, Icr, Irs, Irs, Irs, Irs, Xoc, Xoc
+Xoc, Xoc, Irs, Irs, 4 Irs, Irs, Icr, Icr, Icr, Irs, Irs, Irs, Irs, Xoc, Xoc
+Xoc, Xoc, Irs^Ebn, Irs, Irs, Irs, 1 Icr, Icr, 2 Icr, Irs, Irs, Irs, Irs^Ebn, Xoc, Xoc
+Xoc, Xoc, Xoc, Irs, Irs, Irs, Icr, Icr, Icr, Irs, Irs, Irs, Xoc, Xoc, Xoc
+Xoc, Xoc, Xoc, Xoc, Xoc, Irs, Irs, Icr, Irs, Irs, Xoc, Xoc, Xoc, Xoc, Xoc
+Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Irs, Irs, Irs, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc
+Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Irs, Irs, Irs, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc
+Xoc, Xoc, Xoc, Xoc, Xoc, Xoc, Irs, Irs, Irs, Xoc, Xoc, Xoc, Xoc, Xoc, Xoc
