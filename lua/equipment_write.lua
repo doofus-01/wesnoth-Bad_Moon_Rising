@@ -79,7 +79,7 @@ bmr_equipment.unit = function(unit_id, gear_id)
 -- see also line 168, similar problem.  I think this is fixed now, in Status_Test.lua line 139
 	  bmr_equipment.pool_add(gear_id)
 	  result = "no room"
-          wesnoth.message("Notice", gear_id)      
+          wesnoth.message("Notice", string.format("Cannot equip %s, adding to inventory.", gear_id))
 --          wesnoth.message("Notice", "This unit cannot use this item.")      
 	  return result
       elseif filter_result == "not found" then
