@@ -190,15 +190,15 @@ local shadow_effect = {"effect", { apply_to = "new_ability", {"abilities", { { "
 	name_inactive= _ "nightstalk", female_name_inactive= _ "female^nightstalk", description_inactive= _ "The unit becomes invisible during night.  Enemy units cannot see this unit at night, except if they have units next to it. Any enemy unit that first discovers this unit immediately loses all its remaining movement.", affect_self="yes", {"filter", {{ "filter_location", {time_of_day="chaotic"}}}} }}}}}}
 -- local shadow_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"hides", { id = "nightstalk"}}}}}}
 	
-local poison_special = {"set_specials", {{"poison", {id="poison", name= _ "poison", 
+local poison_special = {"set_specials", {mode="append", {"poison", {id="poison", name= _ "poison", 
 							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
 							}}}}
 
-local drains_special = {"set_specials", {{"drains", {id="drains", name= _ "drains", 
+local drains_special = {"set_specials", {mode="append", {"drains", {id="drains", name= _ "drains", 
 							description= _ "This unit drains health from living units, healing itself for half the amount of damage it deals (rounded down)."
 							}}}}
                                 
-local firststrike_special = {"set_specials", {{"firststrike", {id="firststrike", name= _ "first strike", 
+local firststrike_special = {"set_specials", {mode="append", {"firststrike", {id="firststrike", name= _ "first strike", 
 							description= _ "This unit always strikes first with this attack, even if they are defending."
 							}}}}
                                 
