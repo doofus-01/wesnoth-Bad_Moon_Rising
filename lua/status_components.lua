@@ -1,4 +1,5 @@
-local T = helper.set_wml_tag_metatable {}
+-- local T = helper.set_wml_tag_metatable {}
+local T = wml.tag
 
 function equipment_grid(data)
 	return T.grid{

@@ -1,7 +1,8 @@
 -- started with the add-on Scenario_with_robots as an example of how to do this stuff
 
 helper = wesnoth.require "lua/helper.lua"
-T = helper.set_wml_tag_metatable {}
+-- T = helper.set_wml_tag_metatable {}
+T = wml.tag
 items = wesnoth.require "lua/wml/items.lua"
 _ = wesnoth.textdomain "wesnoth"
                 
