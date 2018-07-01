@@ -174,6 +174,10 @@ table.insert(list_usage, {
 
 local selfheal_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=2, id= "selfheal", name= _ "self-heals", female_name= _ "female^self-heals", description= _ "The unit will heal itself 2 HP per turn. If it is poisoned, it will neither heal nor suffer the poison, but it must seek a cure elsewhere.", affect_self="yes", poison= "slowed" }}}}}}
 
+-- the true illuminates description has a newline, which seems to cause trouble if I don't wrap it in something I don't care about right now.  Fix this later...
+local illuminates_halo = {"effect", {apply_to = "halo", halo="halo/torch-aura.png"}}
+local illuminates_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "illuminates", { id= "illumination", value=25, max_value=25, name= _ "illuminates", female_name= _ "female^illuminates", description= _ "This unit illuminates the surrounding area, making lawful units fight better, and chaotic units fight worse.", affect_self="yes"}}}}}}
+
 local regenerate_effect = {"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=8, id= "regenerates", name= _ "regenerates", female_name= _ "female^regenerates", description= _ "The unit will heal itself 8 HP per turn. If it is poisoned, it will remove the poison instead of healing.", affect_self="yes", poison= "cured" }}}}}}
 -- local regenerate_neg_effect = {"effect", {apply_to = "remove_ability", {"abilities", {{"regenerate", { id = "regenerates"}}}}}}
 
@@ -255,6 +259,19 @@ table.insert(the_list, {
         image = "icons/helmet_leather-cap.png",
         icon = "items/leather_cap.png",
 	cost = 25,
+	usage = "all",
+	position = "head"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "cap_gem", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, fire = -5, arcane = -5}}}}, {"effect", { apply_to = "vision", increase = "-8"}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+        name = _ "Jewel Cap",
+	id = "cap_gem",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This is an expensive and bedazzling covering for the head that is not cumbersome and almost anyone can use it. Bonus: + 5 each impact, fire, and arcane resistance, + 5 HP",
+        image = "icons/helmet_gem-cap.png",
+        icon = "items/gem_cap.png",
+	cost = 65,
 	usage = "all",
 	position = "head"
 	
@@ -681,6 +698,22 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "green_ring", 
+	{"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, fire = -5, cold = -5}}}} , 
+	{"effect", { apply_to = "defense", replace = "no",{"defense", {forest = -25}}}} , 
+	{"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Green Ring",
+        id = "green_ring",
+        tooltip = _ "rings usually provide protection against the non-physical attacks",
+        text = _ "It is as if this ring puts the wearer in harmony with the trees, for they become so nimble in the forest.  Bonus: +25 percent defense in forest, +10 arcane resistance, +5 each fire and cold resistance, +3 HP",
+        image = "icons/ring_green.png",
+        icon = "items/ring-green.png",
+	cost = 135,
+	usage = "amulet",
+	position = "ring"
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "dark_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Dark Ring",
         id = "dark_ring",
@@ -845,6 +878,19 @@ table.insert(the_list, {
         image = "icons/fang_charm.png",
         icon = "items/fang_charm.png",
 	cost = 75,
+	usage = "all",
+	position = "amulet"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "shard_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}, {"effect", { apply_to = "healthy"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10, pierce = -10, arcane = -10}}}}}, 
+        name = _ "Shard Charm",
+        id = "shard_charm",
+        tooltip = _ "amulets can have special effects",
+        text = _ "This is some shimmering crystal shard on a lanyard.  Anyone can wear it, and it seems to bestow some good health on the wearer.  Bonus: +10 each blade, pierce, and arcane resistance, always resting,  and +5 hitpoints",
+        image = "icons/shard_charm.png",
+        icon = "items/shard_charm.png",
+	cost = 125,
 	usage = "all",
 	position = "amulet"
 	
@@ -1512,6 +1558,20 @@ table.insert(the_list, {
 	position = "weapon"	
 	
 })
+table.insert(the_list, {
+	eq_effect = { id = "sun_spear", illuminates_halo, illuminates_effect, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -10}}}} , 
+	{"effect", { apply_to = "attack", name = "spear", increase_damage = "5"}}  },
+        name = _ "Sun-Beam Spear",
+        id = "sun_spear",
+        tooltip = _ "Supplements for the spear attacks",
+        text = _ "This radiant pike appears to be made of gold, though that is probably from the golden sunlight that shines from the spearhead.  Bonus: +5 spear damage, +10 cold and arcane resistance, illuminates.",
+        image = "icons/sun_pike.png",
+        icon = "items/spear5.png",
+	cost = 405,
+	usage = "spear",
+	position = "weapon"	
+	
+})
 ----------------------------bows-------------------------------------------------------------------
 table.insert(the_list, {
 	eq_effect = { id = "poison_arrows", {"effect", { apply_to = "attack", name = "bow", poison_special}} },
@@ -1602,6 +1662,19 @@ table.insert(the_list, {
         image = "attacks/club-found.png",
         icon = "items/club-found.png",
 	cost = 15,
+	usage = "all",
+	position = "weapon"	
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "club_torch", illuminates_effect, illuminates_halo, {"effect", { apply_to = "new_attack", name = "club_torch", description = "torch", range = "melee", type = "fire", damage = 10, number = 2, icon = "attacks/torch.png"}} },
+        name = _ "Torch",
+        id = "club_torch",
+        tooltip = _ "Weapon for anyone to use",
+        text = _ "A dense wooden stick with flammable material wrapped around one end.  Grants a new melee fire attack, and illuminates.",
+        image = "attacks/torch.png",
+        icon = "items/torch.png",
+	cost = 18,
 	usage = "all",
 	position = "weapon"	
 	
