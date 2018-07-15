@@ -4,7 +4,7 @@
 ------------------------------------------------
 
 -- adds gear with gear_id to unit with id
-
+-- if unit and gear were on map, it removes the gear
 --[[
 
 [apply_gear]
@@ -17,10 +17,11 @@
 function wesnoth.wml_actions.apply_gear(cfg)
         local unit_id = cfg.id or helper.wml_error "[apply_gear] expects an id= attribute."
         local gear_id = cfg.gear_id or helper.wml_error "[apply_gear] expects a gear_id= attribute."
-        local filter_result = bmr_equipment.filter(unit_id, gear_id)
-        local app_unit = bmr_equipment.unit(unit_id, gear_id)
-        local eq_unit = wesnoth.get_units({ id = unit_id })
-        if eq_unit[1] then
+        local result = bmr_equipment.unit(unit_id, gear_id)
+        -- pass if the unit could equip the item, or was a player side that had a pool
+        -- fail if the unit couldn't equip and was ai, or was not found
+        if result == "pass" then
+            local eq_unit = wesnoth.get_units({ id = unit_id })
             bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
         end
 end
