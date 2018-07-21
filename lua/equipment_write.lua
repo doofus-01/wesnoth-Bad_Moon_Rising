@@ -43,12 +43,24 @@ bmr_equipment.filter = function(unit_id, gear_id)
           gear_usage = equipment_list.the_list[j].usage
           -- make sure the unit has an open position before continuing
           gear_position = equipment_list.the_list[j].position
-          local gear_index_max = #units[1].variables
+--          wesnoth.message("Filter_debugging", string.format("gear_position= %s", gear_position))
+--        FLAG: This part isn't quite right, I need to figure out/remember how to access the length of unit.variables.gear array
+--          local gear_index_max = #units[1].variables["gear"] -- this isn't working, maybe I need to use the get_child stuff?
+          local gear_index_max = 9 -- this is temporary fix.
           local gear_index = 0
+--          wesnoth.message("Filter_debugging", string.format("gear_index_max= %i", gear_index_max))
           while gear_index < gear_index_max do
 --            gear_pos_temp = units[1].variables["gear["..gear_index.."].position"]
 --            wesnoth.message("Filter_debugging_Iteration", string.format("bmr_equipment.filter returns result= %s", gear_pos_temp))
-            if units[1].variables["gear["..gear_index.."].position"] == gear_position then
+            local gear_position_iter = units[1].variables["gear["..gear_index.."].position"]
+--            wesnoth.message("Filter_debugging_loop", string.format("gear_position_iter= %s", gear_position_iter))
+--            wesnoth.message("Filter_debugging_loop", string.format("gear_index %i out of %i", gear_index, gear_index_max))
+            if gear_position_iter then
+            else
+	      break
+	    end
+            if gear_position_iter == gear_position then
+--            if units[1].variables["gear["..gear_index.."].position"] == gear_position then
               if result ~= "is ai" then
                 result = "no room"
               end
