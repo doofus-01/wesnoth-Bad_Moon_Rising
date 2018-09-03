@@ -21,9 +21,15 @@ function wesnoth.wml_actions.apply_gear(cfg)
         -- pass if the unit could equip the item, or was a player side that had a pool
         -- fail if the unit couldn't equip and was ai, or was not found
         if result == "pass" then
+--           wesnoth.message(string.format("%s on map", unit_id))
+--           wesnoth.message(string.format("%s on map", gear_id))
             local eq_unit = wesnoth.get_units({ id = unit_id })
-            local take_result = bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
-            if take_result == "pass" then
+            -- this fails to store anything if id is something like "Primevalist Fighter-21", from underlying ID of generic unit, 
+            -- then generates errors when eq_unit[1] is referenced
+--           wesnoth.message(string.format("%s on map (array)", eq_unit[1].id))
+--            local take_result = bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
+--            if take_result == "pass" then
+            if eq_unit[1] then
               wesnoth.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
             end
         end
