@@ -1511,7 +1511,7 @@ table.insert(the_list, {
         name = _ "Obsidian Spear",
         id = "obsidian_spear",
         tooltip = _ "Supplements for the spear attacks",
-        text = _ "This spear is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases axe damage by 1, increase parry by 5 percent",
+        text = _ "This spear is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases spear damage by 1, increase parry by 5 percent",
         image = "icons/spear-obsidian.png",
         icon = "items/obsidian_spear.png",
 	cost = 60,
@@ -1613,11 +1613,11 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "2", firststrike_special}} },
+	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "3", firststrike_special}} },
         name = _ "Sky Arrows",
         id = "sky_arrows",
         tooltip = _ "Supplements for the bow attacks",
-        text = "These odd crystalline arrows are well balanced, but they the special thing about them is that they seem to be less affected by the wind, extending their effective range.  Bonus:  Increases bow damage by 2, Grants First Strike ability.",
+        text = "These odd crystalline arrows are well balanced and razor sharp, but the special thing about them is that they seem to be less affected by the wind and air, extending their effective range.  Bonus:  Increases bow damage by 3, Grants First Strike ability.",
         image = "icons/bow-sky.png",
         icon = "items/bow.png~CS(-10,20,50)",
 	cost = 120,
