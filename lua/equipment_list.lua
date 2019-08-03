@@ -213,6 +213,69 @@ there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 
 
 ]]--
 
+------------ arms --------------
+table.insert(the_list, {
+	eq_effect = { id = "leather_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -2, impact = -2}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "Leather Vambrace",
+	id = "leather_vambrace",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "These boiled leather coverings for the forearm offer only minimal protection, but they are light-weight and available to all..  Bonus: + 2 each impact and blade resistance, + 1 HP",
+        image = "icons/leather_vambrace.png",
+        icon = "items/leather_vambrace.png",
+	cost = 10,
+	usage = "all",
+	position = "arms"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "3"}} 
+	            },
+        name = _ "Iron Vambrace",
+	id = "iron_vambrace",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "This is sturdy iron cladding for the forearms, a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and blade resistance, + 3 HP",
+        image = "icons/iron_vambrace.png",
+        icon = "items/iron_vambrace.png",
+	cost = 15,
+	usage = "light_armor",
+	position = "arms"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "obsidian_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -2, impact = -2}}}}, 
+	              {"effect", { apply_to = "attack", range = "ranged", increase_accuracy = "5"}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "Obsidian Bracelet",
+	id = "obsidian_bracelet",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "A broad. stitched hide bracelet with black, glassy shards sewn into the outer surface.  Bonus: + 2 each impact and arcane resistance, increases ranged accuracy by 5, + 1 HP",
+        image = "icons/obsidian_bracelet.png",
+        icon = "items/obsidian_bracelet.png",
+	cost = 20,
+	usage = "all",
+	position = "arms"
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -3, arcane = -3, impact = -3}}}}, 
+	              {"effect", { apply_to = "attack", range = "ranged", increase_parry = "5"}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "Jade Bracelet",
+	id = "jade_bracelet",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.  Bonus: + 3 each impact, cold, and arcane resistance, increases ranged parry by 5, + 1 HP",
+        image = "icons/jade_bracelet.png",
+        icon = "items/jade_bracelet.png",
+	cost = 35,
+	usage = "all",
+	position = "arms"
+	
+})
 ------------ helmets--------------
 -- 20161105 removing the anti-effects, changing eq_effect.name to eq_effect.id for using [remove_object]
 table.insert(the_list, {
@@ -1000,6 +1063,18 @@ table.insert(the_list, {
         image = "icons/tunic_elven.png",
         icon = "items/tunic.png",
 	cost = 30,
+	usage = "all",
+	position = "torso"	
+})
+table.insert(the_list, {
+	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+        name = _ "Blue Tunic",
+        id = "blue_tunic",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "The primevalists have access to some unusual cloth of a forgotten fabric, a small gift from their lords.  It is very tough against the cut of either a blade or a cold wind, but is otherwise unremarkable but for its color, which is an usually pure blue.  Bonus: +5 cold resistance, +5 blade resistance, +2 HP",
+        image = "icons/tunic_blue.png",
+        icon = "items/tunic_blue.png",
+	cost = 28,
 	usage = "all",
 	position = "torso"	
 })
