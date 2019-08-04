@@ -986,6 +986,34 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "kidney_belt", {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Kidney Belt",
+        id = "kidney_belt",
+        tooltip = _ "belt helps with equipment weight",
+        text = _ "This large belt provides support for the lower back.  Anyone can use it.  Bonus: Reduces carried weight by 2; +3 hitpoints",
+        image = "icons/kidney_belt.png",
+        icon = "items/kidney_belt.png",
+	cost = 25,
+	usage = "all",
+	position = "amulet",
+	weight = -2
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "atlas_belt", {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
+        name = _ "Atlas Belt",
+        id = "atlas_belt",
+        tooltip = _ "belt helps with equipment weight",
+        text = _ "This large belt provides support for the lower back, and has many straps and ways to help distribute equipment weight.  Anyone can use it.  Bonus: Reduces carried weight by 4; +7 hitpoints",
+        image = "icons/atlas_belt.png",
+        icon = "items/atlas_belt.png",
+	cost = 37,
+	usage = "all",
+	position = "amulet",
+	weight = -4
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "fang_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Fang Charm",
         id = "fang_charm",
@@ -1130,11 +1158,11 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Blue Tunic",
         id = "blue_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The primevalists have access to some unusual cloth of a forgotten fabric, a small gift from their lords.  It is very tough against the cut of either a blade or a cold wind, but is otherwise unremarkable but for its color, which is an usually pure blue.  Bonus: +5 cold resistance, +5 blade resistance, +2 HP",
+        text = _ "The primevalists have access to some unusual cloth of a forgotten fabric, a small gift from their lords.  It is very tough against the cut of either a blade or a cold wind, but is otherwise unremarkable but for its color, which is an usually pure blue.  Bonus: +5 cold resistance, +7 blade resistance, +2 HP",
         image = "icons/tunic_blue.png",
         icon = "items/tunic_blue.png",
 	cost = 28,
