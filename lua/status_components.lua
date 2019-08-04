@@ -167,7 +167,7 @@ function misc_status_grid()
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level"}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment"}}},
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP"}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait"}}},
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP"}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait"}}},  
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT"}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", tooltip = "Equipment Weight: lowers defense values (except for village and castle) and every ten points costs one movement point."}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
 				}}}				
 			  }},
                  T.column { resistances_grid()} -- right grid
@@ -201,7 +201,6 @@ function set_simple_grid_values(unit)
 	wesnoth.set_dialog_markup(true, "the_unit_type")
 	wesnoth.set_dialog_markup(true, "the_unit_HP")
 	wesnoth.set_dialog_markup(true, "the_unit_XP")
-	wesnoth.set_dialog_markup(true, "the_unit_WT")
 	wesnoth.set_dialog_markup(true, "the_unit_alignment")
 	wesnoth.set_dialog_markup(true, "the_unit_level")
 	wesnoth.set_dialog_value(string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) , "the_unit_type")
@@ -233,14 +232,19 @@ function set_child_grid_values(unit)
 -- weight
 	local unit_var = helper.get_child(unit, "variables")
 	local unit_wt = unit_var.weight
+        if unit_wt then
+        else
+           unit_wt = 0
+        end
 	local wt_color = "color ='#2ac600'"
 	if unit_wt > -10 and unit_wt < 10 then
 	    wt_color = "color ='#e5e5e5'"
-	elseif unit_wt >= 10 and unit_xp < 20 then
+	elseif unit_wt >= 10 and unit_wt < 20 then
 	    wt_color = "color ='#ffc600'"
-	elseif unit_xp >= 20 and unit_xp < 30 then
+	elseif unit_wt >= 20 and unit_wt < 30 then
 	    wt_color = "color ='#ff0000'"
 	end
+	wesnoth.set_dialog_markup(true, "the_unit_WT")
 	wesnoth.set_dialog_value(string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt) , "the_unit_WT")
 -- movement costs
 	wesnoth.set_dialog_markup(true, "the_mcg_title")

@@ -103,9 +103,9 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   old_weight = 0
               end
               temp_weight = old_weight + gear_weight
-              if temp_weight < 0 then -- should not happen, but ...
-                  temp_weight = 0
-              end
+--              if temp_weight < 0 then -- should not happen, but ...
+--                  temp_weight = 0
+--              end
               wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
               local temp_movep_change_old = 0
               local temp_movep_change_new = 0
@@ -122,6 +122,28 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   local movep = wesnoth.get_variable("my_unit.max_moves") 
                   wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
               end
+              local dco = helper.get_child(units[1].__cfg, "defense")
+              local dwt = -1*gear_weight
+              local dco_deep_water = 100
+              if dco.deep_water then
+                  dco_deep_water = dco.deep_water
+              end                 
+              wesnoth.set_variable("my_unit.defense", {
+                shallow_water= dco.shallow_water - dwt,
+                deep_water= dco_deep_water - dwt,  -- special case
+                reef= dco.reef - dwt,
+                swamp_water= dco.swamp_water - dwt,
+                flat= dco.flat - dwt,
+                sand= dco.sand - dwt,
+                forest= dco.forest - dwt,
+                hills= dco.hills - dwt,
+                mountains= dco.mountains - dwt,
+--                village= dco.village - dwt,
+--                castle= dco.castle - dwt,
+                cave= dco.cave -dwt,
+                frozen= dco.frozen -dwt,
+                fungus= dco.fungus - dwt
+              })
               wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 	      wesnoth.add_modification(units[1], "object", eq_eff)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
@@ -131,7 +153,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
         end
       end
 --  wesnoth.message("Filter_debugging1", string.format("bmr_equipment.filter returns result= %s", result))
-  return result
+   return result
 end
 
 -- adds the gear id to a list that can be used by another unit on the recall list
@@ -149,31 +171,33 @@ bmr_equipment.pool_add = function(gear_id)
       gear_number = gear_number + 1
       wesnoth.set_variable("gear_pool[0]."..gear_id, gear_number)
     end 
-return gear_number
+   return gear_number
 end
 
 -- this function calls bmr_equipment.filter and if the gear cannot be applied, we figure out what to do with it.
 -- returns pass/fail
 bmr_equipment.unit = function(unit_id, gear_id)
-  local output = ""
-  local filter_result = bmr_equipment.filter(unit_id, gear_id)
-  if filter_result == "is ai" or filter_result == "not found" then
-    output = "fail"
-  elseif filter_result == "pass" then
-    output = "pass"
-  elseif filter_result == "no room" or filter_result == "wrong type" then
-    bmr_equipment.pool_add(gear_id)
-    output = "pass"
-  else
-    output = "error"
-  end
+    local output = ""
+    local filter_result = bmr_equipment.filter(unit_id, gear_id)
+    if filter_result == "is ai" or filter_result == "not found" then
+      output = "fail"
+    elseif filter_result == "pass" then
+      output = "pass"
+    elseif filter_result == "no room" or filter_result == "wrong type" then
+      bmr_equipment.pool_add(gear_id)
+      output = "pass"
+    else
+      output = "error"
+    end
 --  wesnoth.message("unit_debugging1", string.format("bmr_equipment.unit returns output= %s", output))
-  return output
+   return output
 end
 
 bmr_equipment.remove = function(unit_id, gear_id)
       local result = ""
       local old_gear = ""
+      local old_gear_id = ""
+      local old_gear_weight = 0
       local units = {}
       local gindex = 0
 --      local gear_index = 1
@@ -190,7 +214,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- first check that the unit really has the gear 
       while wesnoth.get_variable("my_unit.variables.gear["..gindex.."]") do
 	  old_gear_id = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].id")
-	  old_gear_weight = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].weight")
+	  old_gear_weight = tonumber(wesnoth.get_variable("my_unit.variables.gear["..gindex.."].weight"))
 	  if old_gear_id == gear_id then
 	    break
 	  end
@@ -201,10 +225,18 @@ bmr_equipment.remove = function(unit_id, gear_id)
       if old_gear_id then
           wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", nil)
           old_weight = wesnoth.get_variable("my_unit.variables.weight")
-          temp_weight = old_weight - old_gear_weight
-          if temp_weight < 0 then -- should not happen, but ...
-              temp_weight = 0
+          if old_weight then
+          else
+             old_weight = 1
           end
+          if old_gear_weight then
+          else
+             old_gear_weight = 1
+          end
+          temp_weight = old_weight - old_gear_weight
+--          if temp_weight < 0 then -- should not happen, but ...
+--              temp_weight = 0
+--          end
           wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
           local temp_movep_change_old = 0
           local temp_movep_change_new = 0
@@ -221,8 +253,32 @@ bmr_equipment.remove = function(unit_id, gear_id)
               local movep = wesnoth.get_variable("my_unit.max_moves") 
               wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
           end
+          local dco = helper.get_child(units[1].__cfg, "defense")
+          local dwt = old_gear_weight
+          local dco_deep_water = 100
+          if dco.deep_water then
+              dco_deep_water = dco.deep_water
+          end                 
           wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
-          wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
+          wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id}) -- this resets many things, we need to restore the unit to modify [defense] values
+          wesnoth.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
+          wesnoth.set_variable("my_unit.defense", {
+            shallow_water= dco.shallow_water - dwt,
+            deep_water= dco_deep_water - dwt, -- special case
+            reef= dco.reef - dwt,
+            swamp_water= dco.swamp_water - dwt,
+            flat= dco.flat - dwt,
+            sand= dco.sand - dwt,
+            forest= dco.forest - dwt,
+            hills= dco.hills - dwt,
+            mountains= dco.mountains - dwt,
+--                village= dco.village - dwt,
+--                castle= dco.castle - dwt,
+            cave= dco.cave - dwt,
+            frozen= dco.frozen - dwt,
+            fungus= dco.fungus - dwt
+      	  })
+          wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- a hack to fix what may be a core bug with remove_object?
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
 
@@ -237,7 +293,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
       else
           wesnoth.message(string.format("%s does not posses %s", unit_id, gear_id))      
       end
-return result      
+   return result      
 end
 
 -- removes the thing from the pool
@@ -249,7 +305,7 @@ bmr_equipment.pool_remove = function(gear_id)
     gear_number = gear_number - 1
     wesnoth.set_variable("gear_pool[0]."..gear_id, gear_number)
     end    
-return gear_number
+   return gear_number
 end
 
 -- this, and its counterpart .item_take, can be moved above the .unit function, and used in it, to filter properly for clearing the map.
@@ -276,7 +332,7 @@ bmr_equipment.item_drop = function(x_1, y_1, gear_id)
     wesnoth.set_variable("gear_map_items["..item_index.."].y", y_1)
     end
     
-return icon
+   return icon
 end
 
 -- does not actually apply the gear, just takes the items off the map, and removes the WML variables
@@ -309,7 +365,7 @@ bmr_equipment.item_take = function(x_1, y_1, gear_id)
       end
       item_index = item_index + 1    
     end
-return result
+   return result
 end
 
 return bmr_equipment

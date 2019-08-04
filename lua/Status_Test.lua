@@ -41,7 +41,7 @@ local unit_id = 0
 local dialog = {
   T.tooltip { id = "tooltip_large" },
   T.helptip { id = "helptip_large" },
-  maximum_height = 800, maximum_width = 800,   -- the only way to keep the scroll_label from spreading really wide, as far as I can tell                                                                   
+  maximum_height = 800, maximum_width = 1100,   -- the only way to keep the scroll_label from spreading really wide, as far as I can tell                                                                   
   -- automatic_placement = false,                                             
   -- height = 850, width = 850, 
   T.grid { 
@@ -167,9 +167,6 @@ local function preshow()
 	  else
 	  gear_text[i] = "No equipment available."
 	end
--- testing -> fail, there is no such widget as "tooltip"
---	wesnoth.set_dialog_value(string.format(" testing : %s ", gear_text[i]), "the_tooltip")
--- /testing
 	wesnoth.set_dialog_value(gear_text[i], "the_gear_description")
 	return select_gear_id[i]
     end
@@ -181,6 +178,12 @@ local li = 0
 local function postshow()
     li = wesnoth.get_dialog_value "the_gearlist"
     pli = wesnoth.get_dialog_value "the_poollist"
+ -- this is very inefficient, but replays do seem to work now.
+    uli = unit_id
+    dxli = dr_x
+    dyli = dr_y
+    sgli = select_gear_id[li]
+    spli = select_pool_id[pli]
     wesnoth.clear_messages()
 end
 
@@ -188,92 +191,55 @@ end
 -- for these three pool functions, need to have a position filter, eventually
 ------------------------------------------------------------------------
 
-local function call_to_pool(r,i)
---  wesnoth.message(string.format("Button %d pressed.  Item selected for send to pool was %s", r, select_gear_id[i]))
-  bmr_equipment.remove(unit_id, select_gear_id[i])
-  bmr_equipment.pool_add(select_gear_id[i])
+local function call_to_pool(u_i,sg_i)
+  bmr_equipment.remove(u_i, sg_i)
+  bmr_equipment.pool_add(sg_i)
 end
 
-local function call_from_pool(r,i)
--- 20150712 - I think this is the problem...  Trying to equip an item from inventory for the wrong unit type causes number of items to increase by one
--- we are currently only pool_remove if filter passed, but maybe that should change...
--- would placing "wrong type" in the if filter solve this?  See equipment_write.lua line 79.
---  wesnoth.message(string.format("Button %d pressed.  Item selected for call from pool was %s", r, select_pool_id[i]))
-  local pter = bmr_equipment.unit(unit_id, select_pool_id[i])
---  if pter == "pass" then
+local function call_from_pool(u_i,sp_i)
+  local pter = bmr_equipment.unit(u_i, sp_i)
   if pter == "pass" or pter == "no room" then
-    bmr_equipment.pool_remove(select_pool_id[i])
+    bmr_equipment.pool_remove(sp_i)
   end
 end
 
-local function delete_from_pool(r,i)
---  wesnoth.message(string.format("Button %d pressed.  Item selected for delete was %s, item %d", r, select_pool_id[i], i))
-  bmr_equipment.pool_remove(select_pool_id[i])
+local function delete_from_pool(sp_i)
+  bmr_equipment.pool_remove(sp_i)
 end
 
-local function call_drop(r,i)
---  local sg_id = select_gear_id[i]
---wesnoth.message(string.format("Button %d pressed.  Item selected for drop was %s", r, select_gear_id[i]))
---wesnoth.message(string.format("Standing in %d x-position.  Unit selected was %s", dr_x, unit_id))
-  bmr_equipment.remove(unit_id, select_gear_id[i])
-  bmr_equipment.item_drop(dr_x, dr_y, select_gear_id[i])
+local function call_drop(u_i,d_x,d_y,sg_i)
+  bmr_equipment.remove(u_i, sg_i)
+  bmr_equipment.item_drop(d_x, d_y, sg_i)
 end
 
--- I have no idea if this sync'ing actually works, but it didn't seem to break anything
 local result = wesnoth.synchronize_choice(
---  wesnoth.message(equipment_grid_list_data)
   function()
---    event_context = wesnoth.current.event_context
---    unit_cfg = wesnoth.get_unit(event_context.x1,event_context.y1).__cfg
---    local u_gear = helper.get_child(unit_cfg, "variables")
---    for gear in helper.child_range(u_gear, "gear") do	
---	local equip_data = equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text)
---	table.insert(equipment_grid_list_data, equip_data)
---	wesnoth.message(equip_data[4])
---    end
     local rv = wesnoth.show_dialog(dialog, preshow, postshow)
-    return { rvs = rv, lis = li, plis = pli}
+    return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli} -- keys end in 's' for 'synchronized'
   end,
   function()
     error("status_meu called by ai?")
   end)
---if can_move== true then
  while result.rvs > 0 do
---call_assign(rv,li)
---droppin
-  if result.rvs == 3 then
-    call_drop(result.rvs,result.lis)
-  elseif result.rvs == 4 then
--- sending to inventory
-    call_to_pool(result.rvs,result.lis)
--- calling from inventory - no button yet
-  elseif result.rvs == 6 then
-    call_from_pool(result.rvs,result.plis)
--- delete from inventory
-  elseif result.rvs == 5 then  
-    delete_from_pool(result.rvs,result.plis)
+  if result.rvs == 3 then  --dropping: needs unit_id, context (x,y), and selected gear_id
+    call_drop(result.ulis,result.dxlis,result.dylis,result.sglis)
+  elseif result.rvs == 4 then  -- sending to inventory: needs unit_id, selected gear_id
+    call_to_pool(result.ulis,result.sglis)
+  elseif result.rvs == 6 then  -- calling from inventory: needs unit_id, selected pool-item_id
+    call_from_pool(result.ulis,result.splis)
+  elseif result.rvs == 5 then  -- delete from inventory: needs selected pool-item_id
+    delete_from_pool(result.splis)
   end
     result = wesnoth.synchronize_choice(
     function()
---    event_context = wesnoth.current.event_context
---    unit_cfg = wesnoth.get_unit(event_context.x1,event_context.y1).__cfg
---    local u_gear = helper.get_child(unit_cfg, "variables")
---    for gear in helper.child_range(u_gear, "gear") do
---	table.insert(equipment_grid_list_data,equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text))
---	wesnoth.message(gear.name)
---    end
-      local rv = wesnoth.show_dialog(dialog, preshow, postshow)
-      return { rvs = rv, lis = li, plis = pli}
+      local rv = wesnoth.show_dialog(dialog, preshow, postshow) -- called a second time because we are in a loop now
+      return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli}
     end,
     function()
       error("status_meu called by ai?")
     end)
  end
---else
---  if rv > 0 then wesnoth.show_dialog(dialog2, preshow2, postshow2) end
---end
 
---
 end
 
 return Status_test
