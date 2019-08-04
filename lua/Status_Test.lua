@@ -125,7 +125,7 @@ local function preshow()
 	wesnoth.set_dialog_value(string.format("%s~SCALE(60,60)", gear.image), "the_gearlist", g_i, "the_gearlist_icon")
 	wesnoth.set_dialog_value(string.format("<span size='xx-small'>%s</span>", gear.name), "the_gearlist", g_i, "the_gearlist_icon_name")
 	wesnoth.set_dialog_markup(true, "the_gearlist", g_i, "the_gearlist_icon_name")
-	gear_text[g_i] = string.format("<span size='large'> %s </span> - %s", gear.name, gear.text)
+	gear_text[g_i] = string.format("<span size='large'> %s </span> (Wt: %s) - %s", gear.name, gear.weight, gear.text)
 	select_gear_id[g_i] = gear.id
 	g_i = g_i + 1
 --  wesnoth.message(equipment_grid_list_data)

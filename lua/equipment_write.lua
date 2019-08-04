@@ -36,6 +36,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
       local gear_image = ""
       local gear_text = ""
       local gear_position = ""
+      local gear_weight = ""
       local eq_eff = ""
       -- find the gear usage for gear_id in equipment_list.the_list (not eqipment_list.list_usage)
       for j in ipairs(equipment_list.the_list) do  
@@ -75,6 +76,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
           gear_cost = equipment_list.the_list[j].cost
           gear_image = equipment_list.the_list[j].image
           gear_text = equipment_list.the_list[j].text
+          gear_weight = equipment_list.the_list[j].weight
           break
         end
       end
@@ -92,8 +94,34 @@ bmr_equipment.filter = function(unit_id, gear_id)
       		image = gear_image,
       		text = gear_text,
       		id = gear_id,
-      		position = gear_position
+      		position = gear_position,
+      		weight = gear_weight
       	      })
+              local old_weight = wesnoth.get_variable("my_unit.variables.weight")
+              if old_weight then
+              else
+                  old_weight = 0
+              end
+              temp_weight = old_weight + gear_weight
+              if temp_weight < 0 then -- should not happen, but ...
+                  temp_weight = 0
+              end
+              wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+              local temp_movep_change_old = 0
+              local temp_movep_change_new = 0
+              while old_weight >= 10 do
+                  temp_movep_change_old = temp_movep_change_old + 1
+                  old_weight = old_weight - 10
+              end
+              while temp_weight >= 10 do
+                  temp_movep_change_new = temp_movep_change_new + 1
+                  temp_weight = temp_weight - 10
+              end
+              if temp_movep_change_new ~= temp_movep_change_old then
+                  local change_movep = temp_movep_change_old - temp_movep_change_new
+                  local movep = wesnoth.get_variable("my_unit.max_moves") 
+                  wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
+              end
               wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 	      wesnoth.add_modification(units[1], "object", eq_eff)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
@@ -162,6 +190,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- first check that the unit really has the gear 
       while wesnoth.get_variable("my_unit.variables.gear["..gindex.."]") do
 	  old_gear_id = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].id")
+	  old_gear_weight = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].weight")
 	  if old_gear_id == gear_id then
 	    break
 	  end
@@ -171,6 +200,27 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- then delete the gear variables
       if old_gear_id then
           wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", nil)
+          old_weight = wesnoth.get_variable("my_unit.variables.weight")
+          temp_weight = old_weight - old_gear_weight
+          if temp_weight < 0 then -- should not happen, but ...
+              temp_weight = 0
+          end
+          wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+          local temp_movep_change_old = 0
+          local temp_movep_change_new = 0
+          while old_weight >= 10 do
+              temp_movep_change_old = temp_movep_change_old + 1
+              old_weight = old_weight - 10
+          end
+          while temp_weight >= 10 do
+              temp_movep_change_new = temp_movep_change_new + 1
+              temp_weight = temp_weight - 10
+          end
+          if temp_movep_change_new ~= temp_movep_change_old then
+              local change_movep = temp_movep_change_old - temp_movep_change_new
+              local movep = wesnoth.get_variable("my_unit.max_moves") 
+              wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
+          end
           wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
           wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
 -- a hack to fix what may be a core bug with remove_object?

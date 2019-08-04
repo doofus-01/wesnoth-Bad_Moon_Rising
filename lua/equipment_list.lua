@@ -210,6 +210,7 @@ local firststrike_special = {"set_specials", {mode="append", {"firststrike", {id
 --[[ 
 there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 5. amulet, 6. torso, 7. greaves(old) + foot-> foot, 8. weapon
 (for dogs only: 1. neck)
+20190803 - adding 'arms'; adding weights attribute
 
 ]]--
 
@@ -226,8 +227,8 @@ table.insert(the_list, {
         icon = "items/leather_vambrace.png",
 	cost = 10,
 	usage = "all",
-	position = "arms"
-	
+	position = "arms",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
@@ -241,7 +242,8 @@ table.insert(the_list, {
         icon = "items/iron_vambrace.png",
 	cost = 15,
 	usage = "light_armor",
-	position = "arms"
+	position = "arms",
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -257,7 +259,8 @@ table.insert(the_list, {
         icon = "items/obsidian_bracelet.png",
 	cost = 20,
 	usage = "all",
-	position = "arms"
+	position = "arms",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -273,7 +276,8 @@ table.insert(the_list, {
         icon = "items/jade_bracelet.png",
 	cost = 35,
 	usage = "all",
-	position = "arms"
+	position = "arms",
+	weight = 1
 	
 })
 ------------ helmets--------------
@@ -291,7 +295,8 @@ table.insert(the_list, {
         icon = "items/black_cowl.png",
 	cost = 35,
 	usage = "all",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -308,7 +313,8 @@ table.insert(the_list, {
         icon = "items/white_ribbon.png",
 	cost = 30,
 	usage = "all",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -323,7 +329,8 @@ table.insert(the_list, {
         icon = "items/leather_cap.png",
 	cost = 25,
 	usage = "all",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -336,7 +343,8 @@ table.insert(the_list, {
         icon = "items/gem_cap.png",
 	cost = 65,
 	usage = "all",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -350,7 +358,8 @@ table.insert(the_list, {
         icon = "items/fur_hat.png",
 	cost = 30,
 	usage = "all",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -365,7 +374,8 @@ table.insert(the_list, {
         icon = "items/helmet3.png~CS(-20,-10,0)",
 	cost = 45,
 	usage = "light_armor",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -380,7 +390,8 @@ table.insert(the_list, {
         icon = "items/helmet_rusty.png",
 	cost = 25,
 	usage = "light_armor",
-	position = "head"
+	position = "head",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -394,7 +405,8 @@ table.insert(the_list, {
         icon = "items/helmet3.png",
 	cost = 80,
 	usage = "light_armor",
-	position = "head"
+	position = "head",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -3}}}}, 
@@ -407,7 +419,8 @@ table.insert(the_list, {
         icon = "items/coif.png",
 	cost = 95,
 	usage = "light_armor",
-	position = "head"
+	position = "head",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "bone_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, pierce = -12, arcane = 5, fire = 5}}}}, 
@@ -420,7 +433,8 @@ table.insert(the_list, {
         icon = "items/bone_helmet.png",
 	cost = 75,
 	usage = "light_armor",
-	position = "head"
+	position = "head",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "crest_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
@@ -432,7 +446,8 @@ table.insert(the_list, {
         icon = "items/helmet1.png~CS(10,10,10)",
 	cost = 120,
 	usage = "heavy_armor",
-	position = "head"
+	position = "head",
+	weight = 2
 
 })
 table.insert(the_list, {
@@ -445,7 +460,8 @@ table.insert(the_list, {
         icon = "items/helmet1.png",
 	cost = 155,
 	usage = "heavy_armor",
-	position = "head"
+	position = "head",
+	weight = 3
 })
 table.insert(the_list, {
 	eq_effect = { id = "great_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -20, blade = -15, pierce = -15}}}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
@@ -457,7 +473,8 @@ table.insert(the_list, {
         icon = "items/helmet2.png~CS(-20,-20,0)",
 	cost = 160,
 	usage = "heavy_armor",
-	position = "head"
+	position = "head",
+	weight = 3
 })
 table.insert(the_list, {
 	eq_effect = { id = "frog_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -30, blade = -20, pierce = -15, fire = 20}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
@@ -469,7 +486,8 @@ table.insert(the_list, {
         icon = "items/helmet4.png",
 	cost = 200,
 	usage = "heavy_armor",
-	position = "head"
+	position = "head",
+	weight = 4
 })
 table.insert(the_list, {
 	eq_effect = { id = "ancient_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -10, arcane = -5, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
@@ -481,7 +499,8 @@ table.insert(the_list, {
         icon = "items/helmet2.png~CS(10,-10,-20)",
 	cost = 235,
 	usage = "heavy_armor",
-	position = "head"
+	position = "head",
+	weight = 2
 })
 ------------------shields-----------------------------
 table.insert(the_list, {
@@ -494,7 +513,8 @@ table.insert(the_list, {
         icon = "items/hide_buckler.png",
 	cost = 15,
 	usage = "all",
-	position = "shield"
+	position = "shield",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
@@ -506,7 +526,8 @@ table.insert(the_list, {
         icon = "items/bronze_buckler.png",
 	cost = 65,
 	usage = "all",
-	position = "shield"
+	position = "shield",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
@@ -518,7 +539,8 @@ table.insert(the_list, {
         icon = "items/iron_buckler.png",
 	cost = 95,
 	usage = "all",
-	position = "shield"
+	position = "shield",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
@@ -530,7 +552,8 @@ table.insert(the_list, {
         icon = "items/buckler.png~CS(-30,-10,-10)",
 	cost = 15,
 	usage = "all",
-	position = "shield"
+	position = "shield",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
@@ -542,7 +565,8 @@ table.insert(the_list, {
         icon = "items/shield-targ.png~CS(30,10,-10)",
 	cost = 20,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
@@ -554,7 +578,8 @@ table.insert(the_list, {
         icon = "items/shield_kite.png",
 	cost = 25,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} },
@@ -566,7 +591,8 @@ table.insert(the_list, {
         icon = "items/buckler.png~CS(20,-10,-10)",
 	cost = 25,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "silver_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = -10, fire = -10}}}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
@@ -578,7 +604,8 @@ table.insert(the_list, {
         icon = "items/buckler.png~CS(20,40,60)",
 	cost = 90,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "iron_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -10, pierce = -10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
@@ -590,7 +617,8 @@ table.insert(the_list, {
         icon = "items/shield-iron.png",
 	cost = 70,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 3
 })
 table.insert(the_list, {
 	eq_effect = { id = "door_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -20, pierce = -30, fire = -10}}}}, {"effect", { apply_to = "movement", increase = "-1"}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
@@ -602,7 +630,8 @@ table.insert(the_list, {
         icon = "items/shield-door.png",
 	cost = 150,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "mirror_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, pierce = -10, fire = -50}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
@@ -614,7 +643,8 @@ table.insert(the_list, {
         icon = "misc/reflector-shield.png",
 	cost = 270,
 	usage = "shield",
-	position = "shield"
+	position = "shield",
+	weight = 1
 })
 ----------------- cloaks -------------------------------
 table.insert(the_list, {
@@ -627,7 +657,8 @@ table.insert(the_list, {
         icon = "items/fur-cloak.png",
 	cost = 30,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "elf_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -5}}}} },
@@ -639,7 +670,8 @@ table.insert(the_list, {
         icon = "items/cloak-green.png",
 	cost = 38,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -652,7 +684,8 @@ table.insert(the_list, {
         icon = "items/orc-cloak.png",
 	cost = 45,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -665,7 +698,8 @@ table.insert(the_list, {
         icon = "items/cloak-green.png~GS()",
 	cost = 145,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -678,7 +712,8 @@ table.insert(the_list, {
         icon = "items/ancient-cloak.png",
 	cost = 135,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -691,7 +726,8 @@ table.insert(the_list, {
         icon = "items/cloak-black.png",
 	cost = 45,
 	usage = "all",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -704,7 +740,8 @@ table.insert(the_list, {
         icon = "items/cloak-black.png~CS(-30,0,10)",
 	cost = 65,
 	usage = "despair",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -717,7 +754,8 @@ table.insert(the_list, {
         icon = "items/cloak-green.png~CS(80,-60,-30)",
 	cost = 265,
 	usage = "amulet",
-	position = "cloak"
+	position = "cloak",
+	weight = 1
 	
 })
 ------- rings ----------------------
@@ -731,7 +769,8 @@ table.insert(the_list, {
         icon = "items/ring-white.png",
 	cost = 38,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -744,7 +783,8 @@ table.insert(the_list, {
         icon = "items/ring-silver.png",
 	cost = 45,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -757,7 +797,8 @@ table.insert(the_list, {
         icon = "items/ring-gold.png",
 	cost = 95,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -773,7 +814,8 @@ table.insert(the_list, {
         icon = "items/ring-green.png",
 	cost = 135,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -786,7 +828,8 @@ table.insert(the_list, {
         icon = "items/ring-black.png~CS(5,-5,0)",
 	cost = 55,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -800,7 +843,8 @@ table.insert(the_list, {
         icon = "items/ring-silver.png",
 	cost = 145,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -818,7 +862,8 @@ table.insert(the_list, {
         icon = "items/ring-black.png",
 	cost = 15,
 	usage = "all",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -833,7 +878,8 @@ table.insert(the_list, {
         icon = "items/ring-brown.png",
 	cost = 195,
 	usage = "amulet",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 -- not really rings, but ...
@@ -847,7 +893,8 @@ table.insert(the_list, {
         icon = "items/gloves.png",
 	cost = 35,
 	usage = "all",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -860,7 +907,8 @@ table.insert(the_list, {
         icon = "items/white_gloves.png",
 	cost = 55,
 	usage = "all",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -876,7 +924,8 @@ table.insert(the_list, {
         icon = "items/black_gloves.png",
 	cost = 55,
 	usage = "all",
-	position = "ring"
+	position = "ring",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -889,7 +938,8 @@ table.insert(the_list, {
         icon = "items/gauntlets1.png",
 	cost = 65,
 	usage = "light_armor",
-	position = "ring"
+	position = "ring",
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -902,7 +952,8 @@ table.insert(the_list, {
         icon = "items/gauntlets-thunder.png",
 	cost = 125,
 	usage = "light_armor",
-	position = "ring"
+	position = "ring",
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -915,7 +966,8 @@ table.insert(the_list, {
         icon = "items/gauntlets2.png",
 	cost = 110,
 	usage = "heavy_armor",
-	position = "ring"
+	position = "ring",
+	weight = 2
 	
 })
 ------------------------amulets-------------------------
@@ -929,7 +981,8 @@ table.insert(the_list, {
         icon = "items/primeval_charm.png",
 	cost = 75,
 	usage = "all",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -942,7 +995,8 @@ table.insert(the_list, {
         icon = "items/fang_charm.png",
 	cost = 75,
 	usage = "all",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -955,7 +1009,8 @@ table.insert(the_list, {
         icon = "items/shard_charm.png",
 	cost = 125,
 	usage = "all",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -970,7 +1025,8 @@ table.insert(the_list, {
         icon = "misc/shock-charm.png",
 	cost = 165,
 	usage = "amulet",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -985,7 +1041,8 @@ table.insert(the_list, {
         icon = "misc/dark-charm.png",
 	cost = 145,
 	usage = "amulet",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -999,7 +1056,8 @@ table.insert(the_list, {
         icon = "items/flower4.png",
 	cost = 75,
 	usage = "amulet",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1012,7 +1070,8 @@ table.insert(the_list, {
         icon = "misc/charm.png",
 	cost = 125,
 	usage = "amulet",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1025,7 +1084,8 @@ table.insert(the_list, {
         icon = "items/ankh-necklace.png~CS(20,-20,60)",
 	cost = 155,
 	usage = "amulet",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1038,7 +1098,8 @@ table.insert(the_list, {
         icon = "items/ankh-necklace.png",
 	cost = 105,
 	usage = "all",
-	position = "amulet"
+	position = "amulet",
+	weight = 1
 	
 })
 --------- armor ---------------
@@ -1052,7 +1113,8 @@ table.insert(the_list, {
         icon = "items/tunic_black.png",
 	cost = 10,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "elven_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
@@ -1064,7 +1126,8 @@ table.insert(the_list, {
         icon = "items/tunic.png",
 	cost = 30,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
@@ -1076,7 +1139,8 @@ table.insert(the_list, {
         icon = "items/tunic_blue.png",
 	cost = 28,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
@@ -1088,7 +1152,8 @@ table.insert(the_list, {
         icon = "items/mage_tunic.png",
 	cost = 120,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
@@ -1100,7 +1165,8 @@ table.insert(the_list, {
         icon = "items/shaman_tunic.png",
 	cost = 80,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
@@ -1112,7 +1178,8 @@ table.insert(the_list, {
         icon = "items/padded_coat.png",
 	cost = 50,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 })
 table.insert(the_list, {
 	eq_effect = { id = "leather_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
@@ -1124,7 +1191,8 @@ table.insert(the_list, {
         icon = "items/armor-leather.png",
 	cost = 35,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1137,7 +1205,8 @@ table.insert(the_list, {
         icon = "items/armor-rusty.png",
 	cost = 15,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1150,7 +1219,8 @@ table.insert(the_list, {
         icon = "items/armor-dragon.png",
 	cost = 135,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1163,7 +1233,8 @@ table.insert(the_list, {
         icon = "items/armor.png",
 	cost = 55,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1176,7 +1247,8 @@ table.insert(the_list, {
         icon = "items/armor-fiber.png",
 	cost = 85,
 	usage = "all",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1189,7 +1261,8 @@ table.insert(the_list, {
         icon = "items/armor-chain.png",
 	cost = 76,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1202,7 +1275,8 @@ table.insert(the_list, {
         icon = "items/armor-iron.png~CS(10,-30,-50)",
 	cost = 85,
 	usage = "heavy_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 3
 	
 })
 table.insert(the_list, {
@@ -1215,7 +1289,8 @@ table.insert(the_list, {
         icon = "items/armor-iron.png",
 	cost = 155,
 	usage = "heavy_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 3
 	
 })
 table.insert(the_list, {
@@ -1228,7 +1303,8 @@ table.insert(the_list, {
         icon = "items/breastplate.png",
 	cost = 195,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1241,7 +1317,8 @@ table.insert(the_list, {
         icon = "items/primeval_breastplate.png",
 	cost = 395,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1254,7 +1331,8 @@ table.insert(the_list, {
         icon = "items/armor-iron.png~CS(10,15,20)",
 	cost = 245,
 	usage = "heavy_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 3
 	
 })
 table.insert(the_list, {
@@ -1267,7 +1345,8 @@ table.insert(the_list, {
         icon = "misc/aegis-armor.png",
 	cost = 495,
 	usage = "light_armor",
-	position = "torso"	
+	position = "torso",	
+	weight = 1
 	
 })
 --------------------------greaves------------------------------------------
@@ -1281,7 +1360,8 @@ table.insert(the_list, {
         icon = "items/greaves-leather.png",
 	cost = 21,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1294,7 +1374,8 @@ table.insert(the_list, {
         icon = "items/greaves-wooden.png",
 	cost = 29,
 	usage = "light_armor",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1307,7 +1388,8 @@ table.insert(the_list, {
         icon = "items/greaves-serpent.png",
 	cost = 125,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1320,7 +1402,8 @@ table.insert(the_list, {
         icon = "items/greaves-brass.png",
 	cost = 39,
 	usage = "light_armor",
-	position = "foot"	
+	position = "foot",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1333,7 +1416,8 @@ table.insert(the_list, {
         icon = "items/greaves-steel.png",
 	cost = 80,
 	usage = "heavy_armor",
-	position = "foot"	
+	position = "foot",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1346,7 +1430,8 @@ table.insert(the_list, {
         icon = "items/greaves-primeval.png",
 	cost = 100,
 	usage = "light_armor",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 --------------------------boots------------------------------------------
@@ -1361,7 +1446,8 @@ table.insert(the_list, {
         icon = "misc/boots.png~CS(20,10,30)",
 	cost = 95,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1374,7 +1460,8 @@ table.insert(the_list, {
         icon = "misc/boots.png",
 	cost = 125,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1387,7 +1474,8 @@ table.insert(the_list, {
         icon = "misc/boots.png~CS(-20,-20,-25)",
 	cost = 135,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1400,7 +1488,8 @@ table.insert(the_list, {
         icon = "items/sandals.png",
 	cost = 235,
 	usage = "all",
-	position = "foot"	
+	position = "foot",	
+	weight = 1
 	
 })
 ----------------------------axes-------------------------------------------------------------------
@@ -1418,7 +1507,8 @@ table.insert(the_list, {
         icon = "items/axe.png~CS(-10,-25,-30)",
 	cost = 10,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1431,7 +1521,8 @@ table.insert(the_list, {
         icon = "items/obsidian_axe.png",
 	cost = 60,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1444,7 +1535,8 @@ table.insert(the_list, {
         icon = "items/axe.png",
 	cost = 130,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1457,7 +1549,8 @@ table.insert(the_list, {
         icon = "items/axe-silver.png",
 	cost = 200,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1470,7 +1563,8 @@ table.insert(the_list, {
         icon = "items/ice_gem.png",
 	cost = 215,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1483,7 +1577,8 @@ table.insert(the_list, {
         icon = "items/axe.png~CS(10,-30,20)",
 	cost = 330,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1496,7 +1591,8 @@ table.insert(the_list, {
         icon = "items/axe-primeval.png",
 	cost = 400,
 	usage = "axe",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 3
 	
 })
 
@@ -1512,7 +1608,8 @@ table.insert(the_list, {
         icon = "items/sword.png",
 	cost = 130,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1525,7 +1622,8 @@ table.insert(the_list, {
         icon = "items/sword-silver.png",
 	cost = 200,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1538,7 +1636,8 @@ table.insert(the_list, {
         icon = "items/ball-gem1.png",
 	cost = 210,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1551,7 +1650,8 @@ table.insert(the_list, {
         icon = "items/sword6.png",
 	cost = 400,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1564,7 +1664,8 @@ table.insert(the_list, {
         icon = "items/flame-sword.png",
 	cost = 400,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1577,7 +1678,8 @@ table.insert(the_list, {
         icon = "items/sword-dark.png",
 	cost = 400,
 	usage = "sword",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 ----------------------------spears-------------------------------------------------------------------
@@ -1591,7 +1693,8 @@ table.insert(the_list, {
         icon = "items/obsidian_spear.png",
 	cost = 60,
 	usage = "spear",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1604,7 +1707,8 @@ table.insert(the_list, {
         icon = "items/spear1.png",
 	cost = 105,
 	usage = "spear",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1617,7 +1721,8 @@ table.insert(the_list, {
         icon = "items/spear3.png",
 	cost = 215,
 	usage = "spear",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1630,7 +1735,8 @@ table.insert(the_list, {
         icon = "items/spear4.png",
 	cost = 365,
 	usage = "spear",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1644,7 +1750,8 @@ table.insert(the_list, {
         icon = "items/spear5.png",
 	cost = 405,
 	usage = "spear",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 2
 	
 })
 ----------------------------bows-------------------------------------------------------------------
@@ -1658,7 +1765,8 @@ table.insert(the_list, {
         icon = "items/bow.png",
 	cost = 100,
 	usage = "bow",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1671,7 +1779,8 @@ table.insert(the_list, {
         icon = "items/bow.png",
 	cost = 125,
 	usage = "bow",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1684,7 +1793,8 @@ table.insert(the_list, {
         icon = "items/bow.png~CS(20,30,30)",
 	cost = 160,
 	usage = "bow",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1697,7 +1807,8 @@ table.insert(the_list, {
         icon = "items/bow.png~CS(-10,20,50)",
 	cost = 120,
 	usage = "bow",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1710,7 +1821,8 @@ table.insert(the_list, {
         icon = "items/bow-crystal.png",
 	cost = 255,
 	usage = "bow",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 -----------------------------random weapons--------------------------------------------------------------
@@ -1725,7 +1837,8 @@ table.insert(the_list, {
         icon = "items/sling1.png",
 	cost = 15,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1738,7 +1851,8 @@ table.insert(the_list, {
         icon = "items/club-found.png",
 	cost = 15,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1751,7 +1865,8 @@ table.insert(the_list, {
         icon = "items/torch.png",
 	cost = 18,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 -----------------------------daggers--------------------------------------------------------------
@@ -1765,7 +1880,8 @@ table.insert(the_list, {
         icon = "items/dagger.png",
 	cost = 25,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1778,7 +1894,8 @@ table.insert(the_list, {
         icon = "items/dagger.png~CS(-10,0,-20)",
 	cost = 30,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1791,7 +1908,8 @@ table.insert(the_list, {
         icon = "items/silver_dagger.png",
 	cost = 125,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1808,7 +1926,8 @@ table.insert(the_list, {
         icon = "items/poison_dagger.png",
 	cost = 125,
 	usage = "all",
-	position = "weapon"	
+	position = "weapon",	
+	weight = 1
 	
 })
 -------------------------------for-dogs-----------------------------
@@ -1822,7 +1941,8 @@ table.insert(the_list, {
         icon = "items/collar.png",
 	cost = 24,
 	usage = "dog",
-	position = "neck"	
+	position = "neck",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1835,7 +1955,8 @@ table.insert(the_list, {
         icon = "items/collar2.png",
 	cost = 46,
 	usage = "dog",
-	position = "neck"	
+	position = "neck",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1848,7 +1969,8 @@ table.insert(the_list, {
         icon = "items/collar3.png",
 	cost = 120,
 	usage = "dog",
-	position = "neck"	
+	position = "neck",	
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -1861,7 +1983,8 @@ table.insert(the_list, {
         icon = "items/leather_vest.png",
 	cost = 38,
 	usage = "dog",
-	position = "torso"	
+	position = "torso",	
+	weight = 2
 	
 })
 table.insert(the_list, {
@@ -1874,7 +1997,8 @@ table.insert(the_list, {
         icon = "items/brigandine_vest.png",
 	cost = 75,
 	usage = "dog",
-	position = "torso"	
+	position = "torso",	
+	weight = 3
 	
 })
 

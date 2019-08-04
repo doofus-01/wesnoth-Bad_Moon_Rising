@@ -166,7 +166,8 @@ function misc_status_grid()
 		 	T.row { T.column { T.grid {
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level"}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment"}}},
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP"}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait"}}},
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP"}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait"}}}  
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP"}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait"}}},  
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT"}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
 				}}}				
 			  }},
                  T.column { resistances_grid()} -- right grid
@@ -178,6 +179,7 @@ end
 function set_simple_grid_values(unit)
 	local unit_hp = unit.hitpoints
 	unit_hp = unit_hp / unit.max_hitpoints
+-- 20190803 -- seems there is some bad logic here, change the <= to >= ?
 	local hp_color = "color ='#34db00'"
 	if unit_hp < 0.2 then
 	    hp_color = "color ='#c80000'"
@@ -199,6 +201,7 @@ function set_simple_grid_values(unit)
 	wesnoth.set_dialog_markup(true, "the_unit_type")
 	wesnoth.set_dialog_markup(true, "the_unit_HP")
 	wesnoth.set_dialog_markup(true, "the_unit_XP")
+	wesnoth.set_dialog_markup(true, "the_unit_WT")
 	wesnoth.set_dialog_markup(true, "the_unit_alignment")
 	wesnoth.set_dialog_markup(true, "the_unit_level")
 	wesnoth.set_dialog_value(string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) , "the_unit_type")
@@ -227,6 +230,18 @@ function set_child_grid_values(unit)
 	wesnoth.set_dialog_markup(true, "the_second_trait")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1]) , "the_first_trait")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2]) , "the_second_trait")
+-- weight
+	local unit_var = helper.get_child(unit, "variables")
+	local unit_wt = unit_var.weight
+	local wt_color = "color ='#2ac600'"
+	if unit_wt > -10 and unit_wt < 10 then
+	    wt_color = "color ='#e5e5e5'"
+	elseif unit_wt >= 10 and unit_xp < 20 then
+	    wt_color = "color ='#ffc600'"
+	elseif unit_xp >= 20 and unit_xp < 30 then
+	    wt_color = "color ='#ff0000'"
+	end
+	wesnoth.set_dialog_value(string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt) , "the_unit_WT")
 -- movement costs
 	wesnoth.set_dialog_markup(true, "the_mcg_title")
 	wesnoth.set_dialog_value("<span color='#eeffb7'>  Movement Costs  </span>", "the_mcg_title")
