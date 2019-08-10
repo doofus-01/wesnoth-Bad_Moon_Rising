@@ -103,49 +103,28 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   old_weight = 0
               end
               temp_weight = old_weight + gear_weight
---              if temp_weight < 0 then -- should not happen, but ...
---                  temp_weight = 0
---              end
               wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
-              local temp_movep_change_old = 0
-              local temp_movep_change_new = 0
-              while old_weight >= 10 do
-                  temp_movep_change_old = temp_movep_change_old + 1
-                  old_weight = old_weight - 10
+-- remove movement penalty, then recalcualte and reapply it
+              local movep = 0
+	      wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
+              if old_weight ~= temp_weight then -- MP loss only goes to -2
+                   if temp_weight >= 20 then
+                       movep = -2
+                   elseif temp_weight >=10 then
+                       movep = -1
+                   end
               end
-              while temp_weight >= 10 do
-                  temp_movep_change_new = temp_movep_change_new + 1
-                  temp_weight = temp_weight - 10
-              end
-              if temp_movep_change_new ~= temp_movep_change_old then
-                  local change_movep = temp_movep_change_old - temp_movep_change_new
-                  local movep = wesnoth.get_variable("my_unit.max_moves") 
-                  wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
-              end
-              local dco = helper.get_child(units[1].__cfg, "defense")
-              local dwt = -1*gear_weight
-              local dco_deep_water = 100
-              if dco.deep_water then
-                  dco_deep_water = dco.deep_water
-              end                 
-              wesnoth.set_variable("my_unit.defense", {
-                shallow_water= dco.shallow_water - dwt,
-                deep_water= dco_deep_water - dwt,  -- special case
-                reef= dco.reef - dwt,
-                swamp_water= dco.swamp_water - dwt,
-                flat= dco.flat - dwt,
-                sand= dco.sand - dwt,
-                forest= dco.forest - dwt,
-                hills= dco.hills - dwt,
-                mountains= dco.mountains - dwt,
---                village= dco.village - dwt,
---                castle= dco.castle - dwt,
-                cave= dco.cave -dwt,
-                frozen= dco.frozen -dwt,
-                fungus= dco.fungus - dwt
-              })
+              local wt_effects = {
+                  id = "wt_moves_id",
+                  wml.tag.effect {
+                      apply_to = "movement",
+                      increase = movep
+                  }
+              }
+                                              
               wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 	      wesnoth.add_modification(units[1], "object", eq_eff)
+	      wesnoth.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
               return result
             end
@@ -227,58 +206,35 @@ bmr_equipment.remove = function(unit_id, gear_id)
           old_weight = wesnoth.get_variable("my_unit.variables.weight")
           if old_weight then
           else
-             old_weight = 1
+             old_weight = 0
           end
           if old_gear_weight then
           else
-             old_gear_weight = 1
+             old_gear_weight = 0
           end
           temp_weight = old_weight - old_gear_weight
---          if temp_weight < 0 then -- should not happen, but ...
---              temp_weight = 0
---          end
           wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
-          local temp_movep_change_old = 0
-          local temp_movep_change_new = 0
-          while old_weight >= 10 do
-              temp_movep_change_old = temp_movep_change_old + 1
-              old_weight = old_weight - 10
+-- remove movement penalty, then recalcualte and reapply it
+          local movep = 0
+	  wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
+          if old_weight ~= temp_weight then -- MP loss only goes to -2
+             if temp_weight >= 20 then
+                 movep = -2
+             elseif temp_weight >=10 then
+                 movep = -1
+             end
           end
-          while temp_weight >= 10 do
-              temp_movep_change_new = temp_movep_change_new + 1
-              temp_weight = temp_weight - 10
-          end
-          if temp_movep_change_new ~= temp_movep_change_old then
-              local change_movep = temp_movep_change_old - temp_movep_change_new
-              local movep = wesnoth.get_variable("my_unit.max_moves") 
-              wesnoth.set_variable("my_unit.max_moves", movep + change_movep) 
-          end
-          local dco = helper.get_child(units[1].__cfg, "defense")
-          local dwt = old_gear_weight
-          local dco_deep_water = 100
-          if dco.deep_water then
-              dco_deep_water = dco.deep_water
-          end                 
+          local wt_effects = {
+              id = "wt_moves_id",
+              wml.tag.effect {
+                  apply_to = "movement",
+                  increase = movep
+              }
+          }
           wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
-          wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id}) -- this resets many things, we need to restore the unit to modify [defense] values
-          wesnoth.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
-          wesnoth.set_variable("my_unit.defense", {
-            shallow_water= dco.shallow_water - dwt,
-            deep_water= dco_deep_water - dwt, -- special case
-            reef= dco.reef - dwt,
-            swamp_water= dco.swamp_water - dwt,
-            flat= dco.flat - dwt,
-            sand= dco.sand - dwt,
-            forest= dco.forest - dwt,
-            hills= dco.hills - dwt,
-            mountains= dco.mountains - dwt,
---                village= dco.village - dwt,
---                castle= dco.castle - dwt,
-            cave= dco.cave - dwt,
-            frozen= dco.frozen - dwt,
-            fungus= dco.fungus - dwt
-      	  })
-          wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
+          wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
+	  wesnoth.add_modification(units[1], "object", wt_effects)
+
 -- a hack to fix what may be a core bug with remove_object?
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
 
