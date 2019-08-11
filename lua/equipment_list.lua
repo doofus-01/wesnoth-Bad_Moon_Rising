@@ -749,11 +749,25 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "rotten_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -2, fire = -10, arcane = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+        name = _ "Rotten Cloak",
+        id = "rotten_cloak",
+        tooltip = _ "all cloaks provide some cold resistance",
+        text = _ "This fetid mess of a cloak is some sort of fungal shield for anyone who can stand to wear it.  Moist and disgusting.  Bonus: +2 cold, +10 fire, and +20 arcane resistances; +2 HP",
+        image = "icons/cloak_rotten",
+        icon = "items/cloak-rotten.png",
+	cost = 15,
+	usage = "all",
+	position = "cloak",
+	weight = 1
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "death_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, arcane = 20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "-10"}}, shadow_effect},
         name = _ "Death Cloak",
         id = "death_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This fetid black cloak looks like something pulled out of the ground.  There is something unworldly about it, a sinister power.  Bonus: +10 cold resistance; nightstalk ability.  Penalty: -10 HP; -20 arcane resistance",
+        text = _ "This vile black cloak looks like something pulled out of the ground.  There is something unworldly about it, a sinister power.  Bonus: +10 cold resistance; nightstalk ability.  Penalty: -10 HP; -20 arcane resistance",
         image = "icons/cloak_black.png~CS(10,15,-5)",
         icon = "items/cloak-black.png",
 	cost = 45,
@@ -767,7 +781,7 @@ table.insert(the_list, {
         name = _ "Black Cloak",
         id = "black_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "There is something unworldly about this inky black, a sinister power.  It is like holding a shadow.  Attempts to wear it usually meet with frustration, however, because it is not meant for the living.  Bonus: +50 cold resistance; nightstalk ability; +5 HP",
+        text = _ "There is something unworldly about this inky black cloak, a sinister power.  Attempts to wear it usually meet with frustration, because it is not meant for the living.  Bonus: +50 cold resistance; nightstalk ability; +5 HP",
         image = "icons/cloak_black.png",
         icon = "items/cloak-black.png~CS(-30,0,10)",
 	cost = 65,
@@ -1298,11 +1312,25 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "assassin_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -9, pierce = -7, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_n1},
+        name = _ "Assassin Vest",
+        id = "assassin_armor",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "A tight-fitting vest with steel plate sewn between the two cloth layers.  Straps and belts make a perfect fit possible for almost anyone.  Bonus: +9 blade, +7 pierce, and +5 impact resistance; reduces equipment weight by 1; +3 HP",
+        image = "icons/cuirass_assassin.png",
+        icon = "items/armor-assassin.png",
+	cost = 95,
+	usage = "all",
+	position = "torso",	
+	weight = -1
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "fiber_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -13, fire = -13}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
         name = _ "Fiberglass Armor",
         id = "fiber_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This heavy tunic is made of some rough, strange cloth of a very coarse thread.  It doesn't keep out the cold or provide much padding, but it is very difficult to cut and it does not burn.   Bonus: +13 blade resistance, +13 fire resistance, +3 HP",
+        text = _ "This sturdy tunic is made of some rough, strange cloth of a very coarse thread.  It doesn't keep out the cold or provide much padding, but it is very difficult to cut and it does not burn.   Bonus: +13 blade resistance, +13 fire resistance, +3 HP",
         image = "icons/cuirass_fiber.png",
         icon = "items/armor-fiber.png",
 	cost = 85,
@@ -1377,6 +1405,20 @@ table.insert(the_list, {
         icon = "items/primeval_breastplate.png",
 	cost = 395,
 	usage = "light_armor",
+	position = "torso",	
+	weight = 2
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "frost_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -22, pierce = -20, fire = -25}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}, wt_effect_2},
+        name = _ "Frost Armor",
+        id = "frost_armor",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "This is the armor of professional fighters.  It is expensive, but offers good protection against all physical strikes.   Bonus: +15 impact, +22 blade, +20 pierce, and +25 fire resistance; +10 HP",
+        image = "icons/frost_armor.png",
+        icon = "items/armor-frost.png",
+	cost = 305,
+	usage = "heavy_armor",
 	position = "torso",	
 	weight = 2
 	
@@ -1508,6 +1550,20 @@ table.insert(the_list, {
 	usage = "all",
 	position = "foot",	
 	weight = 1
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "officer_boots", {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_n2 },
+        name = _ "Officer Boots",
+        id = "officer_boots",
+        tooltip = _ "Footwear usually affects movement",
+        text = _ "Made for Royal officers, but treasured by all, these boots offer good support for the ankle and have better treads than any other available footwear.  Bonus: reduces equipment burden by 2; +2 HP",
+        image = "icons/boots_officer.png",
+        icon = "misc/officer_boots.png",
+	cost = 125,
+	usage = "all",
+	position = "foot",	
+	weight = -2
 	
 })
 table.insert(the_list, {
