@@ -104,6 +104,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
               end
               temp_weight = old_weight + gear_weight
               wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+              wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
               local movep = 0
 	      wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
@@ -122,7 +123,6 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   }
               }
                                               
-              wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 	      wesnoth.add_modification(units[1], "object", eq_eff)
 	      wesnoth.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
@@ -214,6 +214,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
           end
           temp_weight = old_weight - old_gear_weight
           wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+          wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
           local movep = 0
 	  wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
@@ -231,7 +232,6 @@ bmr_equipment.remove = function(unit_id, gear_id)
                   increase = movep
               }
           }
-          wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
           wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
 	  wesnoth.add_modification(units[1], "object", wt_effects)
 
