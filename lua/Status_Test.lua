@@ -99,6 +99,7 @@ local function preshow()
     dr_x = event_context.x1
     dr_y = event_context.y1
     unit_id = unit_cfg.id
+    unit_type = unit_cfg.type
     wesnoth.set_dialog_active(can_move, "use_button")
     wesnoth.set_dialog_active(can_move, "delete_button")
     wesnoth.set_dialog_active(can_move, "drop_button")
@@ -140,14 +141,29 @@ local function preshow()
     end
     local p_i = 1
     for j in ipairs(equipment_list.the_list) do
+    -- set markp for pool list entry to red italic, then check unit can use it and change markup if yes
+        local gpf_style = "italic"    
+        local gpf_color = "#aa5555"    
 	local gear_pool_id = equipment_list.the_list[j].id
 	local gear_pool_name = equipment_list.the_list[j].name
+	local gear_pool_usage = equipment_list.the_list[j].usage
+
 --	local gear_pool_tooltip = equipment_list.the_list[j].tooltip
 	local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
 	if gear_pool_number == nil then gear_pool_number = 0 end
         if gear_pool_number > 0 then
+            for k in ipairs(equipment_list.list_usage) do
+                if equipment_list.list_usage[k].usage == gear_pool_usage then
+                  for l in ipairs(equipment_list.list_usage[k].types) do 
+                    if equipment_list.list_usage[k].types[l] == unit_type then
+                        gpf_style = "normal"    -- normal and blue if useable
+                        gpf_color = "#bbddff"
+                    end
+                  end -- for l
+                end
+            end -- for k
 --	     wesnoth.add_dialog_tree_node("node1", i, "the_poollist")
-	     wesnoth.set_dialog_value(string.format("<span size='x-small'>%s  ( %d )</span>", gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
+	     wesnoth.set_dialog_value(string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
 	     wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
 	     select_pool_id[p_i] = gear_pool_id
 	     p_i = p_i + 1
