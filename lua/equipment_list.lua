@@ -350,6 +350,31 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "sorrow_veil", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {fire = -5, impact = -1}}}}, 
+                      {"effect", { apply_to = "defense", replace = "no", {"defense", {
+                                  forest = -10,
+                                  hills = -10,
+                                  mountains = -10,
+                                  village = -10,
+                                  castle = -10,
+                                  cave = -10
+                      }}}}, 
+	              {"effect", { apply_to = "alignment", set = "neutral"}},
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_n1 
+	            },
+        name = _ "Sorrow Veil",
+	id = "sorrow_veil",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This dark shimmering veil gives the wearer a cool detachment, allowing for better defense in some terrains, and a neutral alignment. Bonus: + 5 fire and +1 impact resistance, sets alignment to neutral, +10 for some terrain , + 1 HP",
+        image = "icons/sorrow_veil.png",
+        icon = "items/sorrow_veil.png",
+	cost = 50,
+	usage = "all",
+	position = "head",
+	weight = -1
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "cap_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
 	            },
@@ -1016,6 +1041,20 @@ table.insert(the_list, {
 	weight = 3
 	
 })
+table.insert(the_list, {
+	eq_effect = { id = "silver_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, impact = -5, pierce = -3, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+        name = _ "Silver Gauntlets",
+        id = "silver_gloves",
+        tooltip = _ "protection for the hands",
+        text = _ "These gauntlets provide full protection for the hands and wrist, and are much lighter than would be expected, given their studry construction.  Bonus: +6 blade, + 5 impact, +3 pierce, +3 cold, +5 fire resistances;  +3 hitpoints.",
+        image = "icons/gauntlets-silver.png",
+        icon = "items/gauntlets-silver.png",
+	cost = 150,
+	usage = "heavy_armor",
+	position = "ring",
+	weight = 1
+	
+})
 ------------------------amulets-------------------------
 table.insert(the_list, {
 	eq_effect = { id = "primeval_charm", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = 30}}}}, {"effect", { apply_to = "status", add = "unplagueable"}}},
@@ -1414,10 +1453,10 @@ table.insert(the_list, {
         name = _ "Frost Armor",
         id = "frost_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is the armor of professional fighters.  It is expensive, but offers good protection against all physical strikes.   Bonus: +15 impact, +22 blade, +20 pierce, and +25 fire resistance; +10 HP",
+        text = _ "This rime-encrusted armor is enchanted to remain freezing cold, at least on the outer surface.  Bonus: +15 impact, +22 blade, +20 pierce, and +25 fire resistance; +10 HP",
         image = "icons/frost_armor.png",
         icon = "items/armor-frost.png",
-	cost = 305,
+	cost = 335,
 	usage = "heavy_armor",
 	position = "torso",	
 	weight = 2
