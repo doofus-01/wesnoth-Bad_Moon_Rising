@@ -1046,7 +1046,7 @@ table.insert(the_list, {
         name = _ "Silver Gauntlets",
         id = "silver_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These gauntlets provide full protection for the hands and wrist, and are much lighter than would be expected, given their studry construction.  Bonus: +6 blade, + 5 impact, +3 pierce, +3 cold, +5 fire resistances;  +3 hitpoints.",
+        text = _ "These gauntlets provide full protection for the hands and wrist, and are much lighter than would be expected, given their sturdy construction.  Bonus: +6 blade, + 5 impact, +3 pierce, +3 cold, +5 fire resistances;  +3 hitpoints.",
         image = "icons/gauntlets-silver.png",
         icon = "items/gauntlets-silver.png",
 	cost = 150,
