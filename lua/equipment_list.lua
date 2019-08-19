@@ -779,7 +779,7 @@ table.insert(the_list, {
         id = "rotten_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
         text = _ "This fetid mess of a cloak is some sort of fungal shield for anyone who can stand to wear it.  Moist and disgusting.  Bonus: +2 cold, +10 fire, and +20 arcane resistances; +2 HP",
-        image = "icons/cloak_rotten",
+        image = "icons/cloak_rotten.png",
         icon = "items/cloak-rotten.png",
 	cost = 15,
 	usage = "all",
