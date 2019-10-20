@@ -19,7 +19,9 @@ Gui_recall.new = function()
 			fixed_width = "true",
 			fixed_height = "true"
 			},
-		maximum_height = 400,
+--		maximum_height = 400,
+		maximum_height = 500,
+--		maximum_width = 800,
 		maximum_width = 800,
 		T.grid { 
 			 T.row { 
