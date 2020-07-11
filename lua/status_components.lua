@@ -28,8 +28,12 @@ function equipment_grid(data)
 					       T.column { T.button { tooltip = "Remove from unit and place on map.  Inactive if unit has no moves left.", id = "drop_button", label = _"Drop" , return_value = 3 } }
 					       }
 					   }}},
-		T.row { T.column { vertical_grow = false, horizontal_grow = false, T.scroll_label { vertical_scrollbar_mode = "always", wrap = true, characters_per_line = 46, id = "the_gear_description"}}}
---		T.row { T.column { vertical_grow = false, horizontal_grow = false, T.label { use_tooltip_on_label_overflow = true, wrap = true, characters_per_line = 46, id = "the_gear_description"}}}
+
+-- this spacer is to prevent resizing with change of label text, but might not be the best way
+		T.row { T.column { horizontal_grow = true, T.spacer { width = 550 }}},
+-- cannot get characters_per_line to be recognized in scroll_label, must not be supported.
+		T.row { T.column { vertical_grow = false, horizontal_grow = false , horizontal_alignment = "left", T.label { characters_per_line = 66, wrap = true, id = "the_gear_description"}}}
+--		T.row { T.column { vertical_grow = false, horizontal_grow = false , horizontal_alignment = "left", T.scroll_label { vertical_scrollbar_mode = "always", characters_per_line = 36, wrap = true, id = "the_gear_description"}}}
 		}                                    
 
 end		                                                                                                                                                                                                                                                                                                                                                                                        					
