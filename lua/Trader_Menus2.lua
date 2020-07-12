@@ -1,4 +1,10 @@
--- this derived from the seller menu, so there may be some backwards naming instances
+--[[
+
+This is for the dialog when buying equipment from the merchant
+It is derived from the seller menu, so there may be some backwards naming instances
+
+]]
+
 Trader_Menus.buyer = function(side_number,list_id)
 local function item_list_content()
       return T.list_definition { T.row { T.column { horizontal_grow = true, T.toggle_panel { T.grid {
@@ -86,19 +92,23 @@ local dialog = {
   T.grid { 
   	   T.row { T.column { T.label { id = "the_title"}}},
   	   T.row { T.column { T.image { id = "the_image"}}},
-  	   T.row { T.column { T.drawing { id = "top_line", width = 500, height = 30, T.draw {    
-  	                      T.line { x1 = 1, y1 = 15, x2 = 450, y2 = 15, color = "255,255,255,255", thickness = 3}, T.text { font_size = 1 }
+  	   T.row { T.column { T.drawing { id = "top_line", width = 540, height = 30, T.draw {    
+  	                      T.line { x1 = 40, y1 = 15, x2 = 500, y2 = 15, color = "255,255,255,255", thickness = 3}, T.text { font_size = 1 }
   	                      }}}},
-  	   T.row { T.column { T.scroll_label { vertical_scrollbar_mode = "always", wrap = true, characters_per_line = 66, id = "the_pool_description"}}},
-  	   T.row { T.column { T.drawing { id = "bottom_line", width = 500, height = 30, T.draw {    
-  	                      T.line { x1 = 1, y1 = 15, x2 = 450, y2 = 15, color = "255,255,255,155", thickness = 3}, T.text { font_size = 1 }
+  	   T.row { T.column { T.grid {
+  	                           T.row {      
+  	                                        T.column { horizontal_alignment = "left", T.spacer { height = 84 }},
+  	                                        T.column { horizontal_alignment = "left", vertical_alignment = "top", T.label { wrap = true, characters_per_line = 66, id = "the_pool_description"}}
+  	                                  }
+  	                    }}},
+  	   T.row { T.column { T.drawing { id = "bottom_line", width = 540, height = 30, T.draw {    
+  	                      T.line { x1 = 40, y1 = 15, x2 = 500, y2 = 15, color = "255,255,255,155", thickness = 3}, T.text { font_size = 1 }
   	                      }}}},
  	   T.row { T.column { border = "all", border_size = 5, horizontal_alignment = "center" , T.label { id = "the_sell_title"}}},
 	   T.row { T.column { T.grid {
 	   			   T.row { 
 	   			   		T.column { border = "top", border_size = 20, T.spacer { id = "spacer_itemlistcontent", linked_group = "item_list_group"}}, --not useful
 	   			   		T.column { border = "all", border_size = 5, horizontal_alignment = "center" , 
---	   			   				T.horizontal_listbox { id = "the_sell_list", linked_group = "item_list_group", item_list_content()}
 	   			   				T.horizontal_listbox { horizontal_scrollbar_mode = "never", vertical_scrollbar_mode = "never", id = "the_sell_list", linked_group = "item_list_group", item_list_content()}
 	   			   				}
 	   			   	}
@@ -151,7 +161,7 @@ local function preshow()
     wesnoth.set_dialog_active(false, "reset_button")
     wesnoth.set_dialog_markup(true, "the_title")
     wesnoth.set_dialog_value("<span size='xx-large' color='#eeffb7'> Merchant </span>" , "the_title")
-    wesnoth.set_dialog_value("portraits/merchant-male.png~SCALE(250,250)" , "the_image")
+    wesnoth.set_dialog_value("portraits/merchant-male.png~SCALE(250,250)~CROP(0,0,250,180)" , "the_image")
     wesnoth.set_dialog_markup(true, "the_sell_title")
     wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Merchandise for Sale </span>" , "the_sell_title")
     wesnoth.set_dialog_markup(true, "the_pool_title")
