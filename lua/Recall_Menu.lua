@@ -64,9 +64,9 @@ Gui_recall.new = function()
 	iupkeep = 0
 	end        			
 	wesnoth.set_dialog_markup(true, "the_headcount")
-	wesnoth.set_dialog_value(string.format("<span size='small' bgcolor='#222288'>Head Count = %d </span>", ioc) , "the_headcount")
+	wesnoth.set_dialog_value(string.format("<span size='small' bgcolor='#000012'>Head Count = %d </span>", ioc) , "the_headcount")
 	wesnoth.set_dialog_markup(true, "the_upkeep")
-	wesnoth.set_dialog_value(string.format("<span size='small' color='#ffbb99' bgcolor='#222288'>Upkeep = %d </span>", iupkeep) , "the_upkeep")
+	wesnoth.set_dialog_value(string.format("<span size='small' bgcolor='#000012'>Upkeep        = %d </span>", iupkeep) , "the_upkeep")
 	local function initial_toggle_on_call()
 	    for i in ipairs(uor) do
 	    		wesnoth.set_dialog_value(uor[i].variables.on_call, "the_on_list", i , "the_on_call_button")
@@ -99,9 +99,9 @@ Gui_recall.new = function()
 	      wesnoth.set_dialog_markup(true, "the_unit_name")
 	      wesnoth.set_dialog_markup(true, "the_unit_traits")
 	      wesnoth.set_dialog_markup(true, "the_unit_type")
-              wesnoth.set_dialog_value(string.format("<span size='x-large' underline='single'>%s</span>", unit.__cfg.name), "the_unit_name")
-              wesnoth.set_dialog_value(string.format("<span size='large' color='#aaaaaa'>%s</span>", unit.__cfg.type), "the_unit_type")
-              wesnoth.set_dialog_value(string.format("<span size='small' style='italic' color='#aaaaaa'>%s, %s</span>", traits_strings[1], traits_strings[2]) , "the_unit_traits")
+              wesnoth.set_dialog_value(string.format("<span size='large' underline='single'>%s</span>", unit.__cfg.name), "the_unit_name")
+              wesnoth.set_dialog_value(string.format("<span style='oblique' color='#aabbcf'>%s</span>", unit.__cfg.type), "the_unit_type")
+              wesnoth.set_dialog_value(string.format("<span variant='smallcaps' color='#bfa7a7'> %s \n %s</span>", traits_strings[1], traits_strings[2]) , "the_unit_traits")
               wesnoth.set_dialog_value(string.format("%s~SCALE(200,200)", unit.__cfg.profile) , "the_unit_profile")
 -- to make a blank list, otherwise we are dominated by the first unit shown, I think.  This can probably be improved.
               local k = 1
@@ -110,11 +110,21 @@ Gui_recall.new = function()
                 k = k + 1
               end          
 --  showing icons of the gear that the unit has, display only
+--  first we black them out, to reserve space and to erase old images
               local g_i = 1
+              while g_i < 9 do
+		wesnoth.set_dialog_value("misc/black-box.png~SCALE(30,30)", "the_gearlist", g_i, "the_gearlist_icon")                        
+                g_i = g_i + 1
+              end
+              g_i = 1
               local uor_gear = helper.get_child(unit.__cfg, "variables")
               for gear in helper.child_range( uor_gear , "gear") do
 		wesnoth.set_dialog_value(string.format("%s~SCALE(30,30)", gear.image), "the_gearlist", g_i, "the_gearlist_icon")                        
 		g_i = g_i + 1
+                -- only display the first 8, this gets too big otherwise
+                if g_i == 9 then
+                  break
+                end
               end
             end
 	end
@@ -163,25 +173,23 @@ Gui_recall.new = function()
 	      if calc_temp > 0.9 then
 	        xp_color = "color='#6633ff'"
 	      end
-            wesnoth.set_dialog_value(string.format("%s " , ut.name), "the_on_list", i, "the_label")
+            wesnoth.set_dialog_value(string.format("<span size='small'> %s </span>" , ut.name), "the_on_list", i, "the_label")
+	    wesnoth.set_dialog_markup(true, "the_on_list", i, "the_label")
 	    wesnoth.set_dialog_markup(true, "the_on_list", i, "the_XP")
-            wesnoth.set_dialog_value(string.format("<span "..xp_color..">XP: %s</span>", ut.experience), "the_on_list", i, "the_XP")
+            wesnoth.set_dialog_value(string.format("<span size='x-small' "..xp_color..">XP: %s</span>", ut.experience), "the_on_list", i, "the_XP")
 	    wesnoth.set_dialog_markup(true, "the_on_list", i, "the_HP")
-            wesnoth.set_dialog_value(string.format("<span "..hp_color..">HP: %s</span>", ut.hitpoints), "the_on_list", i, "the_HP") 
+            wesnoth.set_dialog_value(string.format("<span size='x-small' "..hp_color..">HP: %s</span>", ut.hitpoints), "the_on_list", i, "the_HP") 
             wesnoth.set_dialog_value(string.format("%s~RC(magenta>red)", ut.image), "the_on_list", i, "the_icon")
 	end
+-- make the off-duty text and icons grey
 	for i in ipairs(uor_noc) do
 	    local ut = uor_noc[i].__cfg
--- this does not work, for some strange reason
---	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_label")
---	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_XP")
---            wesnoth.set_dialog_value(string.format("<span color='#999999'>%s</span> " , ut.name), "the_off_list", i, "the_label")
---            wesnoth.set_dialog_value(string.format("<span color='#999999'>XP: %s</span>", ut.experience), "the_off_list", i, "the_XP")
---	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_HP")
---            wesnoth.set_dialog_value(string.format("<span color='#999999'>HP: %s</span>", ut.hitpoints), "the_off_list", i, "the_HP") 
-            wesnoth.set_dialog_value(string.format("%s " , ut.name), "the_off_list", i, "the_label")
-            wesnoth.set_dialog_value(string.format("XP: %s", ut.experience), "the_off_list", i, "the_XP")
-            wesnoth.set_dialog_value(string.format("HP: %s", ut.hitpoints), "the_off_list", i, "the_HP") 
+            wesnoth.set_dialog_value(string.format("<span size='small' color='#777777' > %s </span>" , ut.name), "the_off_list", i, "the_label")
+	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_label")
+	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_XP")
+            wesnoth.set_dialog_value(string.format("<span size='x-small' color='#777777' > XP: %s </span>", ut.experience), "the_off_list", i, "the_XP")
+	    wesnoth.set_dialog_markup(true, "the_off_list", i, "the_HP")
+            wesnoth.set_dialog_value(string.format("<span size='x-small' color='#777777' > HP: %s </span>", ut.hitpoints), "the_off_list", i, "the_HP") 
             wesnoth.set_dialog_value(string.format("%s~GS()", ut.image), "the_off_list", i, "the_icon")
         end                    	                      
         initial_toggle_on_call()
