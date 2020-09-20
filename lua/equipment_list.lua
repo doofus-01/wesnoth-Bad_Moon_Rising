@@ -244,6 +244,8 @@ there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 
 (for dogs only: 1. neck)
 20190803 - adding 'arms'; adding weights attribute
 
+Note: the ID and the eq_effect.ID have to match
+
 ]]--
 
 ------------ arms --------------
@@ -494,7 +496,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "crest_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_2 },
+	eq_effect = { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_2 },
         name = _ "Crested Helmet",
 	id = "crested_helmet",
         tooltip = _ "all helmets offer impact resistance",
