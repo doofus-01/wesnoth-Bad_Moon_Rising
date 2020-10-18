@@ -24,7 +24,9 @@ local pool_list = {}
 local sell_list = {}
 local pool_value = 0
 local sell_value = 0
-local dialog = {
+local li = 0
+local sli = 0
+local sell_dialog = {
   T.tooltip { id = "tooltip_large" },
   T.helptip { id = "helptip_large" },
   maximum_height = 800, maximum_width = 800,                                               
@@ -75,8 +77,10 @@ local dialog = {
 --  	   T.row { T.column {  T.button { id = "ok", label = _"Done" }}},
 	   }
 }
+-- local last_selected_sell_index = 1
+-- local last_selected_pool_index = 1
 
-local function preshow()
+local function preshow(dialog)
     wesnoth.set_dialog_active(false, "sell_button")
     wesnoth.set_dialog_active(false, "reset_button")
     wesnoth.set_dialog_markup(true, "the_title")
@@ -135,10 +139,17 @@ local function preshow()
 	     wesnoth.set_dialog_value(string.format("<span size='x-small'> %s ( %d ) </span>", sell_list[i].name, sell_list[i].number), "the_sell_list", s_i, "item_id")
 	     wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_id")
 	     wesnoth.set_dialog_value(string.format("<span size='x-small' color='#f1ff54'> %d g </span>", sell_list[i].cost), "the_sell_list", s_i, "item_cost")
+--	     testy = wesnoth.get_dialog_value("the_sell_list", s_i, "item_cost")
+--             wesnoth.message(string.format("testy = %s", testy))
 	     wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_cost")
 	     s_i = s_i + 1
 --	     sell_value = sell_value + sell_list[i].cost
 	end
+    end
+    if li > 0 then
+        wesnoth.set_dialog_value(li,"the_pool_list")
+    else
+        wesnoth.set_dialog_value(1, "the_pool_list")
     end
     wesnoth.set_dialog_markup(true, "the_sell_total")
     wesnoth.set_dialog_value(string.format("<span size='large' color='#ccccaa'> %d gold</span>", sell_value), "the_sell_total")
@@ -164,16 +175,26 @@ local function preshow()
         	gear_text[i] = "Nothing available."
         end
         wesnoth.set_dialog_value(gear_text[i], "the_pool_description")
-        return
     end
     wesnoth.set_dialog_callback(select, "the_pool_list")
     select()                                                                                   
 
 end
 
-local li = 0
-local function postshow()
+local function postshow(dialog)
     li = wesnoth.get_dialog_value "the_pool_list"
+--[[ this does not work, and I can't find examples
+--    local tpl_id = wesnoth.get_dialog_value("the_pool_list", li, "item_id") 
+    if #sell_list > 0 then
+--        local i = 1        
+        for i = 1,#sell_list,1 do
+            local tsl_id = wesnoth.get_dialog_value("the_sell_list", i, "item_id") 
+            if tsli == tpli then
+                sli = wesnoth.get_dialog_value "the_sell_list"
+                break
+            end
+        end
+    end]]
 end
 
 local function selected(i)
@@ -223,7 +244,8 @@ local function sell()
     sell_list = {}
 end
 
-local rv = wesnoth.show_dialog(dialog, preshow, postshow)
+local rv = gui.show_dialog(sell_dialog, preshow, postshow)
+-- local rv = wesnoth.show_dialog(dialog, preshow, postshow)
   while rv >= 3 do
 --select or reset, update lists, redraw 
 	  if rv == 3 then
@@ -231,7 +253,7 @@ local rv = wesnoth.show_dialog(dialog, preshow, postshow)
 	  elseif rv == 4 then
 	    reset_list()
 	  end
-  	  rv = wesnoth.show_dialog(dialog, preshow, postshow)
+  	  rv = wesnoth.show_dialog(sell_dialog, preshow, postshow)
   end
   if rv == 2 then
 -- sell

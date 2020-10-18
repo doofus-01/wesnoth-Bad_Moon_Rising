@@ -79,6 +79,7 @@ elseif list_id == 5 then
 else
   sell_list_short = {"fur_hat", "cap_helmet", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "small_dagger"}
 end
+local li = 0
 local pool_value = 0
 local sell_value = 0
 local dialog = {
@@ -216,6 +217,11 @@ local function preshow()
 --	     sell_value = sell_value + sell_list[i].cost
 --	end
     end
+    if li > 0 then
+        wesnoth.set_dialog_value(li,"the_sell_list")
+    else
+        wesnoth.set_dialog_value(1, "the_sell_list")
+    end
     for i in ipairs(pool_list) do
 	if pool_list[i].number > 0 then
 --	     wesnoth.set_dialog_value(pool_list[i].image, "the_pool_list", p_i, "item_image")
@@ -261,7 +267,6 @@ local function preshow()
 
 end
 
-local li = 0
 local function postshow()
     li = wesnoth.get_dialog_value "the_sell_list"
 end
