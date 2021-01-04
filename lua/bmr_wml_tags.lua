@@ -31,7 +31,7 @@ function wesnoth.wml_actions.apply_gear(cfg)
 --            if take_result == "pass" then
             if eq_unit[1] then
               bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
-              wesnoth.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
+              wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
             end
         end
 end

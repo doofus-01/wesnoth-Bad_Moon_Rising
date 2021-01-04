@@ -107,7 +107,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
               wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
               local movep = 0
-	      wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
+	      wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
               if old_weight ~= temp_weight then -- MP loss only goes to -2
                    if temp_weight >= 20 then
                        movep = -2
@@ -123,8 +123,8 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   }
               }
                                               
-	      wesnoth.add_modification(units[1], "object", eq_eff)
-	      wesnoth.add_modification(units[1], "object", wt_effects)
+	      wesnoth.units.add_modification(units[1], "object", eq_eff)
+	      wesnoth.units.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
               return result
             end
@@ -217,7 +217,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
           wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
           local movep = 0
-	  wesnoth.remove_modifications(units[1], {id = "wt_moves_id"})
+	  wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
           if old_weight ~= temp_weight then -- MP loss only goes to -2
              if temp_weight >= 20 then
                  movep = -2
@@ -233,7 +233,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
               }
           }
           wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
-	  wesnoth.add_modification(units[1], "object", wt_effects)
+	  wesnoth.units.add_modification(units[1], "object", wt_effects)
 
 -- a hack to fix what may be a core bug with remove_object?
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
@@ -281,7 +281,7 @@ bmr_equipment.item_drop = function(x_1, y_1, gear_id)
 	icon = "misc/qmark.png"
       wesnoth.message(string.format("%s not found to drop image on map.", gear_id))
     else    
-    items.place_image(x_1, y_1, icon) 
+    wesnoth.interface.add_item_image(x_1, y_1, icon) 
     item_index = wesnoth.get_variable("gear_map_items.length")
     if item_index == nil then item_index = 0 end
     wesnoth.set_variable("gear_map_items["..item_index.."].id", gear_id)
