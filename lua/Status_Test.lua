@@ -175,7 +175,8 @@ local function preshow(self)
 	local gear_pool_usage = equipment_list.the_list[j].usage
 
 --	local gear_pool_tooltip = equipment_list.the_list[j].tooltip
-	local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
+    -- local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
+    local gear_pool_number = wml.variables["gear_pool[0]."..gear_pool_id]
 	if gear_pool_number == nil then gear_pool_number = 0 end
         if gear_pool_number > 0 then
             for k in ipairs(equipment_list.list_usage) do
