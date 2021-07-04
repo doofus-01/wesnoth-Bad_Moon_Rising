@@ -88,22 +88,22 @@ bmr_equipment.filter = function(unit_id, gear_id)
               result = "pass"
               wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
 	      local gindex = wml.variables["my_unit.variables.gear.length"]
-              wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", {
-      		name = gear_name,
-		cost = gear_cost,
-      		image = gear_image,
-      		text = gear_text,
-      		id = gear_id,
-      		position = gear_position,
-      		weight = gear_weight
-      	      })
+              wml.variables["my_unit.variables.gear[" .. gindex .. "]"] = {
+                name = gear_name,
+                cost = gear_cost,
+                image = gear_image,
+                text = gear_text,
+                id = gear_id,
+                position = gear_position,
+                weight = gear_weight
+      	      }
               local old_weight = wml.variables["my_unit.variables.weight"]
               if old_weight then
               else
                   old_weight = 0
               end
               temp_weight = old_weight + gear_weight
-              wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+              wml.variables["my_unit.variables.weight"] = temp_weight 
               wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
               local movep = 0
@@ -148,7 +148,7 @@ bmr_equipment.pool_add = function(gear_id)
       gear_number = wml.variables["gear_pool[0]."..gear_id]
       if gear_number == nil then gear_number = 0 end
       gear_number = gear_number + 1
-      wesnoth.set_variable("gear_pool[0]."..gear_id, gear_number)
+      wml.variables["gear_pool[0]."..gear_id] = gear_number
     end 
    return gear_number
 end
@@ -202,7 +202,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
       end
 -- then delete the gear variables
       if old_gear_id then
-          wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", nil)
+          wml.variables["my_unit.variables.gear[" .. gindex .. "]"] = nil
           old_weight = wml.variables["my_unit.variables.weight"]
           if old_weight then
           else
@@ -213,7 +213,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
              old_gear_weight = 0
           end
           temp_weight = old_weight - old_gear_weight
-          wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
+          wml.variables["my_unit.variables.weight"] = temp_weight
           wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
           local movep = 0
@@ -261,7 +261,7 @@ bmr_equipment.pool_remove = function(gear_id)
        wesnoth.message(string.format("%s is not in the pool, cannot remove", gear_id))
     else 
     gear_number = gear_number - 1
-    wesnoth.set_variable("gear_pool[0]."..gear_id, gear_number)
+    wml.variables["gear_pool[0]."..gear_id] = gear_number
     end    
    return gear_number
 end
@@ -284,10 +284,10 @@ bmr_equipment.item_drop = function(x_1, y_1, gear_id)
     wesnoth.interface.add_item_image(x_1, y_1, icon) 
     item_index = wml.variables["gear_map_items.length"]
     if item_index == nil then item_index = 0 end
-    wesnoth.set_variable("gear_map_items["..item_index.."].id", gear_id)
-    wesnoth.set_variable("gear_map_items["..item_index.."].cost", cost)
-    wesnoth.set_variable("gear_map_items["..item_index.."].x", x_1)
-    wesnoth.set_variable("gear_map_items["..item_index.."].y", y_1)
+    wml.variables["gear_map_items["..item_index.."].id"] = gear_id
+    wml.variables["gear_map_items["..item_index.."].cost"] = cost
+    wml.variables["gear_map_items["..item_index.."].x"] = x_1
+    wml.variables["gear_map_items["..item_index.."].y"] = y_1
     end
     
    return icon
@@ -308,7 +308,7 @@ bmr_equipment.item_take = function(x_1, y_1, gear_id)
           y_temp = wml.variables["gear_map_items["..item_index.."].y"]
 	  if x_temp == x_1 and y_temp == y_1 then
 	    -- delete the WML record
-	    wesnoth.set_variable("gear_map_items["..item_index.."]", nil)
+	    wml.variables["gear_map_items["..item_index.."]"] = nil
 	    -- remove the image from the map
 	    local icon = ""
 	    for j in ipairs(equipment_list.the_list) do  
