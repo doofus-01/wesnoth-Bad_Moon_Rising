@@ -10,7 +10,7 @@ local unit_id = 0
 --local equipment_grid_list_data = {}
 --local event_context = wesnoth.current.event_context
 --local unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
---local u_gear = helper.get_child(unit_cfg, "variables")
+--local u_gear = wml.get_child(unit_cfg, "variables")
 --local function equip_data_table_f()
 --    for gear in helper.child_range(u_gear, "gear") do	
 --	local equip_data = equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text)
@@ -117,7 +117,7 @@ local function preshow()
     -- the equipment list
     local gear_text = {}
     local g_i = 1
-    local u_gear = helper.get_child(unit_cfg, "variables")
+    local u_gear = wml.get_child(unit_cfg, "variables")
 -- changed gear.image SCALE(60,60) to 50,50
 --    wesnoth.message(equipment_grid_list_data[1])
 --    wesnoth.message(equipment_grid_list_data[2][1])

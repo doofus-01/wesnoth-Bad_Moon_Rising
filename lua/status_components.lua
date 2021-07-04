@@ -219,7 +219,7 @@ end
 function set_child_grid_values(unit)
 -- traits
 	local traits_strings = {}
-	local u_mods = helper.get_child(unit, "modifications")
+	local u_mods = wml.get_child(unit, "modifications")
 	local c_i = 1
 	for trait in helper.child_range( u_mods, "trait") do
 	    traits_strings[c_i] = trait.male_name
@@ -234,7 +234,7 @@ function set_child_grid_values(unit)
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1]) , "the_first_trait")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2]) , "the_second_trait")
 -- weight
-	local unit_var = helper.get_child(unit, "variables")
+	local unit_var = wml.get_child(unit, "variables")
 	local unit_wt = unit_var.weight
         if unit_wt then
         else
@@ -253,7 +253,7 @@ function set_child_grid_values(unit)
 -- movement costs
 	wesnoth.set_dialog_markup(true, "the_mcg_title")
 	wesnoth.set_dialog_value("<span color='#eeffb7'>  Movement Costs  </span>", "the_mcg_title")
-	local costs = helper.get_child(unit, "movement_costs")
+	local costs = wml.get_child(unit, "movement_costs")
 	local function mcg_format_row(value,widget)
 	    if value == nil then value = 99 end
 	    local val_color = "color ='#ffc000'"
@@ -284,7 +284,7 @@ function set_child_grid_values(unit)
 -- defense
 	wesnoth.set_dialog_markup(true, "the_dg_title")
 	wesnoth.set_dialog_value("<span color='#eeffb7'>  Terrain Defense  </span>", "the_dg_title")
-	local defense = helper.get_child(unit, "defense")
+	local defense = wml.get_child(unit, "defense")
 	local rf_d = defense.reef
 	local ft_d = defense.forest
 	local fu_d = defense.fungus
@@ -332,7 +332,7 @@ function set_child_grid_values(unit)
 -- resistances
 	wesnoth.set_dialog_markup(true, "the_rg_title")
 	wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single' >  Resistances  </span>", "the_rg_title")
-	local resistance = helper.get_child(unit, "resistance")
+	local resistance = wml.get_child(unit, "resistance")
 	local f_r = 100 - resistance.fire
 	local c_r = 100 - resistance.cold
 	local a_r = 100 - resistance.arcane
