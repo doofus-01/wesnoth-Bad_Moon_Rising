@@ -9,7 +9,7 @@ local dr_y = 0
 local unit_id = 0
 --local equipment_grid_list_data = {}
 --local event_context = wesnoth.current.event_context
---local unit_cfg = wesnoth.get_unit(event_context.x1,event_context.y1).__cfg
+--local unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
 --local u_gear = helper.get_child(unit_cfg, "variables")
 --local function equip_data_table_f()
 --    for gear in helper.child_range(u_gear, "gear") do	
@@ -93,7 +93,7 @@ local dialog = {
 
 local function preshow()
     event_context = wesnoth.current.event_context
-    unit_cfg = wesnoth.get_unit(event_context.x1,event_context.y1).__cfg
+    unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
     local can_move = true
     if unit_cfg.moves == 0 then can_move = false end
     dr_x = event_context.x1
