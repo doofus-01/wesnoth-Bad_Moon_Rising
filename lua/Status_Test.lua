@@ -45,7 +45,7 @@ local dialog = {
   -- automatic_placement = false,                                             
   -- height = 850, width = 850, 
   T.grid { 
-  	   T.row { T.column { T.label { id = "the_panel_title"}}},
+  	   T.row { T.column { T.label { id = "the_panel_title", use_markup = true}}},
            T.row { T.column { T.grid {
 			           T.row { 
 			           		T.column {  horizontal_alignment = "left" , T.grid { --left grid
@@ -66,7 +66,7 @@ local dialog = {
 			    	   	   						}}},
 			    	   	   						T.row { T.column { T.image { id = "the_image" 
 			    	   	   						}}},
-			    	   	   						T.row { T.column { T.label { id = "the_title" 
+			    	   	   						T.row { T.column { T.label { id = "the_title", use_markup = true 
 			    	   	   						}}},
 			           			 				T.row { T.column { border = "all", border_size = 5, horizontal_alignment = "center", vertical_alignment = "center",
 			           			 							T.drawing { id = "left_line", width = 300, height = 60, T.draw { 
@@ -104,13 +104,13 @@ local function preshow()
     wesnoth.set_dialog_active(can_move, "delete_button")
     wesnoth.set_dialog_active(can_move, "drop_button")
     wesnoth.set_dialog_active(can_move, "inventory_button")
-    wesnoth.set_dialog_markup(true, "the_panel_title")
+    -- wesnoth.set_dialog_markup(true, "the_panel_title")
     wesnoth.set_dialog_value("<span size='xx-large' color='#eeffb7'> Unit Status </span>" , "the_panel_title")
-    wesnoth.set_dialog_markup(true, "the_title")
+    -- wesnoth.set_dialog_markup(true, "the_title")
     wesnoth.set_dialog_value(string.format("<span size='x-large' color='#eeffb7'> %s </span>", unit_cfg.name) , "the_title")
-    wesnoth.set_dialog_markup(true, "the_gearlist_title")
+    -- wesnoth.set_dialog_markup(true, "the_gearlist_title")
     wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Equipment </span>" , "the_gearlist_title")
-    wesnoth.set_dialog_markup(true, "the_poollist_title")
+    -- wesnoth.set_dialog_markup(true, "the_poollist_title")
     wesnoth.set_dialog_value("<span size='large' color='#ddeea6' underline='single'> Inventory </span>" , "the_poollist_title")
     set_simple_grid_values(unit_cfg)
     set_child_grid_values(unit_cfg)
@@ -125,7 +125,7 @@ local function preshow()
 --	table.insert(equipment_grid_list_data,equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text))
 	wesnoth.set_dialog_value(string.format("%s~SCALE(60,60)", gear.image), "the_gearlist", g_i, "the_gearlist_icon")
 	wesnoth.set_dialog_value(string.format("<span size='xx-small'>%s</span>", gear.name), "the_gearlist", g_i, "the_gearlist_icon_name")
-	wesnoth.set_dialog_markup(true, "the_gearlist", g_i, "the_gearlist_icon_name")
+	-- wesnoth.set_dialog_markup(true, "the_gearlist", g_i, "the_gearlist_icon_name")
 	gear_text[g_i] = string.format("%s <span size='small'> (Wt: %s) \n  %s </span>", gear.name, gear.weight, gear.text)
 --	gear_text[g_i] = string.format("<span size='large'> %s </span> (Wt: %s) - %s", gear.name, gear.weight, gear.text)
 	select_gear_id[g_i] = gear.id
@@ -165,7 +165,7 @@ local function preshow()
             end -- for k
 --	     wesnoth.add_dialog_tree_node("node1", i, "the_poollist")
 	     wesnoth.set_dialog_value(string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
-	     wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
+	     -- wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
 	     select_pool_id[p_i] = gear_pool_id
 	     p_i = p_i + 1
         end
@@ -179,7 +179,7 @@ local function preshow()
     local function select()
 	-- so, index [i] is refering to the item selected
         local i = wesnoth.get_dialog_value "the_gearlist"
-	wesnoth.set_dialog_markup(true, "the_gear_description")
+	-- wesnoth.set_dialog_markup(true, "the_gear_description")
 	if gear_text[i] then
 	  else
 	  gear_text[i] = "No equipment available."

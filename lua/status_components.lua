@@ -3,7 +3,7 @@ local T = wml.tag
 
 function equipment_grid(data)
 	return T.grid{
-		T.row { T.column { T.label { id = "the_gearlist_title" }}},
+		T.row { T.column { T.label { id = "the_gearlist_title", use_markup = true }}},
 		T.row { T.column { vertical_grow = false, horizontal_alignment = "left" , horizontal_grow = false, T.horizontal_listbox { horizontal_scrollbar_mode = "never", id = "the_gearlist" , 
 		    T.list_definition { T.row { T.column {
 					grow_factor = 1, horizontal_grow = true, vertical_grow = true,
@@ -12,7 +12,7 @@ function equipment_grid(data)
 --					  T.layer{ T.row{ T.column{
 					T.toggle_panel { T.grid {
 								T.row { T.column { T.image { id = "the_gearlist_icon"}}},
-								T.row { T.column { T.label { use_markup = true, id = "the_gearlist_icon_name"}}}
+								T.row { T.column { T.label { use_markup = true, id = "the_gearlist_icon_name", use_markup = true}}}
 								}}
 --					  }}},
 --					  T.layer{ T.row{ T.column{
@@ -32,7 +32,7 @@ function equipment_grid(data)
 -- this spacer is to prevent resizing with change of label text, but might not be the best way
 		T.row { T.column { horizontal_grow = true, T.spacer { width = 550 }}},
 -- cannot get characters_per_line to be recognized in scroll_label, must not be supported.
-		T.row { T.column { vertical_grow = false, horizontal_grow = false , horizontal_alignment = "left", T.label { characters_per_line = 66, wrap = true, id = "the_gear_description"}}}
+		T.row { T.column { vertical_grow = false, horizontal_grow = false , horizontal_alignment = "left", T.label { characters_per_line = 66, wrap = true, id = "the_gear_description", use_markup = true}}}
 --		T.row { T.column { vertical_grow = false, horizontal_grow = false , horizontal_alignment = "left", T.scroll_label { vertical_scrollbar_mode = "always", characters_per_line = 36, wrap = true, id = "the_gear_description"}}}
 		}                                    
 
@@ -84,9 +84,9 @@ end
 
 function inventory_grid()
 	return T.grid{
-		T.row { T.column { border = "all", border_size = 5, T.label { id = "the_poollist_title" }}},
+		T.row { T.column { border = "all", border_size = 5, T.label { id = "the_poollist_title", use_markup = true }}},
 		T.row { T.column { horizontal_alignment = "center" , T.listbox { max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
-						T.toggle_panel { T.grid { T.row { T.column {border = "all", border_size = 2, horizontal_alignment = "center", T.label { wrap = true, characters_per_line = 18, id = "the_poollist_entry"}}}}} 
+						T.toggle_panel { T.grid { T.row { T.column {border = "all", border_size = 2, horizontal_alignment = "center", T.label { wrap = true, characters_per_line = 18, id = "the_poollist_entry", use_markup = true}}}}} 
 						  }}}}}},
 		T.row { T.column { T.grid {
 								  T.row {
@@ -118,12 +118,12 @@ end
 end
 ]]
 function rg_row(header_id,header_label,value_id)
-	return T.row { T.column { vertical_grow = true, T.label {definition = "default_small", id = header_id , label = header_label }}, T.column { T.spacer { width = 12 }}, T.column { horizontal_alignment = "right" , T.label { id = value_id}}}
+	return T.row { T.column { vertical_grow = true, T.label {definition = "default_small", id = header_id , label = header_label }}, T.column { T.spacer { width = 12 }}, T.column { horizontal_alignment = "right" , T.label { id = value_id , use_markup = true}}}
 end
 
 function resistances_grid()
 	return T.grid {
-		T.row { T.column { T.label { id = "the_rg_title"}}},
+		T.row { T.column { T.label { id = "the_rg_title", use_markup = true}}},
 		T.row { T.column { T.grid {
 		rg_row("header_arcane","Arcane","the_rg_arcane"),
 		rg_row("header_blade","Blade","the_rg_blade"),
@@ -136,21 +136,21 @@ function resistances_grid()
 end
 function movementcost_grid()
 	return T.grid {
-		T.row { T.column { T.spacer { id = "mc_spacer" }} , T.column { T.label { id = "the_mcg_title" }} , T.column { T.label { id = "the_dg_title" }}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_shallow_water" , label = "Shallow Water" }} , T.column { T.label { id = "the_mcg_shallow_water"}} , T.column { T.label { id = "the_dg_shallow_water"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_reef" , label = "Reef" }} , T.column { T.label { id = "the_mcg_reef"}} , T.column { T.label { id = "the_dg_reef"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_swamp_water" , label = "Swamp Water" }} , T.column { T.label { id = "the_mcg_swamp_water"}} , T.column { T.label { id = "the_dg_swamp_water"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_deep_water" , label = "Deep Water" }} , T.column { T.label { id = "the_mcg_deep_water"}} , T.column { T.label { id = "the_dg_deep_water"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_flat" , label = "Flat" }} , T.column { T.label { id = "the_mcg_flat"}} , T.column { T.label { id = "the_dg_flat"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_frozen" , label = "Frozen" }} , T.column { T.label { id = "the_mcg_frozen"}} , T.column { T.label { id = "the_dg_frozen"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_sand" , label = "Sand" }} , T.column { T.label { id = "the_mcg_sand"}} , T.column { T.label { id = "the_dg_sand"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_fungus" , label = "Fungus" }} , T.column { T.label { id = "the_mcg_fungus"}} , T.column { T.label { id = "the_dg_fungus"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_forest" , label = "Forest" }} , T.column { T.label { id = "the_mcg_forest"}} , T.column { T.label { id = "the_dg_forest"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_cave" , label = "Cave" }} , T.column { T.label { id = "the_mcg_cave"}} , T.column { T.label { id = "the_dg_cave"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_castle" , label = "Castle" }} , T.column { T.label { id = "the_mcg_castle"}} , T.column { T.label { id = "the_dg_castle"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_village" , label = "Village" }} , T.column { T.label { id = "the_mcg_village"}} , T.column { T.label { id = "the_dg_village"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_hills" , label = "Hills" }} , T.column { T.label { id = "the_mcg_hills"}} , T.column { T.label { id = "the_dg_hills"}}},
-		T.row { T.column { T.label { definition = "default_small", id = "header_mountains" , label = "Mountains" }} , T.column { T.label { id = "the_mcg_mountains"}} , T.column { T.label { id = "the_dg_mountains"}}} --,
+		T.row { T.column { T.spacer { id = "mc_spacer" }} , T.column { T.label { id = "the_mcg_title", use_markup = true }} , T.column { T.label { id = "the_dg_title", use_markup = true }}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_shallow_water" , label = "Shallow Water" }} , T.column { T.label { id = "the_mcg_shallow_water", use_markup = true}} , T.column { T.label { id = "the_dg_shallow_water", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_reef" , label = "Reef" }} , T.column { T.label { id = "the_mcg_reef", use_markup = true}} , T.column { T.label { id = "the_dg_reef", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_swamp_water" , label = "Swamp Water" }} , T.column { T.label { id = "the_mcg_swamp_water", use_markup = true}} , T.column { T.label { id = "the_dg_swamp_water", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_deep_water" , label = "Deep Water" }} , T.column { T.label { id = "the_mcg_deep_water", use_markup = true}} , T.column { T.label { id = "the_dg_deep_water", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_flat" , label = "Flat" }} , T.column { T.label { id = "the_mcg_flat", use_markup = true}} , T.column { T.label { id = "the_dg_flat", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_frozen" , label = "Frozen" }} , T.column { T.label { id = "the_mcg_frozen", use_markup = true}} , T.column { T.label { id = "the_dg_frozen", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_sand" , label = "Sand" }} , T.column { T.label { id = "the_mcg_sand", use_markup = true}} , T.column { T.label { id = "the_dg_sand", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_fungus" , label = "Fungus" }} , T.column { T.label { id = "the_mcg_fungus", use_markup = true}} , T.column { T.label { id = "the_dg_fungus", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_forest" , label = "Forest" }} , T.column { T.label { id = "the_mcg_forest", use_markup = true}} , T.column { T.label { id = "the_dg_forest", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_cave" , label = "Cave" }} , T.column { T.label { id = "the_mcg_cave", use_markup = true}} , T.column { T.label { id = "the_dg_cave", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_castle" , label = "Castle" }} , T.column { T.label { id = "the_mcg_castle", use_markup = true}} , T.column { T.label { id = "the_dg_castle", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_village" , label = "Village" }} , T.column { T.label { id = "the_mcg_village", use_markup = true}} , T.column { T.label { id = "the_dg_village", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_hills" , label = "Hills" }} , T.column { T.label { id = "the_mcg_hills", use_markup = true}} , T.column { T.label { id = "the_dg_hills", use_markup = true}}},
+		T.row { T.column { T.label { definition = "default_small", id = "header_mountains" , label = "Mountains" }} , T.column { T.label { id = "the_mcg_mountains", use_markup = true}} , T.column { T.label { id = "the_dg_mountains", use_markup = true}}} --,
 --[[	        T.row { 
 		 	T.column { T.spacer { id = "mc_end_spacer_l"}},
 	        	T.column { border = "all", border_size = 5, horizontal_alignment = "center", vertical_alignment = "center", 
@@ -166,12 +166,12 @@ function misc_status_grid()
 	 T.row { T.column { border= "all", border_size= 5, T.grid {  -- left grid
 -- this causes errors	         	T.row { T.column { horizontal_alignment = "center" , horizontal_grow = true, T.image { id = "the_icon"}}},
 	         	T.row { T.column { horizontal_alignment = "center" , horizontal_grow = false, T.image { id = "the_icon"}}},
-	         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_type"}}},
+	         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_type", use_markup = true}}},
 		 	T.row { T.column { T.grid {
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level"}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment"}}},
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP"}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait"}}},
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP"}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait"}}},  
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", tooltip = "Equipment Weight: lowers defense values (except for village and castle) and every ten points costs one movement point."}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment", use_markup = true}}},
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait", use_markup = true}}},
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait", use_markup = true}}},  
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: lowers defense values (except for village and castle) and every ten points costs one movement point."}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
 				}}}				
 			  }},
                  T.column { resistances_grid()} -- right grid
@@ -202,11 +202,12 @@ function set_simple_grid_values(unit)
 	elseif unit_xp <= 0.6 and unit_xp < 0.9 then
 	    xp_color = "color ='#5533bb'"
 	end
-	wesnoth.set_dialog_markup(true, "the_unit_type")
-	wesnoth.set_dialog_markup(true, "the_unit_HP")
-	wesnoth.set_dialog_markup(true, "the_unit_XP")
-	wesnoth.set_dialog_markup(true, "the_unit_alignment")
-	wesnoth.set_dialog_markup(true, "the_unit_level")
+    -- these are deprecated, add use_markup = true directly to grid above
+    -- wesnoth.set_dialog_markup(true, "the_unit_type")
+	-- wesnoth.set_dialog_markup(true, "the_unit_HP")
+	-- wesnoth.set_dialog_markup(true, "the_unit_XP")
+	-- wesnoth.set_dialog_markup(true, "the_unit_alignment")
+	-- wesnoth.set_dialog_markup(true, "the_unit_level")
 	wesnoth.set_dialog_value(string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) , "the_unit_type")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> Level: %d </span>", unit.level) , "the_unit_level")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> %s </span>", unit.alignment) , "the_unit_alignment")
@@ -229,8 +230,8 @@ function set_child_grid_values(unit)
 	   else
 	   traits_strings[2] = "."
 	end
-	wesnoth.set_dialog_markup(true, "the_first_trait")
-	wesnoth.set_dialog_markup(true, "the_second_trait")
+	-- wesnoth.set_dialog_markup(true, "the_first_trait")
+	-- wesnoth.set_dialog_markup(true, "the_second_trait")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1]) , "the_first_trait")
 	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2]) , "the_second_trait")
 -- weight
@@ -248,10 +249,10 @@ function set_child_grid_values(unit)
 	elseif unit_wt >= 20 and unit_wt < 30 then
 	    wt_color = "color ='#ff0000'"
 	end
-	wesnoth.set_dialog_markup(true, "the_unit_WT")
+	-- wesnoth.set_dialog_markup(true, "the_unit_WT")
 	wesnoth.set_dialog_value(string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt) , "the_unit_WT")
 -- movement costs
-	wesnoth.set_dialog_markup(true, "the_mcg_title")
+	-- wesnoth.set_dialog_markup(true, "the_mcg_title")
 	wesnoth.set_dialog_value("<span color='#eeffb7'>  Movement Costs  </span>", "the_mcg_title")
 	local costs = wml.get_child(unit, "movement_costs")
 	local function mcg_format_row(value,widget)
@@ -264,8 +265,9 @@ function set_child_grid_values(unit)
 	    elseif value >= 6 then
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
-	    wesnoth.set_dialog_markup(true, widget)
-	    return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
+	    -- wesnoth.set_dialog_markup(true, widget)
+        -- widget.use_markup = true -- not sure how to write an inline replacement, this doesn't work.
+        return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
 	end
 	mcg_format_row(costs.forest,"the_mcg_forest")
 	mcg_format_row(costs.fungus,"the_mcg_fungus")
@@ -282,7 +284,7 @@ function set_child_grid_values(unit)
 	mcg_format_row(costs.deep_water,"the_mcg_deep_water")
 	mcg_format_row(costs.reef,"the_mcg_reef")
 -- defense
-	wesnoth.set_dialog_markup(true, "the_dg_title")
+	-- wesnoth.set_dialog_markup(true, "the_dg_title")
 	wesnoth.set_dialog_value("<span color='#eeffb7'>  Terrain Defense  </span>", "the_dg_title")
 	local defense = wml.get_child(unit, "defense")
 	local rf_d = defense.reef
@@ -312,7 +314,7 @@ function set_child_grid_values(unit)
 	    elseif value <= 10 then
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
-	    wesnoth.set_dialog_markup(true, widget)
+	    -- wesnoth.set_dialog_markup(true, widget)
 	    return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
 	end
 	dg_format_row(rf_d,"the_dg_reef")
@@ -330,7 +332,7 @@ function set_child_grid_values(unit)
 	dg_format_row(ca_d,"the_dg_castle")
 	dg_format_row(vg_d,"the_dg_village")
 -- resistances
-	wesnoth.set_dialog_markup(true, "the_rg_title")
+	-- wesnoth.set_dialog_markup(true, "the_rg_title")
 	wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single' >  Resistances  </span>", "the_rg_title")
 	local resistance = wml.get_child(unit, "resistance")
 	local f_r = 100 - resistance.fire
@@ -350,7 +352,7 @@ function set_child_grid_values(unit)
 	    elseif value <= -40 then
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
-	    wesnoth.set_dialog_markup(true, widget)
+	    -- wesnoth.set_dialog_markup(true, widget)
 	    return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
 	end
 	rg_format_row(a_r,"the_rg_arcane")
