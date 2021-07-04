@@ -87,7 +87,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
             if equipment_list.list_usage[j].types[k] == units[1].type then
               result = "pass"
               wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
-	      local gindex = wesnoth.get_variable("my_unit.variables.gear.length")
+	      local gindex = wml.variables["my_unit.variables.gear.length"]
               wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", {
       		name = gear_name,
 		cost = gear_cost,
@@ -97,7 +97,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
       		position = gear_position,
       		weight = gear_weight
       	      })
-              local old_weight = wesnoth.get_variable("my_unit.variables.weight")
+              local old_weight = wml.variables["my_unit.variables.weight"]
               if old_weight then
               else
                   old_weight = 0
@@ -145,7 +145,7 @@ bmr_equipment.pool_add = function(gear_id)
       end
     end
     if gear_id_test then
-      gear_number = wesnoth.get_variable("gear_pool[0]."..gear_id)
+      gear_number = wml.variables["gear_pool[0]."..gear_id]
       if gear_number == nil then gear_number = 0 end
       gear_number = gear_number + 1
       wesnoth.set_variable("gear_pool[0]."..gear_id, gear_number)
@@ -191,9 +191,9 @@ bmr_equipment.remove = function(unit_id, gear_id)
 
       wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
 -- first check that the unit really has the gear 
-      while wesnoth.get_variable("my_unit.variables.gear["..gindex.."]") do
-	  old_gear_id = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].id")
-	  old_gear_weight = tonumber(wesnoth.get_variable("my_unit.variables.gear["..gindex.."].weight"))
+      while wml.variables["my_unit.variables.gear["..gindex.."]"] do
+	  old_gear_id = wml.variables["my_unit.variables.gear["..gindex.."].id"]
+	  old_gear_weight = tonumber(wml.variables["my_unit.variables.gear["..gindex.."].weight"])
 	  if old_gear_id == gear_id then
 	    break
 	  end
@@ -203,7 +203,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- then delete the gear variables
       if old_gear_id then
           wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", nil)
-          old_weight = wesnoth.get_variable("my_unit.variables.weight")
+          old_weight = wml.variables["my_unit.variables.weight"]
           if old_weight then
           else
              old_weight = 0
@@ -238,7 +238,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- a hack to fix what may be a core bug with remove_object?
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
 
-	  local hack_HP_fix_pre = wesnoth.get_variable("my_unit.hitpoints")
+	  local hack_HP_fix_pre = wml.variables["my_unit.hitpoints"]
 	  local hack_u = wesnoth.get_units({id = unit_id})[1]
 	  if hack_u.max_hitpoints < hack_HP_fix_pre then
 	      hack_u.hitpoints = hack_u.max_hitpoints
@@ -256,7 +256,7 @@ end
 
 -- removes the thing from the pool
 bmr_equipment.pool_remove = function(gear_id)
-    local gear_number = wesnoth.get_variable("gear_pool[0]."..gear_id)
+    local gear_number = wml.variables["gear_pool[0]."..gear_id]
     if gear_number == nil or gear_number == 0 then
        wesnoth.message(string.format("%s is not in the pool, cannot remove", gear_id))
     else 
@@ -282,7 +282,7 @@ bmr_equipment.item_drop = function(x_1, y_1, gear_id)
       wesnoth.message(string.format("%s not found to drop image on map.", gear_id))
     else    
     wesnoth.interface.add_item_image(x_1, y_1, icon) 
-    item_index = wesnoth.get_variable("gear_map_items.length")
+    item_index = wml.variables["gear_map_items.length"]
     if item_index == nil then item_index = 0 end
     wesnoth.set_variable("gear_map_items["..item_index.."].id", gear_id)
     wesnoth.set_variable("gear_map_items["..item_index.."].cost", cost)
@@ -300,12 +300,12 @@ bmr_equipment.item_take = function(x_1, y_1, gear_id)
     local id_temp = ""
     local x_temp = ""
     local y_temp = ""
-    item_max_index = wesnoth.get_variable("gear_map_items.length")
+    item_max_index = wml.variables["gear_map_items.length"]
     while item_index < item_max_index do
-      id_temp = wesnoth.get_variable("gear_map_items["..item_index.."].id")
+      id_temp = wml.variables["gear_map_items["..item_index.."].id"]
       if id_temp == gear_id then
-          x_temp = wesnoth.get_variable("gear_map_items["..item_index.."].x")
-          y_temp = wesnoth.get_variable("gear_map_items["..item_index.."].y")
+          x_temp = wml.variables["gear_map_items["..item_index.."].x"]
+          y_temp = wml.variables["gear_map_items["..item_index.."].y"]
 	  if x_temp == x_1 and y_temp == y_1 then
 	    -- delete the WML record
 	    wesnoth.set_variable("gear_map_items["..item_index.."]", nil)
