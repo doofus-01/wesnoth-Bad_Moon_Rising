@@ -201,7 +201,7 @@ local function postshow()
     dyli = dr_y
     sgli = select_gear_id[li]
     spli = select_pool_id[pli]
-    wesnoth.clear_messages()
+    wesnoth.interface.clear_chat_messages()
 end
 
 ------------------------------------------------------------------------
