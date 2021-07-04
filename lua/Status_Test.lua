@@ -222,7 +222,9 @@ local function preshow(self)
     widget_handle.value_compat = gear_text[i]
     return select_gear_id[i]
     end
-    wesnoth.set_dialog_callback(select, "the_gearlist")
+    -- wesnoth.set_dialog_callback(select, "the_gearlist")
+    widget_handle = self:find('the_gearlist')
+    widget_handle.callback = select
     select()
 end
 
