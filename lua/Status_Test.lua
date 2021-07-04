@@ -91,7 +91,7 @@ local dialog = {
 
 
 
-local function preshow()
+local function preshow(self)
     event_context = wesnoth.current.event_context
     unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
     local can_move = true
@@ -100,10 +100,18 @@ local function preshow()
     dr_y = event_context.y1
     unit_id = unit_cfg.id
     unit_type = unit_cfg.type
-    wesnoth.set_dialog_active(can_move, "use_button")
-    wesnoth.set_dialog_active(can_move, "delete_button")
-    wesnoth.set_dialog_active(can_move, "drop_button")
-    wesnoth.set_dialog_active(can_move, "inventory_button")
+    -- wesnoth.set_dialog_active(can_move, "use_button")
+    local widget_handle = self:find('use_button')
+    widget_handle.enabled = can_move
+    --wesnoth.set_dialog_active(can_move, "delete_button")
+    widget_handle = self:find('delete_button')
+    widget_handle.enabled = can_move
+    -- wesnoth.set_dialog_active(can_move, "drop_button")
+    widget_handle = self:find('drop_button')
+    widget_handle.enabled = can_move
+    -- wesnoth.set_dialog_active(can_move, "inventory_button")
+    widget_handle = self:find('inventory_button')
+    widget_handle.enabled = can_move
     -- wesnoth.set_dialog_markup(true, "the_panel_title")
     wesnoth.set_dialog_value("<span size='xx-large' color='#eeffb7'> Unit Status </span>" , "the_panel_title")
     -- wesnoth.set_dialog_markup(true, "the_title")
@@ -137,8 +145,12 @@ local function preshow()
 --    table.remove(equipment_grid_list_data,1)
  --   table.remove(equipment_grid_list_data,2)
     if g_i == 1 then
-	    wesnoth.set_dialog_active(false, "drop_button")
-	    wesnoth.set_dialog_active(false, "inventory_button")
+	    -- wesnoth.set_dialog_active(false, "drop_button")
+        widget_handle = self:find('drop_button')
+        widget_handle.enabled = can_move
+	    -- wesnoth.set_dialog_active(false, "inventory_button")
+        widget_handle = self:find('inventory_button')
+        widget_handle.enabled = can_move
     end
     local p_i = 1
     for j in ipairs(equipment_list.the_list) do
@@ -171,8 +183,12 @@ local function preshow()
         end
     end
     if p_i == 1 then
-	    wesnoth.set_dialog_active(false, "use_button")
-	    wesnoth.set_dialog_active(false, "delete_button")
+	    -- wesnoth.set_dialog_active(false, "use_button")
+        widget_handle = self:find('use_button')
+        widget_handle.enabled = can_move
+	    -- wesnoth.set_dialog_active(false, "delete_button")
+        widget_handle = self:find('delete_button')
+        widget_handle.enabled = can_move
     end                                    
 
 --
