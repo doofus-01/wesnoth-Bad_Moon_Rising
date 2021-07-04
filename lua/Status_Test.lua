@@ -229,7 +229,7 @@ local function call_drop(u_i,d_x,d_y,sg_i)
   bmr_equipment.item_drop(d_x, d_y, sg_i)
 end
 
-local result = wesnoth.synchronize_choice(
+local result = wesnoth.sync.evaluate_single(
   function()
     local rv = wesnoth.show_dialog(dialog, preshow, postshow)
     return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli} -- keys end in 's' for 'synchronized'
@@ -247,7 +247,7 @@ local result = wesnoth.synchronize_choice(
   elseif result.rvs == 5 then  -- delete from inventory: needs selected pool-item_id
     delete_from_pool(result.splis)
   end
-    result = wesnoth.synchronize_choice(
+    result = wesnoth.sync.evaluate_single(
     function()
       local rv = wesnoth.show_dialog(dialog, preshow, postshow) -- called a second time because we are in a loop now
       return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli}
