@@ -209,7 +209,9 @@ local function preshow(self)
 --
     local function select()
 	-- so, index [i] is refering to the item selected
-        local i = wesnoth.get_dialog_value "the_gearlist"
+        -- local i = wesnoth.get_dialog_value "the_gearlist"
+        widget_handle = self:find('the_gearlist')
+        local i = widget_handle.value_compat
 	-- wesnoth.set_dialog_markup(true, "the_gear_description")
 	if gear_text[i] then
 	  else
@@ -225,9 +227,13 @@ local function preshow(self)
 end
 
 local li = 0
-local function postshow()
-    li = wesnoth.get_dialog_value "the_gearlist"
-    pli = wesnoth.get_dialog_value "the_poollist"
+local function postshow(self)
+    -- li = wesnoth.get_dialog_value "the_gearlist"
+    local widget_handle = self:find('the_gearlist')
+    li = widget_handle.value_compat
+    -- pli = wesnoth.get_dialog_value "the_poollist"
+    widget_handle = self:find('the_poollist')
+    pli = widget_handle.value_compat
  -- this is very inefficient, but replays do seem to work now.
     uli = unit_id
     dxli = dr_x
