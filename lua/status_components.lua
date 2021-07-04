@@ -180,7 +180,7 @@ function misc_status_grid()
 	  }
 end
 
-function set_simple_grid_values(unit)
+function set_simple_grid_values(unit,self)
 	local unit_hp = unit.hitpoints
 	unit_hp = unit_hp / unit.max_hitpoints
 -- 20190803 -- seems there is some bad logic here, change the <= to >= ?
@@ -208,16 +208,30 @@ function set_simple_grid_values(unit)
 	-- wesnoth.set_dialog_markup(true, "the_unit_XP")
 	-- wesnoth.set_dialog_markup(true, "the_unit_alignment")
 	-- wesnoth.set_dialog_markup(true, "the_unit_level")
-	wesnoth.set_dialog_value(string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) , "the_unit_type")
-	wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> Level: %d </span>", unit.level) , "the_unit_level")
-	wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> %s </span>", unit.alignment) , "the_unit_alignment")
-	wesnoth.set_dialog_value(string.format("<span size='small' "..hp_color.."> HP: %s / %s </span>", unit.hitpoints, unit.max_hitpoints) , "the_unit_HP")
-	wesnoth.set_dialog_value(string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience) , "the_unit_XP")
-	wesnoth.set_dialog_value(string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile) , "the_image")
-	wesnoth.set_dialog_value(unit.image, "the_icon")
+	-- wesnoth.set_dialog_value(string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) , "the_unit_type")
+    local widget_handle = self:find('the_unit_type')
+    widget_handle.value_compat = string.format("<span size='large' color='#88dddd'> %s </span>", unit.type)
+    -- wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> Level: %d </span>", unit.level) , "the_unit_level")
+    widget_handle = self:find('the_unit_level')
+    widget_handle.value_compat = string.format("<span size='small' color='#88dddd'> Level: %d </span>", unit.level)
+    -- wesnoth.set_dialog_value(string.format("<span size='small' color='#88dddd'> %s </span>", unit.alignment) , "the_unit_alignment")
+    widget_handle = self:find('the_unit_alignment')
+    widget_handle.value_compat = string.format("<span size='small' color='#88dddd'> %s </span>", unit.alignment)
+    -- wesnoth.set_dialog_value(string.format("<span size='small' "..hp_color.."> HP: %s / %s </span>", unit.hitpoints, unit.max_hitpoints) , "the_unit_HP")
+    widget_handle = self:find('the_unit_HP')
+    widget_handle.value_compat = string.format("<span size='small' "..hp_color.."> HP: %s / %s </span>", unit.hitpoints, unit.max_hitpoints)
+    -- wesnoth.set_dialog_value(string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience) , "the_unit_XP")
+    widget_handle = self:find('the_unit_XP')
+    widget_handle.value_compat = string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience)
+    -- wesnoth.set_dialog_value(string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile) , "the_image")
+    widget_handle = self:find('the_image')
+    widget_handle.value_compat = string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile)
+    -- wesnoth.set_dialog_value(unit.image, "the_icon")
+    widget_handle = self:find('the_icon')
+    widget_handle.value_compat = unit.image
 end
 
-function set_child_grid_values(unit)
+function set_child_grid_values(unit, self)
 -- traits
 	local traits_strings = {}
 	local u_mods = wml.get_child(unit, "modifications")
@@ -232,9 +246,13 @@ function set_child_grid_values(unit)
 	end
 	-- wesnoth.set_dialog_markup(true, "the_first_trait")
 	-- wesnoth.set_dialog_markup(true, "the_second_trait")
-	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1]) , "the_first_trait")
-	wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2]) , "the_second_trait")
--- weight
+	-- wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1]) , "the_first_trait")
+    widget_handle = self:find('the_first_trait')
+    widget_handle.value_compat = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1])
+    -- wesnoth.set_dialog_value(string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2]) , "the_second_trait")
+    widget_handle = self:find('the_second_trait')
+    widget_handle.value_compat = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2])
+    -- weight
 	local unit_var = wml.get_child(unit, "variables")
 	local unit_wt = unit_var.weight
         if unit_wt then
@@ -250,10 +268,14 @@ function set_child_grid_values(unit)
 	    wt_color = "color ='#ff0000'"
 	end
 	-- wesnoth.set_dialog_markup(true, "the_unit_WT")
-	wesnoth.set_dialog_value(string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt) , "the_unit_WT")
+	-- wesnoth.set_dialog_value(string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt) , "the_unit_WT")
+    widget_handle = self:find('the_unit_WT')
+    widget_handle.value_compat = string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt)
 -- movement costs
 	-- wesnoth.set_dialog_markup(true, "the_mcg_title")
-	wesnoth.set_dialog_value("<span color='#eeffb7'>  Movement Costs  </span>", "the_mcg_title")
+	-- wesnoth.set_dialog_value("<span color='#eeffb7'>  Movement Costs  </span>", "the_mcg_title")
+    widget_handle = self:find('the_mcg_title')
+    widget_handle.value_compat = "<span color='#eeffb7'>  Movement Costs  </span>"
 	local costs = wml.get_child(unit, "movement_costs")
 	local function mcg_format_row(value,widget)
 	    if value == nil then value = 99 end
@@ -267,7 +289,10 @@ function set_child_grid_values(unit)
 	    end
 	    -- wesnoth.set_dialog_markup(true, widget)
         -- widget.use_markup = true -- not sure how to write an inline replacement, this doesn't work.
-        return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
+        -- return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
+        widget_handle = self:find(widget)
+        widget_handle.value_compat = string.format("<span "..val_color.." size = 'small'>%s </span>", value)
+        return
 	end
 	mcg_format_row(costs.forest,"the_mcg_forest")
 	mcg_format_row(costs.fungus,"the_mcg_fungus")
@@ -285,7 +310,9 @@ function set_child_grid_values(unit)
 	mcg_format_row(costs.reef,"the_mcg_reef")
 -- defense
 	-- wesnoth.set_dialog_markup(true, "the_dg_title")
-	wesnoth.set_dialog_value("<span color='#eeffb7'>  Terrain Defense  </span>", "the_dg_title")
+	-- wesnoth.set_dialog_value("<span color='#eeffb7'>  Terrain Defense  </span>", "the_dg_title")
+    widget_handle = self:find('the_dg_title')
+    widget_handle.value_compat = "<span color='#eeffb7'>  Terrain Defense  </span>"
 	local defense = wml.get_child(unit, "defense")
 	local rf_d = defense.reef
 	local ft_d = defense.forest
@@ -315,8 +342,11 @@ function set_child_grid_values(unit)
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
 	    -- wesnoth.set_dialog_markup(true, widget)
-	    return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
-	end
+	    -- return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
+        widget_handle = self:find(widget)
+        widget_handle.value_compat = string.format("<span "..val_color.." size = 'small'>%s </span>", value)
+        return
+    end
 	dg_format_row(rf_d,"the_dg_reef")
 	dg_format_row(ft_d,"the_dg_forest")
 	dg_format_row(fu_d,"the_dg_fungus")
@@ -333,8 +363,10 @@ function set_child_grid_values(unit)
 	dg_format_row(vg_d,"the_dg_village")
 -- resistances
 	-- wesnoth.set_dialog_markup(true, "the_rg_title")
-	wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single' >  Resistances  </span>", "the_rg_title")
-	local resistance = wml.get_child(unit, "resistance")
+	-- wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single' >  Resistances  </span>", "the_rg_title")
+    widget_handle = self:find('the_rg_title')
+    widget_handle.value_compat = "<span size='large' color='#eeffb7' underline='single' >  Resistances  </span>"
+    local resistance = wml.get_child(unit, "resistance")
 	local f_r = 100 - resistance.fire
 	local c_r = 100 - resistance.cold
 	local a_r = 100 - resistance.arcane
@@ -353,8 +385,11 @@ function set_child_grid_values(unit)
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
 	    -- wesnoth.set_dialog_markup(true, widget)
-	    return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
-	end
+	    -- return wesnoth.set_dialog_value(string.format("<span "..val_color.." size = 'small'>%s </span>", value) , widget)
+        widget_handle = self:find(widget)
+        widget_handle.value_compat = string.format("<span "..val_color.." size = 'small'>%s </span>", value)
+        return
+    end
 	rg_format_row(a_r,"the_rg_arcane")
 	rg_format_row(b_r,"the_rg_blade")
 	rg_format_row(c_r,"the_rg_cold")
