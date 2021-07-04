@@ -12,7 +12,7 @@ bmr_equipment = {}
 bmr_equipment.filter = function(unit_id, gear_id)    
       local result = "wrong type"
       local units = {}  
-      units = wesnoth.get_units({ id = unit_id })
+      units = wesnoth.units.find_on_map({ id = unit_id })
       if units[1] then
       else
         units = wesnoth.get_recall_units({ id = unit_id })
@@ -180,7 +180,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
       local units = {}
       local gindex = 0
 --      local gear_index = 1
-      units = wesnoth.get_units({ id = unit_id })      
+      units = wesnoth.units.find_on_map({ id = unit_id })
       if units[1] then
 	result = "on_map"
       else
@@ -239,7 +239,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
 
 	  local hack_HP_fix_pre = wml.variables["my_unit.hitpoints"]
-	  local hack_u = wesnoth.get_units({id = unit_id})[1]
+	  local hack_u = wesnoth.units.find_on_map({id = unit_id})[1]
 	  if hack_u.max_hitpoints < hack_HP_fix_pre then
 	      hack_u.hitpoints = hack_u.max_hitpoints
 	  else
