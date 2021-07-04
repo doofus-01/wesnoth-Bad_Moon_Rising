@@ -231,7 +231,7 @@ end
 
 local result = wesnoth.sync.evaluate_single(
   function()
-    local rv = wesnoth.show_dialog(dialog, preshow, postshow)
+    local rv = gui.show_dialog(dialog, preshow, postshow)
     return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli} -- keys end in 's' for 'synchronized'
   end,
   function()
@@ -249,7 +249,7 @@ local result = wesnoth.sync.evaluate_single(
   end
     result = wesnoth.sync.evaluate_single(
     function()
-      local rv = wesnoth.show_dialog(dialog, preshow, postshow) -- called a second time because we are in a loop now
+      local rv = gui.show_dialog(dialog, preshow, postshow) -- called a second time because we are in a loop now
       return { rvs = rv, lis = li, plis = pli, ulis = uli, dxlis = dxli, dylis = dyli, sglis = sgli, splis = spli}
     end,
     function()
