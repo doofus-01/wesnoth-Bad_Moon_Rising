@@ -86,7 +86,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
           for k in ipairs(equipment_list.list_usage[j].types) do 
             if equipment_list.list_usage[j].types[k] == units[1].type then
               result = "pass"
-              wesnoth.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
+              wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
 	      local gindex = wesnoth.get_variable("my_unit.variables.gear.length")
               wesnoth.set_variable("my_unit.variables.gear[" .. gindex .. "]", {
       		name = gear_name,
@@ -104,7 +104,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
               end
               temp_weight = old_weight + gear_weight
               wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
-              wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
+              wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
               local movep = 0
 	      wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
@@ -189,7 +189,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
       end  
 -- th effects need to be moved into the filter below...
 
-      wesnoth.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
+      wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
 -- first check that the unit really has the gear 
       while wesnoth.get_variable("my_unit.variables.gear["..gindex.."]") do
 	  old_gear_id = wesnoth.get_variable("my_unit.variables.gear["..gindex.."].id")
@@ -214,7 +214,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
           end
           temp_weight = old_weight - old_gear_weight
           wesnoth.set_variable("my_unit.variables.weight", temp_weight) 
-          wesnoth.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
+          wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
           local movep = 0
 	  wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
@@ -232,7 +232,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
                   increase = movep
               }
           }
-          wesnoth.fire("remove_object", { id = unit_id, object_id = gear_id})
+          wml.fire("remove_object", { id = unit_id, object_id = gear_id})
 	  wesnoth.units.add_modification(units[1], "object", wt_effects)
 
 -- a hack to fix what may be a core bug with remove_object?
