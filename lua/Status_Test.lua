@@ -12,7 +12,7 @@ local unit_id = 0
 --local unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
 --local u_gear = wml.get_child(unit_cfg, "variables")
 --local function equip_data_table_f()
---    for gear in helper.child_range(u_gear, "gear") do	
+--    for gear in wml.child_range(u_gear, "gear") do	
 --	local equip_data = equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text)
 --	if equipment_grid_list_data[1] == nil then
 --	wesnoth.message("first...")
@@ -121,7 +121,7 @@ local function preshow()
 -- changed gear.image SCALE(60,60) to 50,50
 --    wesnoth.message(equipment_grid_list_data[1])
 --    wesnoth.message(equipment_grid_list_data[2][1])
-    for gear in helper.child_range(u_gear, "gear") do
+    for gear in wml.child_range(u_gear, "gear") do
 --	table.insert(equipment_grid_list_data,equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text))
 	wesnoth.set_dialog_value(string.format("%s~SCALE(60,60)", gear.image), "the_gearlist", g_i, "the_gearlist_icon")
 	wesnoth.set_dialog_value(string.format("<span size='xx-small'>%s</span>", gear.name), "the_gearlist", g_i, "the_gearlist_icon_name")

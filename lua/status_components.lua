@@ -221,7 +221,7 @@ function set_child_grid_values(unit)
 	local traits_strings = {}
 	local u_mods = wml.get_child(unit, "modifications")
 	local c_i = 1
-	for trait in helper.child_range( u_mods, "trait") do
+	for trait in wml.child_range( u_mods, "trait") do
 	    traits_strings[c_i] = trait.male_name
 	    c_i = c_i + 1
 	end
