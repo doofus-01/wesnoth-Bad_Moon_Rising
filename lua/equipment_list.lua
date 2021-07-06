@@ -615,11 +615,11 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2 },
+	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -3}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2 },
         name = _ "Wooden Shield",
 	id = "wooden_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is a basic wooden shield.  Nothing fancy but still provides some protection.  Bonus: + 5 impact resistance, + 5 blade resistance, + 2 HP",
+        text = _ "This is a basic wooden shield.  Nothing fancy but still provides some protection.  Bonus: + 5 impact resistance, + 5 blade resistance, +3 pierce resistance, + 2 HP",
         image = "icons/shield_wooden.png",
         icon = "items/shield-targ.png~CS(30,10,-10)",
 	cost = 20,
@@ -628,7 +628,7 @@ table.insert(the_list, {
 	weight = 2
 })
 table.insert(the_list, {
-	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 },
+	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -4}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1 },
         name = _ "Kite Shield",
 	id = "kite_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -641,7 +641,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2 },
+	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -6, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2 },
         name = _ "Orcish Shield",
 	id = "orc_shield",
         tooltip = _ "all shields offer impact resistance",

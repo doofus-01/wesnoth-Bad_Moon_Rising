@@ -23,7 +23,7 @@ function wesnoth.wml_actions.apply_gear(cfg)
         if result == "pass" then
 --           wesnoth.message(string.format("%s on map", unit_id))
 --           wesnoth.message(string.format("%s on map", gear_id))
-            local eq_unit = wesnoth.get_units({ id = unit_id })
+            local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
             -- this fails to store anything if id is something like "Primevalist Fighter-21", from underlying ID of generic unit, 
             -- then generates errors when eq_unit[1] is referenced
 --           wesnoth.message(string.format("%s on map (array)", eq_unit[1].id))
@@ -52,7 +52,7 @@ function wesnoth.wml_actions.remove_gear(cfg)
         local gear_id = cfg.gear_id or helper.wml_error "[remove_gear] expects a gear_id= attribute."
         local result = bmr_equipment.remove(unit_id, gear_id)
         if result == "on_map" then
-          local eq_unit = wesnoth.get_units({ id = unit_id })
+          local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
           bmr_equipment.item_drop(eq_unit[1].x, eq_unit[1].y, gear_id)
 --          wesnoth.message(string.format("%s on map", unit_id))
         elseif result == "on_recall" then
@@ -128,6 +128,6 @@ function wesnoth.wml_actions.center_message(cfg)
         local image = cfg.image
         if image == nil then image = "wesnoth-icon.png" end
 
-	wesnoth.show_popup_dialog(title,message,image)
+	gui.show_popup(title,message,image)
 end
 

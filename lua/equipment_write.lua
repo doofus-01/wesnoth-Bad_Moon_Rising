@@ -317,7 +317,7 @@ bmr_equipment.item_take = function(x_1, y_1, gear_id)
 	          break
 	      end
 	    end
-	    items.remove(x_1, y_1, icon) 	    
+	    wesnoth.interface.remove_item(x_1, y_1, icon)
 	    result = "pass"
 	  end
       end
