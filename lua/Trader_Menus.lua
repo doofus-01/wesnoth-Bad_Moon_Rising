@@ -80,16 +80,31 @@ local sell_dialog = {
 -- local last_selected_sell_index = 1
 -- local last_selected_pool_index = 1
 
-local function preshow(dialog)
-    wesnoth.set_dialog_active(false, "sell_button")
-    wesnoth.set_dialog_active(false, "reset_button")
-    wesnoth.set_dialog_markup(true, "the_title")
-    wesnoth.set_dialog_value("<span size='xx-large' color='#eeffb7'> Selling Inventory </span>" , "the_title")
-    wesnoth.set_dialog_value("portraits/merchant-female.png~SCALE(250,250)~CROP(0,0,250,200)" , "the_image")
-    wesnoth.set_dialog_markup(true, "the_sell_title")
-    wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Offering to Merchant </span>" , "the_sell_title")
-    wesnoth.set_dialog_markup(true, "the_pool_title")
-    wesnoth.set_dialog_value("<span size='large' color='#ddeea6' underline='single'> Inventory </span>" , "the_pool_title")
+local function preshow(self)
+    -- wesnoth.set_dialog_active(false, "sell_button")
+    -- wesnoth.set_dialog_active(false, "reset_button")
+    local widget_handle = self:find('sell_button')
+    widget_handle.enabled = false
+    widget_handle = self:find('reset_button')
+    widget_handle.enabled = false
+    --wesnoth.set_dialog_markup(true, "the_title")
+    --wesnoth.set_dialog_value("<span size='xx-large' color='#eeffb7'> Selling Inventory </span>" , "the_title")
+    widget_handle = self:find('the_title')
+    widget_handle.use_markup = true
+    widget_handle.label = "<span size='xx-large' color='#eeffb7'> Selling Inventory </span>"
+    -- wesnoth.set_dialog_value("portraits/merchant-female.png~SCALE(250,250)~CROP(0,0,250,200)" , "the_image")
+    widget_handle = self:find('the_image')
+    widget_handle.label = "portraits/merchant-female.png~SCALE(250,250)~CROP(0,0,250,200)"
+    --wesnoth.set_dialog_markup(true, "the_sell_title")
+    -- wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Offering to Merchant </span>" , "the_sell_title")
+    widget_handle = self:find('the_sell_title')
+    widget_handle.use_markup = true
+    widget_handle.label = "<span size='large' color='#eeffb7' underline='single'> Offering to Merchant </span>"
+    -- wesnoth.set_dialog_markup(true, "the_pool_title")
+    -- wesnoth.set_dialog_value("<span size='large' color='#ddeea6' underline='single'> Inventory </span>" , "the_pool_title")
+    widget_handle = self:find('the_pool_title')
+    widget_handle.use_markup = true
+    widget_handle.label = "<span size='large' color='#ddeea6' underline='single'> Inventory </span>"
     local gear_text = {}
 --    sell_value = 0
 -- if there is no list, build it
@@ -102,7 +117,8 @@ local function preshow(dialog)
 	local pool_image = equipment_list.the_list[j].image
 	local sell_cost = equipment_list.the_list[j].cost * 0.5 -- is this fair?
 	sell_cost = math.floor(sell_cost)
-	local pool_number = wesnoth.get_variable("gear_pool[0]."..pool_id)
+	-- local pool_number = wesnoth.get_variable("gear_pool[0]."..pool_id)
+	local pool_number = wml.variables["gear_pool[0]."..pool_id]
 	if pool_number == nil then pool_number = 0 end
 	if pool_number > 0 then
 		table.insert(pool_list,{id=pool_id, name=pool_name, cost=pool_cost, number=pool_number, image=pool_image, text=pool_text})
@@ -114,7 +130,7 @@ local function preshow(dialog)
 
     end
 -- if there is still no list, set to empty -- moved outside the above if
-      if pool_list[1] == nil then table.insert(pool_list,{ id= "empty" , name= "Empty", cost= 0 , number= 0, image=blank_icon, text="Nothing available."}) end
+      if pool_list[1] == nil then table.insert(pool_list,{ id= "empty" , name= "Empty", cost= 0 , number= 1, image=blank_icon, text="Nothing available."}) end
       if sell_list[1] == nil then 
         table.insert(sell_list,{ id= "empty" , name= "Empty", cost= 0 , number= 0, image=blank_icon}) 
       end
@@ -123,11 +139,19 @@ local function preshow(dialog)
     local s_i = 1
     for i in ipairs(pool_list) do
 	if pool_list[i].number > 0 then
-	     wesnoth.set_dialog_value(pool_list[i].image.."~SCALE(30,30)", "the_pool_list", p_i, "item_image")
-	     wesnoth.set_dialog_value(string.format("<span size='x-small'> %s ( %d ) </span>", pool_list[i].name, pool_list[i].number), "the_pool_list", p_i, "item_id")
-	     wesnoth.set_dialog_markup(true, "the_pool_list", p_i, "item_id")
-	     wesnoth.set_dialog_value(string.format("<span size='x-small' color='#f1ff54'>%d g </span>", pool_list[i].cost), "the_pool_list", p_i, "item_cost")
-	     wesnoth.set_dialog_markup(true, "the_pool_list", p_i, "item_cost")
+	     --wesnoth.set_dialog_value(pool_list[i].image.."~SCALE(30,30)", "the_pool_list", p_i, "item_image")
+             widget_handle = self:find("the_pool_list", p_i, "item_image")
+             widget_handle.label = pool_list[i].image.."~SCALE(30,30)"
+	     -- wesnoth.set_dialog_value(string.format("<span size='x-small'> %s ( %d ) </span>", pool_list[i].name, pool_list[i].number), "the_pool_list", p_i, "item_id")
+	     -- wesnoth.set_dialog_markup(true, "the_pool_list", p_i, "item_id")
+             widget_handle = self:find("the_pool_list", p_i, "item_id")
+             widget_handle.use_markup = true
+             widget_handle.label = string.format("<span size='x-small'> %s ( %d ) </span>", pool_list[i].name, pool_list[i].number)
+	     -- wesnoth.set_dialog_value(string.format("<span size='x-small' color='#f1ff54'>%d g </span>", pool_list[i].cost), "the_pool_list", p_i, "item_cost")
+	     -- wesnoth.set_dialog_markup(true, "the_pool_list", p_i, "item_cost")
+             widget_handle = self:find("the_pool_list", p_i, "item_cost")
+             widget_handle.use_markup = true
+             widget_handle.label = string.format("<span size='x-small' color='#f1ff54'>%d g </span>", pool_list[i].cost)
 	     gear_text[p_i] = string.format("<span size='small'> %s </span>", pool_list[i].text)
 	     p_i = p_i + 1
 --	     pool_value = pool_value + pool_list[i].cost
@@ -135,54 +159,87 @@ local function preshow(dialog)
     end
     for i in ipairs(sell_list) do
 	if sell_list[i].number > 0 then
-	     wesnoth.set_dialog_value(sell_list[i].image.."~SCALE(30,30)", "the_sell_list", s_i, "item_image")
-	     wesnoth.set_dialog_value(string.format("<span size='x-small'> %s ( %d ) </span>", sell_list[i].name, sell_list[i].number), "the_sell_list", s_i, "item_id")
-	     wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_id")
-	     wesnoth.set_dialog_value(string.format("<span size='x-small' color='#f1ff54'> %d g </span>", sell_list[i].cost), "the_sell_list", s_i, "item_cost")
+	     -- wesnoth.set_dialog_value(sell_list[i].image.."~SCALE(30,30)", "the_sell_list", s_i, "item_image")
+             widget_handle = self:find("the_sell_list", p_i, "item_image")
+             widget_handle.label = sell_list[i].image.."~SCALE(30,30)"
+	     -- wesnoth.set_dialog_value(string.format("<span size='x-small'> %s ( %d ) </span>", sell_list[i].name, sell_list[i].number), "the_sell_list", s_i, "item_id")
+	     -- wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_id")
+             widget_handle = self:find("the_sell_list", p_i, "item_id")
+             widget_handle.use_markup = true
+             widget_handle.label = string.format("<span size='x-small'> %s ( %d ) </span>", sell_list[i].name, sell_list[i].number)
+	     -- wesnoth.set_dialog_value(string.format("<span size='x-small' color='#f1ff54'> %d g </span>", sell_list[i].cost), "the_sell_list", s_i, "item_cost")
+	     -- wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_cost")
+             widget_handle = self:find("the_sell_list", p_i, "item_cost")
+             widget_handle.use_markup = true
+             widget_handle.label = string.format("<span size='x-small' color='#f1ff54'> %d g </span>", sell_list[i].cost)
 --	     testy = wesnoth.get_dialog_value("the_sell_list", s_i, "item_cost")
 --             wesnoth.message(string.format("testy = %s", testy))
-	     wesnoth.set_dialog_markup(true, "the_sell_list", s_i, "item_cost")
 	     s_i = s_i + 1
 --	     sell_value = sell_value + sell_list[i].cost
 	end
     end
+    -- wesnoth.interface.add_chat_message(string.format("li = %d", li))
+    widget_handle = self:find("the_pool_list")
     if li > 0 then
-        wesnoth.set_dialog_value(li,"the_pool_list")
+        -- wesnoth.set_dialog_value(li,"the_pool_list")
+        widget_handle.selected_index = li
     else
-        wesnoth.set_dialog_value(1, "the_pool_list")
+        -- wesnoth.set_dialog_value(1, "the_pool_list")
+        widget_handle.selected_index = 1
     end
-    wesnoth.set_dialog_markup(true, "the_sell_total")
-    wesnoth.set_dialog_value(string.format("<span size='large' color='#ccccaa'> %d gold</span>", sell_value), "the_sell_total")
-    wesnoth.set_dialog_markup(true, "the_pool_total")
-    wesnoth.set_dialog_value(string.format("<span size='large' color='#ccccaa'> %d gold</span>", pool_value), "the_pool_total")
+    -- wesnoth.set_dialog_markup(true, "the_sell_total")
+    -- wesnoth.set_dialog_value(string.format("<span size='large' color='#ccccaa'> %d gold</span>", sell_value), "the_sell_total")
+    widget_handle = self:find("the_sell_total")
+    widget_handle.label = string.format("<span size='large' color='#ccccaa'> %d gold</span>", sell_value)
+    widget_handle.use_markup = true
+    -- wesnoth.set_dialog_markup(true, "the_pool_total")
+    -- wesnoth.set_dialog_value(string.format("<span size='large' color='#ccccaa'> %d gold</span>", pool_value), "the_pool_total")
+    widget_handle = self:find("the_pool_total")
+    widget_handle.label = string.format("<span size='large' color='#ccccaa'> %d gold</span>", pool_value)
+    widget_handle.use_markup = true
 
    -- end
     if pool_list[1].id == "empty" then
-	    wesnoth.set_dialog_active(false, "select_button")
+	    -- wesnoth.set_dialog_active(false, "select_button")
+            widget_handle = self:find("select_button")
+            widget_handle.enabled = false
     end                                    
 --    wesnoth.message(string.format("sell value = %d, for button eval", sell_value))
     if sell_value >= 1 then
-	    wesnoth.set_dialog_active(true, "reset_button")
-	    wesnoth.set_dialog_active(true, "sell_button")
+	    -- wesnoth.set_dialog_active(true, "reset_button")
+	    -- wesnoth.set_dialog_active(true, "sell_button")
+            widget_handle = self:find("reset_button")
+            widget_handle.enabled = true
+            widget_handle = self:find("sell_button")
+            widget_handle.enabled = true
     end                                    
 
     local function select()
         -- so, index [i] is refering to the item selected
-    	local i = wesnoth.get_dialog_value "the_pool_list"
-        wesnoth.set_dialog_markup(true, "the_pool_description")
+    	-- local i = wesnoth.get_dialog_value "the_pool_list"
+        widget_handle = self:find('the_pool_list')
+        local i = widget_handle.selected_index
+        -- wesnoth.set_dialog_markup(true, "the_pool_description")
+        widget_handle = self:find('the_pool_description')
+        widget_handle.use_markup = true
         if gear_text[i] then
         else
         	gear_text[i] = "Nothing available."
         end
-        wesnoth.set_dialog_value(gear_text[i], "the_pool_description")
+        -- wesnoth.set_dialog_value(gear_text[i], "the_pool_description")
+        widget_handle.label = gear_text[i]
     end
-    wesnoth.set_dialog_callback(select, "the_pool_list")
+    -- wesnoth.set_dialog_callback(select, "the_pool_list")
+    widget_handle = self:find('the_pool_list')
+    widget_handle.callback = select
     select()                                                                                   
 
 end
 
-local function postshow(dialog)
-    li = wesnoth.get_dialog_value "the_pool_list"
+local function postshow(self)
+    -- li = wesnoth.get_dialog_value "the_pool_list"
+    local widget_handle = self:find('the_pool_list')
+    li = widget_handle.selected_index
 --[[ this does not work, and I can't find examples
 --    local tpl_id = wesnoth.get_dialog_value("the_pool_list", li, "item_id") 
     if #sell_list > 0 then
@@ -237,7 +294,7 @@ local function sell()
 	   sell_list[i].number = sell_list[i].number - 1
 	end
     end
-    wesnoth.fire("gold", { amount=sell_value, side = side_number})    
+    wml.fire("gold", { amount=sell_value, side = side_number})    
 --    wesnoth.message(string.format("sell value = %d", sell_value))
 --    wesnoth.message(string.format("side number = %d", side_number))
     pool_list = {}
@@ -253,7 +310,7 @@ local rv = gui.show_dialog(sell_dialog, preshow, postshow)
 	  elseif rv == 4 then
 	    reset_list()
 	  end
-  	  rv = wesnoth.show_dialog(sell_dialog, preshow, postshow)
+  	  rv = gui.show_dialog(sell_dialog, preshow, postshow)
   end
   if rv == 2 then
 -- sell
