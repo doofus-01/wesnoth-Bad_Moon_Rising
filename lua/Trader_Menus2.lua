@@ -59,23 +59,18 @@ local sell_list_short = {}
 -- had to make the lists smaller for sizing issues at smaller resolutions
 if list_id == 1 then
   sell_list_short = {"cap_helmet", "wooden_shield", "kidney_belt", "stone_ring", "leather_armor", "elven_tunic", "boot_cleat", "small_dagger"}
--- for testing
---  sell_list_short = {"fur_hat", "cap_helmet", "steel_greaves", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "elven_tunic", "boot_cleat", "small_dagger", "steel_blade", "holy_charm", "orc_dagger"}
 elseif list_id == 2 then
-  sell_list_short = {"chain_helmet", "light_helmet", "leather_gloves", "steel_ring", "leather_vambrace", "scale_armor", "leather_boots", "steel_spear"}
---  sell_list_short = {"chain_helmet", "light_helmet", "wooden_shield", "fur_cloak", "steel_ring", "leather_armor", "scale_armor", "leather_boots", "steel_spear"}
+  sell_list_short = {"light_helmet", "leather_gloves", "steel_ring", "leather_vambrace", "scale_armor", "leather_boots", "steel_spear", "elf_blade"}
 elseif list_id == 21 then
-  sell_list_short = {"light_helmet", "white_gloves", "steel_ring", "elf_cloak", "scale_armor", "miner_boots", "leather_boots", "steel_arrows"}
---  sell_list_short = {"chain_helmet", "light_helmet", "wooden_shield", "fur_cloak", "steel_ring", "leather_armor", "scale_armor", "leather_boots", "steel_spear"}
+  sell_list_short = {"chain_helmet", "white_gloves", "steel_ring", "elf_cloak", "scale_armor", "miner_boots", "leather_boots", "steel_arrows"}
 elseif list_id == 3 then
   sell_list_short = {"steel_helmet", "iron_shield", "iron_vambrace", "chain_armor", "scale_armor", "steel_arrows", "steel_axe", "steel_blade"}
---  sell_list_short = {"steel_helmet", "iron_shield", "fur_cloak", "steel_ring", "chain_armor", "scale_armor", "steel_arrows", "steel_axe", "steel_blade"}
 elseif list_id == 4 then
   sell_list_short = {"crested_helmet", "atlas_belt", "iron_shield", "steel_greaves", "gold_ring", "breastplate", "steel_arrows", "silver_dagger", "steel_blade"}
---  sell_list_short = {"crested_helmet", "iron_shield", "steel_greaves", "steel_ring", "gold_ring", "breastplate", "scale_armor", "steel_arrows", "silver_dagger", "steel_blade"}
 elseif list_id == 5 then
   sell_list_short = {"bascinet_helmet", "door_shield", "atlas_belt", "elf_cloak", "gold_ring", "chain_armor", "silver_dagger", "steel_axe", "steel_spear"}
---  sell_list_short = {"bascinet_helmet", "door_shield", "elf_cloak", "gold_ring", "breastplate", "chain_armor", "steel_arrows", "silver_dagger", "steel_blade", "steel_axe", "steel_spear"}
+elseif list_id == 5 then
+  sell_list_short = {"cap_gem", "silver_shield", "atlas_belt", "green_ring", "mage_tunic", "bronze_gauntlets", "steel_axe", "steel_spear"}
 else
   sell_list_short = {"fur_hat", "cap_helmet", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "small_dagger"}
 end
