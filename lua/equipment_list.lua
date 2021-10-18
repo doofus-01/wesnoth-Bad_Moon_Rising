@@ -32,7 +32,7 @@ table.insert(list_usage, {
     "Walking Corpse", "Soulless",
     "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", 
     "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider",
-    "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
+    -- "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
     "Bowman", "Longbowman", "Master Bowman",
     "Fencer","Duelist","Master at Arms",
     "Scarrion_Spearman", "Therion", "Russle", "Altos",
@@ -41,6 +41,11 @@ table.insert(list_usage, {
     "Red Mage", "Arch Mage", "Silver Mage", "Great Mage", 
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
     "Royal Spotter", "Royal Herdsman", "Royal Rider", "Royal Thrower", "Royal FireKnight",
+    "Elvish Archer", "Elvish Avenger", "Elvish Ranger", "Elvish Marksman", "Elvish Sharpshooter",
+    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal",
+    "Elvish Scout", "Elvish Rider", "Elvish Outrider",
+    "Elvish Shaman", "Elvish Druid", "Elvish Shyde", "Elvish Sorceress", "Elvish Enchantress", "Elvish Sylph",
+    "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
     "Phantom Cloak", "Phantom Shadow", "Phantom Master", "Phantom Rider", "Phantom Horseman", "Phantom Dullohan", "Phantom Slayer", "Phantom Slayer2", "Phantom Spearman",
     "Phantom Widow", "Phantom Midnight", "Phantom White", "Phantom Banshee", 
     "Phantom Soldier", "Phantom Officer", "Phantom Knight", "Phantom Queen", "Phantom King",
@@ -67,6 +72,8 @@ table.insert(list_usage, {
     "Red Mage", "Arch Mage", "Silver Mage", "Great Mage", "Dark Messiah",
     "Phantom Cloak", "Phantom Shadow", "Phantom Master","Phantom Widow","Phantom Midnight","Phantom White","Phantom Banshee",
     "Lich", "Ancient Lich",
+    "Elvish Shaman", "Elvish Druid", "Elvish Shyde", "Elvish Sorceress", "Elvish Enchantress", "Elvish Sylph",
+    "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
     "Primevalist Follower", "Primevalist Monk", "Primevalist Celebrant", "Primevalist Prior",
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Bad Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Hrala"},
     usage = "amulet"
@@ -88,6 +95,10 @@ table.insert(list_usage, {
     "Primeval Cutter", "Primeval Ironwheel", "Primeval Aerowheel", "Primeval Firewheel", "Primeval Sunwheel",
     "Primeval Dogface", "Primeval Warrior", "Primeval Titan",
     "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier",
+    "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
+    "Elvish Scout", "Elvish Rider", "Elvish Outrider",
+    "Elvish Archer", "Elvish Avenger", "Elvish Ranger", "Elvish Marksman", "Elvish Sharpshooter",
+    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal",
     "Walking Corpse", "Soulless",
     "Skeleton", "Revenant", "Draug", "Death Knight",
     "Skeleton Archer", "Bone Shooter", "Banebow",
@@ -127,6 +138,8 @@ table.insert(list_usage, {
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Raenna", 
     "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow",
     "Skeleton Archer", "Bone Shooter", "Banebow",
+    "Elvish Scout", "Elvish Rider", "Elvish Outrider",
+    "Elvish Archer", "Elvish Avenger", "Elvish Ranger", "Elvish Marksman", "Elvish Sharpshooter",
     "Therion",
     "Bowman", "Longbowman", "Master Bowman"},
     usage = "bow"
@@ -136,6 +149,7 @@ table.insert(list_usage, {
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Great Orc",
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
+    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal",
     "Carusoe", "Carusoe2", "Bad Raenna", "Huric"},
     usage = "sword"
 })
@@ -296,6 +310,22 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
+	eq_effect = { id = "wooden_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -3, impact = -2}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 
+	            },
+        name = _ "Wooden Vambrace",
+	id = "wooden_vambrace",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "Light and hard, these wooden arm-guards provide effective protection without encumbering the wearer.  Bonus: + 2 impact and +3 blade resistance, + 2 HP",
+        image = "icons/wooden_vambrace.png",
+        icon = "items/wooden_vambrace.png",
+	cost = 112,
+	usage = "light_armor",
+	position = "arms",
+	weight = 1
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2 
 	            },
@@ -305,6 +335,22 @@ table.insert(the_list, {
         text = _ "This is sturdy iron cladding for the forearms, a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and blade resistance, + 3 HP",
         image = "icons/iron_vambrace.png",
         icon = "items/iron_vambrace.png",
+	cost = 15,
+	usage = "light_armor",
+	position = "arms",
+	weight = 2
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_2 
+	            },
+        name = _ "Silver Vambrace",
+	id = "silver_vambrace",
+        tooltip = _ "protection for the forearms, can be work with gloves",
+        text = _ "The bright metal of this vambrace is only a bit stronger than common iron, but it also provides a barrier to magical assaults. It is a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and arcane, +5 blade resistance, + 4 HP",
+        image = "icons/iron_vambrace.png~GS()",
+        icon = "items/iron_vambrace.png~GS()",
 	cost = 15,
 	usage = "light_armor",
 	position = "arms",
