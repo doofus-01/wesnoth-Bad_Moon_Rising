@@ -550,7 +550,7 @@ table.insert(the_list, {
         name = _ "Chain Coif",
 	id = "chain_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.  Bonus: + 8 impact resistance, +3 blade resistance, + 4 HP",
+        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.  Bonus: + 8 impact resistance, +3 blade resistance, + 5 HP",
         image = "icons/helmet_chain-coif.png",
         icon = "items/coif.png",
 	cost = 95,
@@ -571,6 +571,20 @@ table.insert(the_list, {
 	usage = "light_armor",
 	position = "head",
 	weight = 1
+})
+table.insert(the_list, {
+	eq_effect = { id = "silver_chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -4, arcane = -5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_2},
+        name = _ "Silver Mail Coif",
+	id = "silver_chain_helmet",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.  Bonus: + 10 impact, +4 blade, +5 arcane resistances, + 5 HP",
+        image = "icons/helmet_chain-coif.png~GS()~CS(-20,8,12)",
+        icon = "items/coif.png~GS()~CS(-20,8,12)",
+	cost = 105,
+	usage = "light_armor",
+	position = "head",
+	weight = 2
 })
 table.insert(the_list, {
 	eq_effect = { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_2 },
