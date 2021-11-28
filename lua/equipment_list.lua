@@ -46,6 +46,7 @@ table.insert(list_usage, {
     "Elvish Scout", "Elvish Rider", "Elvish Outrider",
     "Elvish Shaman", "Elvish Druid", "Elvish Shyde", "Elvish Sorceress", "Elvish Enchantress", "Elvish Sylph",
     "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
+    "Swamp Monk", "Swamp Mage",
     "Phantom Cloak", "Phantom Shadow", "Phantom Master", "Phantom Rider", "Phantom Horseman", "Phantom Dullohan", "Phantom Slayer", "Phantom Slayer2", "Phantom Spearman",
     "Phantom Widow", "Phantom Midnight", "Phantom White", "Phantom Banshee", 
     "Phantom Soldier", "Phantom Officer", "Phantom Knight", "Phantom Queen", "Phantom King",
@@ -75,6 +76,7 @@ table.insert(list_usage, {
     "Elvish Shaman", "Elvish Druid", "Elvish Shyde", "Elvish Sorceress", "Elvish Enchantress", "Elvish Sylph",
     "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
     "Primevalist Follower", "Primevalist Monk", "Primevalist Celebrant", "Primevalist Prior",
+    "Swamp Monk", "Swamp Mage",
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Bad Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Hrala"},
     usage = "amulet"
 })
