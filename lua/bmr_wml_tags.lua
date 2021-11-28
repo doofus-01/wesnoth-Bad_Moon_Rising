@@ -116,8 +116,8 @@ end
 ------------------------------------------
 --  Interface tags
 ------------------------------------------
-
--- WML tag for the pop-up dialog
+-- moving this to Archaic_Era
+--[[ WML tag for the pop-up dialog
 
 -- local _ = wesnoth.textdomain "wesnoth-Bad_Moon_Rising"
 -- need to figure out how to deal with translations on the "message"
@@ -130,4 +130,4 @@ function wesnoth.wml_actions.center_message(cfg)
 
 	gui.show_popup(title,message,image)
 end
-
+]]
