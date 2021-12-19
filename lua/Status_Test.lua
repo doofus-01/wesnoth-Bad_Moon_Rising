@@ -100,6 +100,12 @@ local function preshow(self)
     dr_y = event_context.y1
     unit_id = unit_cfg.id
     unit_type = unit_cfg.type
+    local the_unit = wesnoth.units.find_on_map({ id = unit_id })
+    if the_unit[1] then
+      else
+          wesnoth.message("Filter_debugging4", string.format("status dialog preshow failed to find unit"))
+    end
+
     -- wesnoth.set_dialog_active(can_move, "use_button")
     local widget_handle = self:find('use_button')
     widget_handle.enabled = can_move
@@ -169,10 +175,11 @@ local function preshow(self)
     for j in ipairs(equipment_list.the_list) do
     -- set markp for pool list entry to red italic, then check unit can use it and change markup if yes
         local gpf_style = "italic"    
-        local gpf_color = "#aa5555"    
+        local gpf_color = "#bf6655"    
 	local gear_pool_id = equipment_list.the_list[j].id
 	local gear_pool_name = equipment_list.the_list[j].name
 	local gear_pool_usage = equipment_list.the_list[j].usage
+	local gear_pool_position = equipment_list.the_list[j].position
 
 --	local gear_pool_tooltip = equipment_list.the_list[j].tooltip
     -- local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
@@ -183,8 +190,23 @@ local function preshow(self)
                 if equipment_list.list_usage[k].usage == gear_pool_usage then
                   for l in ipairs(equipment_list.list_usage[k].types) do 
                     if equipment_list.list_usage[k].types[l] == unit_type then
-                        gpf_style = "normal"    -- normal and blue if useable
-                        gpf_color = "#bbddff"
+                      gpf_style = "normal"    -- normal and light blue if useable
+                      gpf_color = "#cfdfff"
+                      -- now check that the position isn't already taken
+                      local gp_index = 0
+                      local gp_index_max = 9 -- this should be improved on
+                      while gp_index < gp_index_max do
+                        local gear_position_iter = the_unit[1].variables["gear["..gp_index.."].position"]
+                        if gear_position_iter then
+                        else
+                          break
+                        end
+                        if gear_position_iter == gear_pool_position then
+                          gpf_color = "#44a9cb" -- darker and oblique if position is not available
+                          gpf_style = "oblique"
+                        end
+                        gp_index = gp_index + 1
+                      end
                     end
                   end -- for l
                 end
