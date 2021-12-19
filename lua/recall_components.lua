@@ -10,7 +10,8 @@ function list_content()
                                                         T.row { T.column { horizontal_alignment = "center", T.label { text_aligment = "left", id = "the_HP"} }},
                                                         T.row { T.column { horizontal_alignment = "center", T.label { text_aligment = "left", id = "the_XP"} }}
                                                       }},
-                                             T.column { horizontal_grow = true, horizontal_alignment = "right", T.image { id = "the_icon", linked_group = "icons" } }
+                                             T.column { horizontal_grow = false, horizontal_alignment = "right", T.image { id = "the_icon", linked_group = "icons" } }
+--                                             T.column { horizontal_grow = true, horizontal_alignment = "right", T.image { id = "the_icon", linked_group = "icons" } }
 					   }
 					}}
 				}}}

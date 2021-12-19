@@ -25,12 +25,22 @@ Gui_recall.new = function()
 		maximum_width = 800,
 		T.grid { 
 			 T.row { 
-			    T.column { T.spacer{ id = "tl_spacer" }},
+--			    T.column { T.spacer{ id = "tl_spacer" }},
+			    T.column { horizontal_alignment = "left", T.grid {
+			                T.row { 
+			                    T.column { horizontal_alignment = "left", T.toggle_button { id = "the_skip_skirmish_button", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit", definition = 'default'}},
+			                    T.column { horizontal_alignment = "left", T.label { id = "the_skip_skirmish_label", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit"}}
+			                    }
+			    		}},
 			    T.column { T.label { id = "the_title", label = "Traveling Party", definition = "title", tooltip = "select units to be auto-recalled" }},
 			    T.column { T.spacer{ id = "tr_spacer" }}
 				},                                                                                                                                                
 			 T.row { 
 			    T.column { T.label { id = "the_on_title", label = "On Call"}},
+--			    T.column { T.grid {
+--			                T.row { T.column { T.label { id = "the_skip_skirmish_label", label = _ "Auto-flee", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit"}}},
+--			                T.row { T.column { T.toggle_button { id = "the_skip_skirmish_button", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit", definition = 'default'}}}
+--			    		}},
 			    T.column { T.spacer{ id = "c_spacer" }},
 			    T.column { T.label { id = "the_off_title", label = "Off-duty"}}
 				},                                                                                                                                                
@@ -70,6 +80,11 @@ Gui_recall.new = function()
     widget_handle.label = string.format("<span size='small' bgcolor='#000012'>Head Count = %d </span>", ioc)
     -- wesnoth.set_dialog_markup(true, "the_upkeep")
 	-- wesnoth.set_dialog_value(string.format("<span size='small' bgcolor='#000012'>Upkeep        = %d </span>", iupkeep) , "the_upkeep")
+    widget_handle = self:find("the_skip_skirmish_button")
+    widget_handle.selected = wml.variables["skip_skirmishes"]
+    widget_handle = self:find('the_skip_skirmish_label')
+    widget_handle.use_markup = true
+    widget_handle.label = string.format("<span size='small'>Auto-flee</span>")
     widget_handle = self:find('the_upkeep')
     widget_handle.use_markup = true
     widget_handle.label = string.format("<span size='small' bgcolor='#000012'>Upkeep        = %d </span>", iupkeep)
@@ -160,7 +175,7 @@ Gui_recall.new = function()
 	    -- local i = wesnoth.get_dialog_value "the_off_list"
         widget_handle = self:find('the_off_list')
         local i = widget_handle.selected_index
-        select(uor_noc[i])
+            select(uor_noc[i])
 	end
     
     local function select_on()
@@ -287,6 +302,8 @@ Gui_recall.new = function()
 -- do I really need these two variables anymore?
     local li_on = 0
     local li_off = 0
+-- the skip skirmish button value
+    local bv_skip = 'no'
 -- read the button values ...  
     local function postshow(self)
         -- li_on = wesnoth.get_dialog_value "the_on_list"
@@ -307,6 +324,8 @@ Gui_recall.new = function()
                 widget_handle = self:find("the_off_list", i , "the_on_call_button")
                 bv_off[i] = widget_handle.selected
             end
+        widget_handle = self:find("the_skip_skirmish_button")
+        bv_skip = widget_handle.selected
     end
     local function call_assign(r)
 --       local r = wesnoth.show_dialog(dialog, preshow, postshow)
@@ -371,6 +390,7 @@ Gui_recall.new = function()
           wesnoth.set_variable("on_call_upkeep", iupkeep)
           wml.variables['on_call_upkeep'] = iupkeep          
        end
+       wml.variables['skip_skirmishes'] = bv_skip          
     end
 -- ... and don't do anything if cancel was selected    
     local rv = gui.show_dialog(dialog, preshow, postshow)
