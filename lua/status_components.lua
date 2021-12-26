@@ -232,12 +232,16 @@ function set_simple_grid_values(unit,self)
 end
 
 function set_child_grid_values(unit, self)
--- traits
+-- traits - hard coded for two, and using male_name with name as fallback.  This can be improved
 	local traits_strings = {}
 	local u_mods = wml.get_child(unit, "modifications")
 	local c_i = 1
 	for trait in wml.child_range( u_mods, "trait") do
 	    traits_strings[c_i] = trait.male_name
+	    if traits_strings[c_i] then
+            else
+                traits_strings[c_i] = trait.name
+            end
 	    c_i = c_i + 1
 	end
 	if traits_strings[2] then
