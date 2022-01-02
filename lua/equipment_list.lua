@@ -52,6 +52,7 @@ table.insert(list_usage, {
     "Phantom Soldier", "Phantom Officer", "Phantom Knight", "Phantom Queen", "Phantom King",
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
     "Primevalist Follower", "Primevalist Monk", "Primevalist Celebrant", "Primevalist Prior",
+    "Primevalist Mendicant", "Primevalist Cenobite",
     "Carusoe", "Carusoe2", "Bad Raenna", "Raenna", "Dark Messiah", "Huric", "Hrala",
     "Primeval Swiftfoot", "Primeval Striker", "Primeval Slasher", "Primeval Protector", "Primeval Highguard", "Primeval Gyrepacter",
     "Primeval Slow", "Primeval Driver", "Primeval Giant",
@@ -77,6 +78,7 @@ table.insert(list_usage, {
     "Elvish Traveller", "Elvish Trader", "Elvish Voyager",
     "Primevalist Follower", "Primevalist Monk", "Primevalist Celebrant", "Primevalist Prior",
     "Swamp Monk", "Swamp Mage",
+    "Primevalist Mendicant", "Primevalist Cenobite",
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Bad Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Hrala"},
     usage = "amulet"
 })
