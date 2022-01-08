@@ -190,7 +190,8 @@ table.insert(list_usage, {
 
 -- equipment weight [effect]s
 -- some weight effects are handled in equiment_write.lua:  movement, unit.variables.weight
-local wt_def_effect = function (wt)
+-- Actually, this should not be here, moving it to be with movement effect
+--[[local wt_def_effect = function (wt)
     local weight_effect = {"effect", {apply_to = "defense", replace = "no", {"defense", {
                           shallow_water= wt,
                           deep_water= wt,
@@ -220,7 +221,7 @@ local wt_effect_n2 = wt_def_effect(-2)
 local wt_effect_n3 = wt_def_effect(-3)
 local wt_effect_n4 = wt_def_effect(-4)
 local wt_effect_n5 = wt_def_effect(-5)
-
+]]
 
 -- WIP
 --[[
@@ -300,7 +301,7 @@ Note: the ID and the eq_effect.ID have to match
 ------------ arms --------------
 table.insert(the_list, {
 	eq_effect = { id = "leather_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -2, impact = -2}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Leather Vambrace",
 	id = "leather_vambrace",
@@ -315,7 +316,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "wooden_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -3, impact = -2}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
 	            },
         name = _ "Wooden Vambrace",
 	id = "wooden_vambrace",
@@ -331,7 +332,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2 
+	              {"effect", { apply_to = "hitpoints", increase_total = "3"}} 
 	            },
         name = _ "Iron Vambrace",
 	id = "iron_vambrace",
@@ -347,7 +348,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_2 
+	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} 
 	            },
         name = _ "Silver Vambrace",
 	id = "silver_vambrace",
@@ -364,7 +365,7 @@ table.insert(the_list, {
 table.insert(the_list, {
 	eq_effect = { id = "obsidian_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -2, impact = -2}}}}, 
 	              {"effect", { apply_to = "attack", range = "ranged", increase_accuracy = "5"}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Obsidian Bracelet",
 	id = "obsidian_bracelet",
@@ -381,7 +382,7 @@ table.insert(the_list, {
 table.insert(the_list, {
 	eq_effect = { id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -3, arcane = -3, impact = -3}}}}, 
 	              {"effect", { apply_to = "attack", range = "ranged", increase_parry = "5"}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Jade Bracelet",
 	id = "jade_bracelet",
@@ -400,7 +401,7 @@ table.insert(the_list, {
 table.insert(the_list, {
 	eq_effect = { id = "black_cowl", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -2, impact = -2}}}}, 
 	              {"effect", { apply_to = "alignment", set = "chaotic"}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Black Cowl",
 	id = "black_cowl",
@@ -418,7 +419,7 @@ table.insert(the_list, {
 	eq_effect = { id = "white_ribbon", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -5, impact = -1}}}}, 
 	              {"effect", { apply_to = "alignment", set = "lawful"}},
 	              selfheal_effect, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "White Ribbon",
 	id = "white_ribbon",
@@ -443,7 +444,7 @@ table.insert(the_list, {
                                   cave = -10
                       }}}}, 
 	              {"effect", { apply_to = "alignment", set = "neutral"}},
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_n1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}
 	            },
         name = _ "Sorrow Veil",
 	id = "sorrow_veil",
@@ -459,7 +460,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "cap_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Padded Cap",
 	id = "cap_helmet",
@@ -474,7 +475,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "cap_gem", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, fire = -5, arcane = -5}}}}, {"effect", { apply_to = "vision", increase = "-8"}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1},
+	eq_effect = { id = "cap_gem", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, fire = -5, arcane = -5}}}}, {"effect", { apply_to = "vision", increase = "-8"}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Jewel Cap",
 	id = "cap_gem",
         tooltip = _ "all helmets offer impact resistance",
@@ -488,7 +489,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "fur_hat", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -6}}}}, wt_effect_1 
+	eq_effect = { id = "fur_hat", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -6}}}} 
 	            },
         name = _ "Fur Hat",
 	id = "fur_hat",
@@ -504,7 +505,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "light_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
 	            },
         name = _ "Light Helmet",
 	id = "light_helmet",
@@ -520,7 +521,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "rusty_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -1, arcane = -5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
 	            },
         name = _ "Rusty Helmet",
 	id = "rusty_helmet",
@@ -536,7 +537,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "steel_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_1 },
+	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
         name = _ "Steel Helmet",
 	id = "steel_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -550,7 +551,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -3}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_2},
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Chain Coif",
 	id = "chain_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -564,7 +565,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "bone_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, pierce = -12, arcane = 5, fire = 5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1 },
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
         name = _ "Bone Helmet",
 	id = "bone_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -578,7 +579,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "silver_chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -4, arcane = -5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_2},
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Silver Mail Coif",
 	id = "silver_chain_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -591,7 +592,7 @@ table.insert(the_list, {
 	weight = 2
 })
 table.insert(the_list, {
-	eq_effect = { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_2 },
+	eq_effect = { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
         name = _ "Crested Helmet",
 	id = "crested_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -605,7 +606,7 @@ table.insert(the_list, {
 
 })
 table.insert(the_list, {
-	eq_effect = { id = "bascinet_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -15, blade = -10, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "8"}}, wt_effect_3 },
+	eq_effect = { id = "bascinet_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -15, blade = -10, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "8"}} },
         name = _ "Bascinet",
 	id = "bascinet_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -618,7 +619,7 @@ table.insert(the_list, {
 	weight = 3
 })
 table.insert(the_list, {
-	eq_effect = { id = "great_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -20, blade = -15, pierce = -15}}}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}}, wt_effect_3 },
+	eq_effect = { id = "great_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -20, blade = -15, pierce = -15}}}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
         name = _ "Great Helm",
 	id = "great_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -631,7 +632,7 @@ table.insert(the_list, {
 	weight = 3
 })
 table.insert(the_list, {
-	eq_effect = { id = "frog_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -30, blade = -20, pierce = -15, fire = 20}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}}, wt_effect_4 },
+	eq_effect = { id = "frog_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -30, blade = -20, pierce = -15, fire = 20}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
         name = _ "Trooper Helmet",
 	id = "frog_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -644,7 +645,7 @@ table.insert(the_list, {
 	weight = 4
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -10, arcane = -5, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}}, wt_effect_2 },
+	eq_effect = { id = "ancient_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -10, arcane = -5, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
         name = _ "Ancient Helmet",
 	id = "ancient_helmet",
         tooltip = _ "all helmets offer impact resistance",
@@ -658,7 +659,7 @@ table.insert(the_list, {
 })
 ------------------shields-----------------------------
 table.insert(the_list, {
-	eq_effect = { id = "hide_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, blade = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 },
+	eq_effect = { id = "hide_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, blade = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
         name = _ "Hide Buckler",
 	id = "hide_buckler",
         tooltip = _ "all shields offer impact resistance",
@@ -671,7 +672,7 @@ table.insert(the_list, {
 	weight = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_1 },
+	eq_effect = { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
         name = _ "Bronze Buckler",
 	id = "bronze_buckler",
         tooltip = _ "all shields offer impact resistance",
@@ -684,7 +685,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_1 },
+	eq_effect = { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
         name = _ "Iron Buckler",
 	id = "iron_buckler",
         tooltip = _ "all shields offer impact resistance",
@@ -697,7 +698,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1 },
+	eq_effect = { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
         name = _ "Ancient Targe",
 	id = "rusty_targ",
         tooltip = _ "all shields offer impact resistance",
@@ -710,7 +711,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -3}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2 },
+	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -3}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
         name = _ "Wooden Shield",
 	id = "wooden_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -723,7 +724,7 @@ table.insert(the_list, {
 	weight = 2
 })
 table.insert(the_list, {
-	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -4}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1 },
+	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -4}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} },
         name = _ "Kite Shield",
 	id = "kite_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -736,7 +737,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -6, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2 },
+	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -6, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} },
         name = _ "Orcish Shield",
 	id = "orc_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -749,7 +750,7 @@ table.insert(the_list, {
 	weight = 2
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = -10, fire = -10}}}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1 },
+	eq_effect = { id = "silver_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = -10, fire = -10}}}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
         name = _ "Silver Shield",
 	id = "silver_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -762,7 +763,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -10, pierce = -10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}}, wt_effect_3 },
+	eq_effect = { id = "iron_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -10, pierce = -10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
         name = _ "Iron Shield",
 	id = "iron_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -775,7 +776,7 @@ table.insert(the_list, {
 	weight = 3
 })
 table.insert(the_list, {
-	eq_effect = { id = "door_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -20, pierce = -30, fire = -10}}}}, {"effect", { apply_to = "movement", increase = "-1"}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}}, wt_effect_4 },
+	eq_effect = { id = "door_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -20, pierce = -30, fire = -10}}}}, {"effect", { apply_to = "movement", increase = "-1"}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
         name = _ "Door Shield",
 	id = "door_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -788,7 +789,7 @@ table.insert(the_list, {
 	weight = 4
 })
 table.insert(the_list, {
-	eq_effect = { id = "mirror_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, pierce = -10, fire = -50}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}}, wt_effect_1 },
+	eq_effect = { id = "mirror_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, pierce = -10, fire = -50}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
         name = _ "Mirror Shield",
 	id = "mirror_shield",
         tooltip = _ "all shields offer impact resistance",
@@ -802,7 +803,7 @@ table.insert(the_list, {
 })
 ----------------- cloaks -------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "fur_cloak", id = "fur_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}}, wt_effect_1 },
+	eq_effect = { id = "fur_cloak", id = "fur_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} },
         name = _ "Fur Cloak",
         id = "fur_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -815,7 +816,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "elf_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -5}}}}, wt_effect_1 },
+	eq_effect = { id = "elf_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -5}}}} },
         name = _ "Elven Cloak",
         id = "elf_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -829,7 +830,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2},
+	eq_effect = { id = "orc_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Orcish Cloak",
         id = "orc_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -843,7 +844,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, fire = -15, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "silver_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, fire = -15, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Silver Cloak",
         id = "silver_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -857,7 +858,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} , {"effect", { apply_to = "movement", increase = "1"}}, wt_effect_n1},
+	eq_effect = { id = "ancient_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} , {"effect", { apply_to = "movement", increase = "1"}}},
         name = _ "Ancient Cloak",
         id = "ancient_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -871,7 +872,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "rotten_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -2, fire = -10, arcane = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "rotten_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -2, fire = -10, arcane = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Rotten Cloak",
         id = "rotten_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -913,7 +914,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "mage_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, fire = -5, arcane = -5, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "attack", range = "ranged", increase_damage = "1"}}, wt_effect_1},
+	eq_effect = { id = "mage_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, fire = -5, arcane = -5, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "attack", range = "ranged", increase_damage = "1"}}},
         name = _ "Mage Cloak",
         id = "mage_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -927,7 +928,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -15, fire = -15, arcane = -15, pierce = -2, blade = -2}}}} , wt_effect_1},
+	eq_effect = { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -15, fire = -15, arcane = -15, pierce = -2, blade = -2}}}}},
         name = _ "Cloak of Gaea",
         id = "gaea_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
@@ -1066,7 +1067,7 @@ table.insert(the_list, {
 })
 -- not really rings, but ...
 table.insert(the_list, {
-	eq_effect = { id = "leather_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -3, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}, wt_effect_1},
+	eq_effect = { id = "leather_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -3, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
         name = _ "Leather Gloves",
         id = "leather_gloves",
         tooltip = _ "protection for the hands",
@@ -1111,7 +1112,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2},
+	eq_effect = { id = "bronze_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Bronze Gauntlets",
         id = "bronze_gloves",
         tooltip = _ "protection for the hands",
@@ -1125,7 +1126,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "thunder_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, arcane = -5, fire = -8, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1},
+	eq_effect = { id = "thunder_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, arcane = -5, fire = -8, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Thunder Gauntlets",
         id = "thunder_gloves",
         tooltip = _ "protection for the hands",
@@ -1139,7 +1140,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -6, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_3},
+	eq_effect = { id = "steel_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -6, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Steel Gauntlets",
         id = "steel_gloves",
         tooltip = _ "protection for the hands",
@@ -1153,7 +1154,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, impact = -5, pierce = -3, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+	eq_effect = { id = "silver_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, impact = -5, pierce = -3, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Silver Gauntlets",
         id = "silver_gloves",
         tooltip = _ "protection for the hands",
@@ -1167,7 +1168,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gold_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -8, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_3},
+	eq_effect = { id = "gold_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -8, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Goldmaill Gauntlets",
         id = "gold_gloves",
         tooltip = _ "protection for the hands",
@@ -1196,7 +1197,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "kidney_belt", {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_n2},
+	eq_effect = { id = "kidney_belt", {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Kidney Belt",
         id = "kidney_belt",
         tooltip = _ "belt helps with equipment weight",
@@ -1210,7 +1211,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "atlas_belt", {"effect", { apply_to = "hitpoints", increase_total = "7"}}, wt_effect_n4},
+	eq_effect = { id = "atlas_belt", {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
         name = _ "Atlas Belt",
         id = "atlas_belt",
         tooltip = _ "belt helps with equipment weight",
@@ -1342,7 +1343,7 @@ table.insert(the_list, {
 })
 --------- armor ---------------
 table.insert(the_list, {
-	eq_effect = { id = "black_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -7, arcane = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_1},
+	eq_effect = { id = "black_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -7, arcane = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Black Tunic",
         id = "black_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1355,7 +1356,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "elven_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "elven_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Elven Tunic",
         id = "elven_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1368,7 +1369,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Blue Tunic",
         id = "blue_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1381,7 +1382,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+	eq_effect = { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Mage Tunic",
         id = "mage_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1394,7 +1395,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+	eq_effect = { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Shaman Tunic",
         id = "shaman_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1407,7 +1408,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Padded Coat",
         id = "padded_coat",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1420,7 +1421,7 @@ table.insert(the_list, {
 	weight = 1
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "leather_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Leather Armor",
         id = "leather_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1434,7 +1435,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "rusty_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -7, blade = -4, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2},
+	eq_effect = { id = "rusty_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -7, blade = -4, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Rusty Armor",
         id = "rusty_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1448,7 +1449,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "elven_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5, impact = -7, blade = -12, pierce = -7}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_1},
+	eq_effect = { id = "elven_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5, impact = -7, blade = -12, pierce = -7}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Ranger Armor",
         id = "elven_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1462,7 +1463,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dragon_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5, impact = -5, blade = -10, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1},
+	eq_effect = { id = "dragon_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5, impact = -5, blade = -10, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Dragonscale Armor",
         id = "dragon_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1476,7 +1477,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "scale_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_2},
+	eq_effect = { id = "scale_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Scale Armor",
         id = "scale_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1490,7 +1491,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "assassin_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -9, pierce = -7, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_n1},
+	eq_effect = { id = "assassin_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -9, pierce = -7, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Assassin Vest",
         id = "assassin_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1504,7 +1505,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "fiber_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -13, fire = -13}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, wt_effect_1},
+	eq_effect = { id = "fiber_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -13, fire = -13}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Fiberglass Armor",
         id = "fiber_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1518,7 +1519,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "chain_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -14, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}, wt_effect_3},
+	eq_effect = { id = "chain_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -14, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Chainmail Tunic",
         id = "chain_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1532,7 +1533,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -15, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_3},
+	eq_effect = { id = "bronze_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -15, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Bronze Armor",
         id = "bronze_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1546,7 +1547,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bone_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = 4, blade = -15, pierce = -20, arcane = 5, cold = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1},
+	eq_effect = { id = "bone_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = 4, blade = -15, pierce = -20, arcane = 5, cold = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Bone Armor",
         id = "bone_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1560,7 +1561,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}, wt_effect_4},
+	eq_effect = { id = "iron_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
         name = _ "Iron Armor",
         id = "iron_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1574,7 +1575,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}, wt_effect_2},
+	eq_effect = { id = "breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
         name = _ "Breastplate",
         id = "breastplate",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1588,7 +1589,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "goldmail_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -14, blade = -18, pierce = -12}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_2},
+	eq_effect = { id = "goldmail_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -14, blade = -18, pierce = -12}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Goldnmail Tunic",
         id = "goldmail_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1602,7 +1603,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -22, pierce = -15, fire = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}, wt_effect_2},
+	eq_effect = { id = "primeval_breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -22, pierce = -15, fire = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
         name = _ "Primeval Breastplate",
         id = "primeval_breastplate",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1616,7 +1617,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "frost_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -22, pierce = -20, fire = -25}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}, wt_effect_2},
+	eq_effect = { id = "frost_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -22, pierce = -20, fire = -25}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
         name = _ "Frost Armor",
         id = "frost_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1630,7 +1631,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -24, blade = -25, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}, wt_effect_4},
+	eq_effect = { id = "steel_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -24, blade = -25, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
         name = _ "Steel Armor",
         id = "steel_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1644,7 +1645,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "aegis_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -40, blade = -65, pierce = -40}}}} , {"effect", { apply_to = "hitpoints", increase_total = "17"}}, wt_effect_2},
+	eq_effect = { id = "aegis_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -40, blade = -65, pierce = -40}}}} , {"effect", { apply_to = "hitpoints", increase_total = "17"}}},
         name = _ "Aegis Armor",
         id = "aegis_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1673,7 +1674,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_1},
+	eq_effect = { id = "wooden_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Wooden Shinguards",
         id = "wooden_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1701,7 +1702,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "brass_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_2},
+	eq_effect = { id = "brass_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Bronze Greaves",
         id = "brass_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1715,7 +1716,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {pierce = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_2},
+	eq_effect = { id = "steel_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {pierce = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Steel Greaves",
         id = "steel_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1729,7 +1730,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -10, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}, wt_effect_1},
+	eq_effect = { id = "primeval_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -10, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Primeval Greaves",
         id = "primeval_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
@@ -1745,7 +1746,7 @@ table.insert(the_list, {
 --------------------------boots------------------------------------------
 -- what happens if you subtract movement cost down to zero?
 table.insert(the_list, {
-	eq_effect = { id = "boot_cleats", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {mountains = -1}}}}, wt_effect_1},
+	eq_effect = { id = "boot_cleats", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {mountains = -1}}}}},
         name = _ "Boot Cleat",
         id = "boot_cleat",
         tooltip = _ "Footwear usually affects movement",
@@ -1759,7 +1760,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "officer_boots", {"effect", { apply_to = "hitpoints", increase_total = "2"}}, wt_effect_n2 },
+	eq_effect = { id = "officer_boots", {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Officer Boots",
         id = "officer_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1773,7 +1774,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {forest = -1}}}}, wt_effect_1 },
+	eq_effect = { id = "leather_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {forest = -1}}}} },
         name = _ "Fine Leather Boots",
         id = "leather_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1787,7 +1788,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "miner_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {cave = -1}}}}, wt_effect_1 },
+	eq_effect = { id = "miner_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {cave = -1}}}} },
         name = _ "Miner Boots",
         id = "miner_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1801,7 +1802,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_boots", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -5, pierce = -5}}}} , {"effect", { apply_to = "movement_costs", replace = "no", {"movement_costs", {hills = -1, frozen = -1, cave = -1}}}}, wt_effect_1 },
+	eq_effect = { id = "primeval_boots", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -5, pierce = -5}}}} , {"effect", { apply_to = "movement_costs", replace = "no", {"movement_costs", {hills = -1, frozen = -1, cave = -1}}}} },
         name = _ "Primeval Sandals",
         id = "primeval_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1820,7 +1821,7 @@ table.insert(the_list, {
 							{"poison", {id="poison", name= _ "poison", 
 							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
 							}} 
-							}} }}, wt_effect_1}, 
+							}} }}}, 
         name = _ "Rusty Axe",
         id = "rusty_axe",
         tooltip = _ "Supplements for the axe attacks",
@@ -1834,7 +1835,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "obsidian_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1", increase_parry = "5"}}, wt_effect_1 },
+	eq_effect = { id = "obsidian_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1", increase_parry = "5"}} },
         name = _ "Obsidian Axe",
         id = "obsidian_axe",
         tooltip = _ "Supplements for the axe attacks",
@@ -1848,7 +1849,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, wt_effect_1 },
+	eq_effect = { id = "steel_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
         name = _ "Steel Edge",
         id = "steel_axe",
         tooltip = _ "Supplements for the axe attacks",
@@ -1904,7 +1905,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "10"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "10"}}, wt_effect_1 },
+	eq_effect = { id = "primeval_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "10"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "10"}} },
         name = _ "Great Primeval Axe",
         id = "primeval_axe",
         tooltip = _ "Supplements for the sword attacks",
@@ -1921,7 +1922,7 @@ table.insert(the_list, {
 
 ----------------------------sword-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "elf_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-elven.png"}}, wt_effect_1 },
+	eq_effect = { id = "elf_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-elven.png"}} },
         name = _ "Elven Blade",
         id = "elf_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -1935,7 +1936,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, wt_effect_1 },
+	eq_effect = { id = "steel_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
         name = _ "Steel Blade",
         id = "steel_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -1949,7 +1950,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_sword", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}}, wt_effect_1 },
+	eq_effect = { id = "silver_sword", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}} },
         name = _ "Silver Sword",
         id = "silver_sword",
         tooltip = _ "Supplements for the sword attacks",
@@ -1977,7 +1978,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "warlord_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/greatsword-orcish.png"}}, wt_effect_1 },
+	eq_effect = { id = "warlord_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/greatsword-orcish.png"}} },
         name = _ "Warlord Blade",
         id = "warlord_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -1991,7 +1992,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ice_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="misc/ice_blade.png"}}, wt_effect_1 },
+	eq_effect = { id = "ice_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="misc/ice_blade.png"}} },
         name = _ "Ice Blade",
         id = "ice_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -2005,7 +2006,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "revanche_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "fire"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-flaming.png"}}, wt_effect_1 },
+	eq_effect = { id = "revanche_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "fire"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-flaming.png"}} },
         name = _ "Revanche Blade",
         id = "revanche_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -2019,7 +2020,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dark_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/baneblade.png"}}, wt_effect_1 },
+	eq_effect = { id = "dark_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/baneblade.png"}} },
         name = _ "Dark Blade",
         id = "dark_blade",
         tooltip = _ "Supplements for the sword attacks",
@@ -2048,7 +2049,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "2"}}, wt_effect_1 },
+	eq_effect = { id = "steel_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "2"}} },
         name = _ "Steelpoint Spear",
         id = "steel_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2062,7 +2063,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "royal_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "3"}}, wt_effect_1 },
+	eq_effect = { id = "royal_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "3"}} },
         name = _ "Royal Spear",
         id = "royal_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2105,7 +2106,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "black_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "6"}}, wt_effect_1 },
+	eq_effect = { id = "black_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "6"}} },
         name = _ "Black Spear",
         id = "black_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2353,7 +2354,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, wt_effect_1},
+	eq_effect = { id = "leather_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Leather Vest",
         id = "leather_vest",
         tooltip = _ "these vests are body armor for dogs",
@@ -2367,7 +2368,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "serpent_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, pierce = -5, impact = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}, wt_effect_1},
+	eq_effect = { id = "serpent_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, pierce = -5, impact = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
         name = _ "Serpent Vest",
         id = "serpent_vest",
         tooltip = _ "these vests are body armor for dogs",
@@ -2381,7 +2382,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "brigandine_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -10, impact = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}, wt_effect_2},
+	eq_effect = { id = "brigandine_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -10, impact = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
         name = _ "Brigandine Vest",
         id = "brigandine_vest",
         tooltip = _ "these vests are body armor for dogs",

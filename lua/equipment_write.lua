@@ -120,9 +120,34 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   wml.tag.effect {
                       apply_to = "movement",
                       increase = movep
+                  },
+                  wml.tag.effect {
+                      apply_to = "defense",
+                      replace = "no",
+                      -- civilized terrain types, like castle and village, are left off
+                      {"defense", {
+                          shallow_water= temp_weight,
+                          deep_water= temp_weight,
+                          reef= temp_weight,
+                          swamp_water= temp_weight,
+                          flat= temp_weight,
+                          sand= temp_weight,
+                          forest= temp_weight,
+                          hills= temp_weight,
+                          mountains= temp_weight,
+                          cave= temp_weight,
+                          frozen= temp_weight,
+                          fungus= temp_weight
+                      }}
                   }
               }
-                                              
+              local wt_def_effect = function (wt)
+                  local weight_defense_effect = {"effect", {apply_to = "defense", replace = "no", 
+                  }
+                  }
+                  return weight_defense_effect
+              end
+
 	      wesnoth.units.add_modification(units[1], "object", eq_eff)
 	      wesnoth.units.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
@@ -230,6 +255,25 @@ bmr_equipment.remove = function(unit_id, gear_id)
               wml.tag.effect {
                   apply_to = "movement",
                   increase = movep
+              },
+              wml.tag.effect {
+                      apply_to = "defense",
+                      replace = "no",
+                      -- civilized terrain types, like castle and village, are left off
+                      {"defense", {
+                          shallow_water= temp_weight,
+                          deep_water= temp_weight,
+                          reef= temp_weight,
+                          swamp_water= temp_weight,
+                          flat= temp_weight,
+                          sand= temp_weight,
+                          forest= temp_weight,
+                          hills= temp_weight,
+                          mountains= temp_weight,
+                          cave= temp_weight,
+                          frozen= temp_weight,
+                          fungus= temp_weight
+                      }}
               }
           }
           wml.fire("remove_object", { id = unit_id, object_id = gear_id})
