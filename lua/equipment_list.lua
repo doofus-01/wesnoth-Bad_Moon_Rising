@@ -14,7 +14,7 @@ table.insert(list_usage, {
     types = {
     "Walking Corpse", "Soulless", "Skeleton",
     "Archaic_Goblin", "Frost Goblin", "Goblin Impaler",
-    "Ukian Runner", "Ukian Courrier", "Ukian Commando", 
+    "Ukian Runner", "Ukian Courrier", "Ukian Commando", "Ukian Sick", 
     "Orcish Slinger", "Orcish Hunter", "Orcish Stalker", "Orcish Drifter", "Orcish Wanderer", "Orcish Vagrant", "Orcish Vagrant2", "Orcish Traveler", "Ukian Seeress", "Ukian Witch", 
     "Ukian Regular", "Ukian Veteran", "Ukian Signalman", "Ukian Subcommander", "Ukian Commander", "Ukian Flareman", "Ukian Officer", "Belleros", "Belleros_Officer", 
     "Orcish Serf", "Orcish Foreman", 
@@ -23,7 +23,6 @@ table.insert(list_usage, {
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Orcish Raider", "Orcish Terror",
     "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Juggernaught",
     "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2",
-    "Rat Rider", "Rat Lancer", "Rat Dragoon",
     "Spearman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Thug", "Sergeant","Lieutenant","General",
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Heavy Infantryman","Shock Trooper","Iron Mauler",
@@ -32,6 +31,7 @@ table.insert(list_usage, {
     "Walking Corpse", "Soulless",
     "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", 
     "Snow Wolf Rider", "Frost Wolf Rider", "Ice Wolf Rider",
+    "Rat Rider", "Rat Lancer", "Rat Dragoon",
     -- "Elvish Fighter", "Elvish Archer", "Elvish Ranger", "Elvish Hero", "Elvish Captain", "Elvish Champion", "Elvish Marshal", "Elvish Marksman", "Elvish Sharpshooter", "Elvish Avenger",
     "Bowman", "Longbowman", "Master Bowman",
     "Fencer","Duelist","Master at Arms",
@@ -91,6 +91,7 @@ table.insert(list_usage, {
     "Bowman", "Longbowman", "Master Bowman",
     "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Raider", "Orcish Terror", "Orcish FlameThrower",
     "Rat Rider", "Rat Lancer", "Rat Dragoon",
+    "Wolf Rider", "Goblin Knight", "Goblin Pillager", "Direwolf Rider", 
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
     "Royal Spotter", "Royal Herdsman", "Royal Rider", "Royal Thrower", "Royal FireKnight",
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
@@ -287,8 +288,8 @@ local drains_special = {"set_specials", {mode="append", {"drains", {id="drains",
 local firststrike_special = {"set_specials", {mode="append", {"firststrike", {id="firststrike", name= _ "first strike", 
 							description= _ "This unit always strikes first with this attack, even if they are defending."
 							}}}}
-                                
-                
+-- this is to catch orc crossbows, without affecting the fire attack                                
+local bow_filter = {"and", {type="pierce", range="ranged"}}
 --[[ 
 there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 5. amulet, 6. torso, 7. greaves(old) + foot-> foot, 8. weapon
 (for dogs only: 1. neck)
@@ -347,7 +348,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}}, 
+	eq_effect = { id =  "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}},
 	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} 
 	            },
         name = _ "Silver Vambrace",
@@ -1589,6 +1590,20 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "wind_plate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
+        name = _ "Airstrike Armor",
+        id = "wind_plate",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "This armor is a dream for those who need mobility.  It is made of some lightweight, strong, and forgotten material.  Oddly enough, the airflow and coolant system makes this armor more envigorating than fatiguing.  It leaves plenty of weak-points, but offers good protection against a spear or axe to the chest.   Bonus: +20 impact resistance, +15 blade resistance, +15 pierce resistance, +12 HP",
+        image = "icons/air-plate.png",
+        icon = "items/air-plate.png",
+	cost = 295,
+	usage = "light_armor",
+	position = "torso",	
+	weight = -2
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "goldmail_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -14, blade = -18, pierce = -12}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Goldnmail Tunic",
         id = "goldmail_armor",
@@ -2121,7 +2136,7 @@ table.insert(the_list, {
 })
 ----------------------------bows-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "poison_arrows", {"effect", { apply_to = "attack", name = "bow", poison_special}} },
+	eq_effect = { id = "poison_arrows", {"effect", { apply_to = "attack", bow_filter, poison_special}} },
         name = _ "Poison Arrows",
         id = "poison_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2135,7 +2150,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "2"}} },
+	eq_effect = { id = "steel_arrows", {"effect", { apply_to = "attack", bow_filter, increase_damage = "2"}} },
         name = _ "Steel Arrows",
         id = "steel_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2149,7 +2164,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_arrows", {"effect", { apply_to = "attack", name = "bow", increase_accuracy = "10"}} },
+	eq_effect = { id = "silver_arrows", {"effect", { apply_to = "attack", bow_filter, increase_accuracy = "10"}} },
         name = _ "Silver Arrows",
         id = "silver_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2163,7 +2178,7 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", name = "bow", increase_damage = "3", firststrike_special}} },
+	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", bow_filter, increase_damage = "3", firststrike_special}} },
         name = _ "Sky Arrows",
         id = "sky_arrows",
         tooltip = _ "Supplements for the bow attacks",
