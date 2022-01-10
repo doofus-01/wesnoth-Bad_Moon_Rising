@@ -2184,7 +2184,7 @@ table.insert(the_list, {
         tooltip = _ "Supplements for the bow attacks",
         text = "These sleek silver arrows are perfectly balanced, much better than the usual crude things used by humans and orcs.  Increases bow accuracy by 10",
         image = "icons/bow-silver.png",
-        icon = "items/bow.png~CS(20,30,30)",
+        icon = "items/bow-2.png~GS()~CS(-25,0,30)",
 	cost = 160,
 	usage = "bow",
 	position = "weapon",	
