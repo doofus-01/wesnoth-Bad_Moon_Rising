@@ -68,9 +68,9 @@ elseif list_id == 3 then
 elseif list_id == 4 then
   sell_list_short = {"crested_helmet", "atlas_belt", "iron_shield", "steel_greaves", "gold_ring", "breastplate", "steel_arrows", "silver_dagger", "steel_blade"}
 elseif list_id == 5 then
-  sell_list_short = {"bascinet_helmet", "door_shield", "atlas_belt", "elf_cloak", "gold_ring", "chain_armor", "silver_dagger", "steel_axe", "steel_spear"}
-elseif list_id == 5 then
-  sell_list_short = {"cap_gem", "silver_shield", "atlas_belt", "green_ring", "mage_tunic", "bronze_gauntlets", "steel_axe", "steel_spear"}
+  sell_list_short = {"silver_chain_helmet", "atlas_belt", "elf_cloak", "gold_ring", "elven_armor", "silver_vambrace", "silver_axe", "steel_spear"}
+elseif list_id == 6 then
+  sell_list_short = {"cap_gem", "door_shield", "silver_shield", "atlas_belt", "green_ring", "mage_tunic", "bronze_gauntlets", "steel_axe"}
 else
   sell_list_short = {"fur_hat", "cap_helmet", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "small_dagger"}
 end
