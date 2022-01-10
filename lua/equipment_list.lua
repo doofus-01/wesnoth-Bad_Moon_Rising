@@ -325,7 +325,7 @@ table.insert(the_list, {
         text = _ "Light and hard, these wooden arm-guards provide effective protection without encumbering the wearer.  Bonus: + 2 impact and +3 blade resistance, + 2 HP",
         image = "icons/wooden_vambrace.png",
         icon = "items/wooden_vambrace.png",
-	cost = 112,
+	cost = 12,
 	usage = "light_armor",
 	position = "arms",
 	weight = 1
@@ -357,10 +357,10 @@ table.insert(the_list, {
         text = _ "The bright metal of this vambrace is only a bit stronger than common iron, but it also provides a barrier to magical assaults. It is a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and arcane, +5 blade resistance, + 4 HP",
         image = "icons/iron_vambrace.png~GS()",
         icon = "items/iron_vambrace.png~GS()",
-	cost = 15,
+	cost = 45,
 	usage = "light_armor",
 	position = "arms",
-	weight = 2
+	weight = 1
 	
 })
 table.insert(the_list, {
@@ -381,14 +381,14 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -3, arcane = -3, impact = -3}}}}, 
+	eq_effect = { id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -4, arcane = -4, impact = -4}}}}, 
 	              {"effect", { apply_to = "attack", range = "ranged", increase_parry = "5"}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
 	            },
         name = _ "Jade Bracelet",
 	id = "jade_bracelet",
         tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.  Bonus: + 3 each impact, cold, and arcane resistance, increases ranged parry by 5, + 1 HP",
+        text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.  Bonus: + 4 each impact, cold, and arcane resistance, increases ranged parry by 5, + 2 HP",
         image = "icons/jade_bracelet.png",
         icon = "items/jade_bracelet.png",
 	cost = 35,
@@ -1455,9 +1455,9 @@ table.insert(the_list, {
         id = "elven_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
         text = _ "This is very similar to standard leather armor, but the stitching is finer, and the leather has been tanned in some process, known only to the Wood Elves, that makes it tougher and less prone to cracking.  Bonus: +5 fire, +5 cold, +7 impact resistance, +12 blade resistance, +7 pierce resistance, +6 HP",
-        image = "icons/armor_leather.png~CS(-25,0,-10",
+        image = "icons/armor_leather.png~CS(-25,0,-10)",
         icon = "items/armor-leather.png~CS(-25,0,-10)",
-	cost = 65,
+	cost = 75,
 	usage = "light_armor",
 	position = "torso",	
 	weight = 1
@@ -1699,7 +1699,7 @@ table.insert(the_list, {
 	cost = 29,
 	usage = "light_armor",
 	position = "foot",	
-	weight = 1
+	weight = 0
 	
 })
 table.insert(the_list, {
@@ -1727,7 +1727,21 @@ table.insert(the_list, {
 	cost = 39,
 	usage = "light_armor",
 	position = "foot",	
-	weight = 2
+	weight = 1
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "ranger_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+        name = _ "Ranger Greaves",
+        id = "ranger_greaves",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "These well-made leg-guards were designed for those who need mobility, so they are very light and unrestricting.  They can be worn by anyone with some physical strength without being a hinderance.  Bonus: +3 impact, +6 blade, +5 pierce resistances; +2 HP",
+        image = "icons/greaves_brass.png~GS()~CS(0,25,-75)",
+        icon = "items/greaves-brass.png~GS()~CS(0,25,-75)",
+	cost = 65,
+	usage = "light_armor",
+	position = "foot",	
+	weight = -1
 	
 })
 table.insert(the_list, {
