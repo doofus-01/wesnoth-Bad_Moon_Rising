@@ -37,6 +37,8 @@ table.insert(list_usage, {
     "Fencer","Duelist","Master at Arms",
     "Scarrion_Spearman", "Therion", "Russle", "Altos",
     "Thief","Rogue","Assassin",
+    "Footpad", "Outlaw", "Fugitive",
+    "Poacher", "Trapper", "Ranger", "Huntsman",
     "Thug","Bandit","Highwayman","Resurrectionist",
     "Red Mage", "Arch Mage", "Silver Mage", "Great Mage", 
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
@@ -108,6 +110,8 @@ table.insert(list_usage, {
     "Skeleton", "Revenant", "Draug", "Death Knight",
     "Skeleton Archer", "Bone Shooter", "Banebow",
     "Thug","Bandit","Highwayman","Resurrectionist",
+    "Trapper", "Ranger", "Huntsman",
+    "Outlaw", "Fugitive",
     "Scarrion_Spearman", "Therion", "Altos",
     "Carusoe", "Carusoe2", "Bad Raenna", "Raenna", "Dark Messiah", "Huric"
     },
@@ -145,6 +149,7 @@ table.insert(list_usage, {
     "Skeleton Archer", "Bone Shooter", "Banebow",
     "Elvish Scout", "Elvish Rider", "Elvish Outrider",
     "Elvish Archer", "Elvish Avenger", "Elvish Ranger", "Elvish Marksman", "Elvish Sharpshooter",
+    "Poacher", "Trapper", "Ranger", "Huntsman",
     "Therion",
     "Bowman", "Longbowman", "Master Bowman"},
     usage = "bow"
