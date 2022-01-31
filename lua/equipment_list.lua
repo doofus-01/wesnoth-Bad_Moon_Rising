@@ -174,6 +174,7 @@ table.insert(list_usage, {
 table.insert(list_usage, {
     types = {"Ukian Regular", "Ukian Veteran", "Ukian Runner", "Ukian Courrier", "Ukian Commando",
     "Spearman", "Javelineer", "Pikeman", "Halberdier", 
+    "Phantom Spearman", "Phantom Soldier", "Phantom Officer",
     "Carusoe", "Carusoe2", 
     "Scarrion_Spearman",
     "Archaic_Goblin", "Frost Goblin", "Goblin Impaler",
@@ -190,7 +191,10 @@ table.insert(list_usage, {
     usage = "dog"
 })
 table.insert(list_usage, {
-    types = {"Phantom Cloak", "Phantom Shadow", "Phantom Master", "Phantom Rider", "Phantom Horseman", "Phantom Dullohan", "Phantom Slayer", "Phantom Spearman", "Phantom Soldier", "Phantom Officer", "Phantom Knight", "Phantom Queen", "Phantom King"},
+    types = {"Phantom Cloak", "Phantom Shadow", "Phantom Master", 
+    "Phantom Rider", "Phantom Horseman", "Phantom Dullohan", "Phantom Slayer", 
+    "Phantom Spearman", "Phantom Soldier", "Phantom Officer", "Phantom Knight", 
+    "Phantom Queen", "Phantom King"},
     usage = "despair"
 })
 
@@ -906,11 +910,11 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "black_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -50}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, shadow_effect},
+	eq_effect = { id = "black_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -50, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, shadow_effect},
         name = _ "Black Cloak",
         id = "black_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "There is something unworldly about this inky black cloak, a sinister power.  Attempts to wear it usually meet with frustration, because it is not meant for the living.  Bonus: +50 cold resistance; nightstalk ability; +5 HP",
+        text = _ "There is something unworldly about this inky black cloak, a sinister power.  Attempts to wear it usually meet with frustration, because it is not meant for the living.  Bonus: +50 cold , +20 pierce resistances; nightstalk ability; +5 HP",
         image = "icons/cloak_black.png",
         icon = "items/cloak-black.png~CS(-30,0,10)",
 	cost = 65,
