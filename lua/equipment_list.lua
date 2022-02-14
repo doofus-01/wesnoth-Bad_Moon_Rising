@@ -938,11 +938,11 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -15, fire = -15, arcane = -15, pierce = -2, blade = -2}}}}},
+	eq_effect = { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -20, fire = -20, arcane = -20, pierce = -7, blade = -7}}}}},
         name = _ "Cloak of Gaea",
         id = "gaea_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "The natural world has a power that dwarfs anything shaped by mortals.  The living fibers of this cloak shlter the wearer from most magic energy attacks, for they are just weak echos of natural phenomena.",
+        text = _ "The natural world has a power that dwarfs anything shaped by mortals.  The living fibers of this cloak shlter the wearer from most magic energy attacks, for they are just weak echos of natural phenomena.  Bonus: 20% resistance to cold, fire, arcane attacks, and 7% resistance to pierce and blade attack.",
         image = "icons/cloak_gaea.png",
         icon = "items/cloak-green.png~CS(-20,60,-20)",
 	cost = 365,
