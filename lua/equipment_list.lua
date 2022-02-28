@@ -2215,12 +2215,12 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "starburst_arrows", {"effect", { apply_to = "new_attack", name = "starburst", description = "starburst", range = "ranged", type = "arcane", damage = 13, number = 3}} },
+	eq_effect = { id = "starburst_arrows", {"effect", { apply_to = "new_attack", name = "starburst", description = "starburst", range = "ranged", type = "arcane", damage = 13, number = 3, icon = "attacks/bow-short-reinforced.png~BLIT(halo/elven/ice-halo1.png~CROP(0,0,47,49),11,9)"}} },
         name = _ "Starburst Arrows",
         id = "starburst_arrows",
         tooltip = _ "Supplements for the bow attacks",
         text = _ "The soft metal of these arrowheads is impregnated with a shards of a very rare crystal, causing them to explode upon impact, with an otherworldly flame.  Grants a new arcane attack.",
-        image = "attacks/bow-short-reinforced.png~BLIT(halo/elven/ice-halo1.png~CROP(0,0,47,49),11,9)",
+        image =  "attacks/bow-short-reinforced.png~BLIT(halo/elven/ice-halo1.png~CROP(0,0,47,49),11,9)",
         icon = "items/bow-crystal.png",
 	cost = 255,
 	usage = "bow",
