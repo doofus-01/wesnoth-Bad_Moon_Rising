@@ -35,6 +35,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
       local gear_cost = ""
       local gear_image = ""
       local gear_text = ""
+      local gear_usage = ""
       local gear_position = ""
       local gear_weight = ""
       local eq_eff = ""
@@ -76,6 +77,8 @@ bmr_equipment.filter = function(unit_id, gear_id)
           gear_cost = equipment_list.the_list[j].cost
           gear_image = equipment_list.the_list[j].image
           gear_text = equipment_list.the_list[j].text
+          gear_usage = equipment_list.the_list[j].usage
+          gear_position = equipment_list.the_list[j].position
           gear_weight = equipment_list.the_list[j].weight
           break
         end
@@ -141,13 +144,57 @@ bmr_equipment.filter = function(unit_id, gear_id)
                       }}
                   }
               }
+              -- 
               local wt_def_effect = function (wt)
                   local weight_defense_effect = {"effect", {apply_to = "defense", replace = "no", 
                   }
                   }
                   return weight_defense_effect
               end
+              -- for updating the attack dialog icon - only applies to blades (axes + swords), spears and bows.
+              -- Everything else gets its own "new attack", so we don't worry about it here
+              local blade_icons_effects = {
+                  id = "new_attack_icon_id",
+                  wml.tag.effect {
+                      apply_to = "attack",
+                      range = "melee",
+                      type = "blade",
+                      set_icon = gear_image
+                  }
+              }
+              local spear_icons_effects = {
+                  id = "new_attack_icon_id",
+                  wml.tag.effect {
+                      apply_to = "attack",
+                      name = "spear",
+                      set_icon = gear_image
+                  }
+              }
+              local bow_icons_effects = {
+                  id = "new_attack_icon_id",
+                  wml.tag.effect {
+                      apply_to = "attack",
+                      {"and", {
+                          range = "ranged",
+                          type = "pierce"
+                      }},
+                      set_icon = gear_image
+                  }
+              }
 
+              if gear_position == "weapon" then
+                  wesnoth.interface.add_chat_message("Filter_debugging", string.format("gear_usage= %s", gear_usage))
+                  if gear_usage == "axe" or gear_usage == "sword" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is axe/sword", gear_usage))
+	              wesnoth.units.add_modification(units[1], "object", blade_icons_effects)
+	          elseif gear_usage == "spear" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is spear", gear_usage))
+	              wesnoth.units.add_modification(units[1], "object", spear_icons_effects)
+	          elseif gear_usage == "bow" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is bow", gear_usage))
+	              wesnoth.units.add_modification(units[1], "object", bow_icons_effects)
+                  end
+              end
 	      wesnoth.units.add_modification(units[1], "object", eq_eff)
 	      wesnoth.units.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
@@ -277,6 +324,7 @@ bmr_equipment.remove = function(unit_id, gear_id)
               }
           }
           wml.fire("remove_object", { id = unit_id, object_id = gear_id})
+          wml.fire("remove_object", { id = unit_id, object_id = "new_attack_icon_id"})
 	  wesnoth.units.add_modification(units[1], "object", wt_effects)
 
 -- a hack to fix what may be a core bug with remove_object?
