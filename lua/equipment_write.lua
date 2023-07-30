@@ -183,7 +183,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
               }
 
               if gear_position == "weapon" then
-                  wesnoth.interface.add_chat_message("Filter_debugging", string.format("gear_usage= %s", gear_usage))
+--                  wesnoth.interface.add_chat_message("Filter_debugging", string.format("gear_usage= %s", gear_usage))
                   if gear_usage == "axe" or gear_usage == "sword" then
                       -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is axe/sword", gear_usage))
 	              wesnoth.units.add_modification(units[1], "object", blade_icons_effects)
