@@ -39,7 +39,7 @@ bmr_e_g["neck"] = "Throat Protection"
 bmr_e_g["dog"] = "for use by canines"
 bmr_e_g["all"] = "available to all"
 bmr_e_g["orcish"] = "available to orcs"
-bmr_e_g["amulet"] = "available to magi and shamans"
+bmr_e_g["amulets"] = "available to magi and shamans"
 bmr_e_g["light_armor"] = "for light infantry"
 bmr_e_g["heavy_armoor"] = "for heavy infantry"
 bmr_e_g["shields"] = "for shield-bearers"
@@ -79,7 +79,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 			_ "Between the main scenarios, there is a World Map that the player moves through to reach actual scenarios.\n\n" ..
 			""
 		local str_cat_worldmap, str_des_worldmap = help_page_text( _ "Campaign Navigation", _ "The world map is a psuedo-scenario that allows the player to move between campaign scenarios, shop scenarios, battles, and random skirmishes.")
-		local str_cat_items, str_des_items = help_page_text( _ "Inventory", _ "Various weapons, armor, and other gear can be acquired throughout the campaign.  As they are discovered, they will show up in the list here.  Not every unit can use every item.")
+		local str_cat_items, str_des_items = help_page_text( _ "Inventory", _ "Various weapons, armor, and other gear can be acquired throughout the campaign.  As they are discovered, they will show up in the list here, meaning that you have discovered them - it does not mean you currently posses them.  Not every unit can use every item.")
 		local str_cat_recruit, str_des_recruit = help_page_text( _ "Recruit and Recall" , _ "There is a limited pool of new recruits available to your forces, and while you can pick up more along the way, each life is precious.")
 		--local str_cat_settings = _ "Settings"
 
