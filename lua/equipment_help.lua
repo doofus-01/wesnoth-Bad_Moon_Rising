@@ -3,8 +3,7 @@ local _ = wesnoth.textdomain 'Bad_Moon_Rising'
 local dialog_wml = wml.load "~add-ons/Bad_Moon_Rising/utils/help_dialog.cfg"
 
 -- This help dialog is adapted from the World Conquest help dialog
--- TODO : reading data from: 1. the equipment list; 2. the enemies list (skirmishes)
--- I've replace some names and references, but haven't really digested how this works yet.
+-- TODO : the enemies list (skirmishes)
 
 local function make_caption(text)
 	return ("<big><b>%s</b></big>"):format(text)
@@ -14,16 +13,46 @@ local function help_page_text(caption, description)
 	return caption, ("%s\n\n%s"):format(make_caption(caption), description)
 end
 
+-- the newlines are mostly due to the fact that the wrap key is pretty ineffective, and we end up with a vveerrryyy wide scrollbar
 local bmr_worldmap ={}
-table.insert(bmr_worldmap, {subtopic_id = "worldmap", subtopic_text = "description of worldmap", subtopic_icon = "help/worldmap.png"})
-table.insert(bmr_worldmap, {subtopic_id = "campaign scenarios", subtopic_text = "description of campaign scenarios", subtopic_icon = "help/campaign.png"})
-table.insert(bmr_worldmap, {subtopic_id = "shop scenarios", subtopic_text = "description of shop scenarios", subtopic_icon = "help/shop.png"})
-table.insert(bmr_worldmap, {subtopic_id = "battles", subtopic_text = "description of worldmap battles", subtopic_icon = "help/battle.jpg"})
-table.insert(bmr_worldmap, {subtopic_id = "skirmishes", subtopic_text = "description of worldmap skirkishes", subtopic_icon = "help/skirmish.jpg"})
+table.insert(bmr_worldmap, {subtopic_id = "World Map", subtopic_text = "<small>Travel between scenarios is achieved through the World Map, \n where the player's forces are represented by a single leader unit, \n and any interaction leads to a different scenario. \n This can take some time, but gives you some limited control over \n the scenario progression, and a chance to upgrade your forces \n between scenarios.</small>", subtopic_icon = "help/worldmap.webp"})
+table.insert(bmr_worldmap, {subtopic_id = "Campaign Scenarios", subtopic_text = "<small>The core scenarios of this campaign are like most other Wesnoth \n campaigns, a mix of strategy and story.</small>", subtopic_icon = "help/campaign.webp"})
+table.insert(bmr_worldmap, {subtopic_id = "Shops", subtopic_text = "<small>There are a limited number of shops, usually reached through the World Map, \n where gear can be bought or sold.  They are often a place to \n recruit new followers or gather information.</small>", subtopic_icon = "help/shop.webp"})
+table.insert(bmr_worldmap, {subtopic_id = "Battles", subtopic_text = "<small>The enemy units on the World Map represent another roaming army, \n and any interaction with them leads to a Battle Scenario. \n Such scenarios are bigger than the random skirmishes, but \n lesser than the core campaign scenarios.</small>", subtopic_icon = "help/battle.webp"})
+table.insert(bmr_worldmap, {subtopic_id = "Skirmishes", subtopic_text = "<small>Enemies lurk behind every snowdrift and tree, so your forces will \n often stumble into random skirmishes as they move over the World Map. \n Each skirmish is short and not usually a problem, but they can \n take a toll as they add up.  Sometimes you get the first move, \n sometimes you are ambushed, so be sure to arrange your travelling party \n with an eye toward both experience and survival.</small>", subtopic_icon = "help/skirmish.webp"})
+
+-- to make the internal IDs look better, probably belongs either in the equipment data or in a separate function
+-- TODO translatable _ marks
+local bmr_e_g = {}
+-- positions
+bmr_e_g["arms"] = "Arm Guards"
+bmr_e_g["head"] = "Headgear"
+bmr_e_g["shield"] = "Shields"
+bmr_e_g["cloak"] = "Cloaks"
+bmr_e_g["ring"] = "Hands"
+bmr_e_g["amulet"] = "Miscellaneous"
+bmr_e_g["torso"] = "Tunics and Armor"
+bmr_e_g["foot"] = "Footgear"
+bmr_e_g["weapon"] = "Weapons"
+bmr_e_g["neck"] = "Throat Protection"
+-- usage types
+bmr_e_g["dog"] = "for use by canines"
+bmr_e_g["all"] = "available to all"
+bmr_e_g["orcish"] = "available to orcs"
+bmr_e_g["amulet"] = "available to magi and shamans"
+bmr_e_g["light_armor"] = "for light infantry"
+bmr_e_g["heavy_armoor"] = "for heavy infantry"
+bmr_e_g["shields"] = "for shield-bearers"
+bmr_e_g["bow"] = "for archers"
+bmr_e_g["sword"] = "for swordsmen"
+bmr_e_g["axe"] = "for ax-wielders"
+bmr_e_g["spear"] = "for spearmen"
+bmr_e_g["despair"] = "for phantoms only"
+
 
 function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
-
-    local discovery_list = wml.variables["known_items"]
+    local curr_side = wesnoth.current.side
+    local discovery_list = wml.variables["known_items["..curr_side.."].s"]
 	local show_help_mechanics = cfg.show_mechanics ~= false
 	local show_help_recruit = cfg.show_recruit ~= false
 	local show_help_worldmap = cfg.show_worldmap ~= false
@@ -37,19 +66,20 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 
 	local current_side = wesnoth.interface.get_viewing_side()
 	local preshow = function(dialog)
-		local str_cat_mechanics = _ "Game Mechanics"
+		local str_cat_mechanics = _ "Overview"
 		local str_des_mechanics = cfg.mechanics_text or
-			make_caption( _ "Game Mechanics") .. "\n\n" ..
-			_ "Bad Moon Rising has game mechanics that are very similar to standard Wesnoth singleplayer campaigns, however there are a few key differences.\n\n"..
-			_ "<b>Equipment</b>\n" ..
+			make_caption( _ "General Help") .. "\n\n" ..
+			_ "Bad Moon Rising has game mechanics that are very similar to standard Wesnoth singleplayer campaigns, however there are a few key differences as described here.\n"..
+			_ "Questions or suggestions are always welcome and can be posted to:\n ".."https://forums.wesnoth.org" .."\n\n"..
+			_ "<b>Inventory</b>\n" ..
 			_ "Player and AI units can carry items and equipment.\n\n" ..
 			_ "<b>Recruit and Recall</b>\n" ..
 			_ "There are limits on new recruits, so spamming is less viable and even non-elite veterans can be important.\n\n" ..
 			_ "<b>World Map</b>\n" ..
 			_ "Between the main scenarios, there is a World Map that the player moves through to reach actual scenarios.\n\n" ..
 			""
-		local str_cat_worldmap, str_des_worldmap = help_page_text( _ "World Map", _ "The world map is a psuedo-scenario that allows the player to move between campaign scenarios, shop scenarios, battles, and random skirmishes.")
-		local str_cat_items, str_des_items = help_page_text( _ "Equipment", _ "Items can be given to units to make them funky.")
+		local str_cat_worldmap, str_des_worldmap = help_page_text( _ "Campaign Navigation", _ "The world map is a psuedo-scenario that allows the player to move between campaign scenarios, shop scenarios, battles, and random skirmishes.")
+		local str_cat_items, str_des_items = help_page_text( _ "Inventory", _ "Various weapons, armor, and other gear can be acquired throughout the campaign.  As they are discovered, they will show up in the list here.  Not every unit can use every item.")
 		local str_cat_recruit, str_des_recruit = help_page_text( _ "Recruit and Recall" , _ "There is a limited pool of new recruits available to your forces, and while you can pick up more along the way, each life is precious.")
 		--local str_cat_settings = _ "Settings"
 
@@ -64,13 +94,13 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 			local details_page = details:add_item_of_type(page_type)
 			if args.title then
 				node.label_topic.label = args.title
-				node.unfolded = true
+				node.unfolded = false
 			end
 			index_map[table.concat(node.path, "_")] = details.item_count
 			return node, details_page
 		end
 
-		---- add general topic ----
+		---- add general overview topic ----
 		if show_help_mechanics then
 			local node, page = root_node:add_help_page {
 				title = str_cat_mechanics
@@ -78,7 +108,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 			page.label_content.marked_up_text = str_des_mechanics
 		end
 
-		---- add general topic ----
+		---- add general recruit topic ----
 		if show_help_mechanics then
 			local node, page = root_node:add_help_page {
 				title = str_cat_recruit
@@ -116,46 +146,34 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 				page_type = "equipment"
 			}
 			root_page.desc.marked_up_text = str_des_items
---			wesnoth.interface.add_chat_message(string.format("%s", discovery_list))
---Note - this is where we read from equipment_list.lua, the first is "arms" for now
             local position_old = "dummy"
---[[            local position_old = "arms"
-            local subnode, sub_page = node:add_help_page {
-                title = position_old,
-                page_type = "equipment",
-                node_type = "subcategory",
-            }
-            local page_element = sub_page.treeview_equipment:add_item_of_type("equipment_item")
-            page_element.image.label = "misc/blank-hex.png"
-            page_element.label_name.marked_up_text = string.format("<big><i>%s</i></big> - Explainer text", position_old)
-]]
             local subnode, subpage = nil, nil
             for i in ipairs(equipment_list.the_list) do
                 if string.find(discovery_list, equipment_list.the_list[i].id) then
                     local item_icon = equipment_list.the_list[i].image or ""
                     local item_name = equipment_list.the_list[i].name or ""
                     local item_desc = equipment_list.the_list[i].text or ""
+                    local item_usage = equipment_list.the_list[i].usage or ""
                     local item_position = equipment_list.the_list[i].position or ""
 				-- local not_available = stringx.map_split(artifact.not_available or "")
                     if position_old ~= item_position then
                         subnode, sub_page = node:add_help_page {
-                            title = item_position,
+                            title = bmr_e_g[item_position],
                             page_type = "equipment",
                             node_type = "subcategory",
                         }
                         page_element = sub_page.treeview_equipment:add_item_of_type("equipment_item")
                         page_element.image.label = "misc/blank-hex.png"
-                        page_element.label_name.marked_up_text = string.format("<big><i>%s</i></big> - Explainer text", item_position)
+                        page_element.label_name.marked_up_text = string.format("<big><b>%s</b></big>", bmr_e_g[item_position])
                         position_old = item_position
                     end
                     page_element = sub_page.treeview_equipment:add_item_of_type("equipment_item")
                     page_element.image.label = item_icon
-                    page_element.label_name.label = item_name .. "\n" .. item_desc
+                    page_element.label_name.marked_up_text = "<b>".. item_name .. "</b> - <i>"..bmr_e_g[item_usage].."</i> \n" .. item_desc
                 end
             end
 		end
---[[
--- Settings would be good to have at some point
+--[[ Settings would be good to have at some point, but needs more thought
 		if show_help_settings then
 			local node, page = root_node:add_help_page {
 				title = str_cat_settings,

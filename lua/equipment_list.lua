@@ -140,7 +140,7 @@ table.insert(list_usage, {
     "Scarrion_Spearman",
     "Spearman", "Swordsman", "Royal Guard",
     "Phantom Spearman", "Phantom Soldier", "Phantom Officer", "Phantom Master"},
-    usage = "shield"
+    usage = "shields"
 })
 table.insert(list_usage, {
     types = {
@@ -729,7 +729,7 @@ table.insert(the_list, {
         image = "icons/shield_wooden.png",
         icon = "items/shield-targ.png~CS(30,10,-10)",
 	cost = 20,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 2
 })
@@ -742,7 +742,7 @@ table.insert(the_list, {
         image = "icons/shield_kite.png",
         icon = "items/shield_kite.png",
 	cost = 25,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
@@ -755,7 +755,7 @@ table.insert(the_list, {
         image = "icons/orc_roundshield.png",
         icon = "items/buckler.png~CS(20,-10,-10)",
 	cost = 25,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 2
 })
@@ -768,7 +768,7 @@ table.insert(the_list, {
         image = "icons/silver_buckler.png",
         icon = "items/buckler.png~CS(20,40,60)",
 	cost = 90,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
@@ -781,7 +781,7 @@ table.insert(the_list, {
         image = "icons/shield_steel.png~CS(-10,-30,-10)",
         icon = "items/shield-iron.png",
 	cost = 70,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 3
 })
@@ -794,7 +794,7 @@ table.insert(the_list, {
         image = "icons/shield_tower.png",
         icon = "items/shield-door.png",
 	cost = 150,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 4
 })
@@ -807,7 +807,7 @@ table.insert(the_list, {
         image = "icons/shield_polished.png~GS()",
         icon = "misc/reflector-shield.png",
 	cost = 270,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
