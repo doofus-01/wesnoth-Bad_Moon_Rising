@@ -13,41 +13,42 @@ local function help_page_text(caption, description)
 	return caption, ("%s\n\n%s"):format(make_caption(caption), description)
 end
 
--- the newlines are mostly due to the fact that the wrap key is pretty ineffective, and we end up with a vveerrryyy wide scrollbar
+local bmr_skirmish_items = _ "<small>    While in these scenarios, enemies and allies will occasionally drop gold or equipment when they fall, and these may be recovered by the player units.</small>"
+
 local bmr_worldmap ={}
-table.insert(bmr_worldmap, {subtopic_id = "World Map", subtopic_text = "<small>Travel between scenarios is achieved through the World Map, where the player's forces are represented by a single leader unit, and any interaction leads to a different scenario.  This can take some time, but gives you some limited control over the scenario progression, and a chance to upgrade your forces between scenarios.</small>", subtopic_icon = "help/worldmap.webp"})
-table.insert(bmr_worldmap, {subtopic_id = "Campaign Scenarios", subtopic_text = "<small>The core scenarios of this campaign are like most other Wesnoth campaigns, a mix of strategy and story.</small>", subtopic_icon = "help/campaign.webp"})
-table.insert(bmr_worldmap, {subtopic_id = "Shops", subtopic_text = "<small>There are a limited number of shops, usually reached through the World Map, where gear can be bought or sold.  They are often a place to \n recruit new followers or gather information.</small>", subtopic_icon = "help/shop.webp"})
-table.insert(bmr_worldmap, {subtopic_id = "Battles", subtopic_text = "<small>The enemy units on the World Map represent another roaming army, and any interaction with them leads to a Battle Scenario. Such scenarios are bigger than the random skirmishes, but lesser than the core campaign scenarios.</small>", subtopic_icon = "help/battle.webp"})
-table.insert(bmr_worldmap, {subtopic_id = "Skirmishes", subtopic_text = "<small>Enemies lurk behind every snowdrift and tree, so your forces will often stumble into random skirmishes as they move over the World Map. Each skirmish is short and not usually a problem, but they can take a toll as they add up.  Sometimes you get the first move, sometimes you are ambushed, so be sure to arrange your travelling party with an eye toward both experience and survival.</small>", subtopic_icon = "help/skirmish.webp"})
+table.insert(bmr_worldmap, {subtopic_id = _ "World Map", subtopic_text = _ "<small>    Travel between scenarios is achieved through the World Map, where the player's forces are represented by a single sprite, and any interaction leads to a different scenario.  This can take more time than the standard 'beads on a map' style, but it does give you some limited control over the scenario progression, and a chance to upgrade your forces between scenarios.  \n \n    While on the world map, you can access a 'Marching Formation' dialog, which lets you choose the squad present in the random skirmishes.</small>", subtopic_image = "help/worldmap.webp", subtopic_icon = "help/map_icon.webp"})
+table.insert(bmr_worldmap, {subtopic_id = _ "Campaign Scenarios", subtopic_text = _ "<small>    The core scenarios of this campaign are like most other Wesnoth campaigns, a mix of strategy and story.  \n \n    In all combat scenarios, a 'Unit Status' dialog is accessible, where equipment and inventory can be configured. </small> \n \n"..bmr_skirmish_items, subtopic_image = "help/campaign.webp", subtopic_icon = "help/skirmish_items.webp"})
+table.insert(bmr_worldmap, {subtopic_id = _ "Shops", subtopic_text = _ "<small>    There are a limited number of shops, usually reached through the World Map, where gear can be bought or sold, depending upon which merchant you approach. \n \n    They are often a place to recruit new followers or gather information from other people in the shop.</small>", subtopic_image = "help/shop.webp", subtopic_icon = "help/shop_character.webp"})
+table.insert(bmr_worldmap, {subtopic_id = _ "Battles", subtopic_text = _ "<small>    The enemy units on the World Map represent another roaming army, and any interaction with them leads to a Battle Scenario. Such scenarios are bigger than the random skirmishes, but lesser than the core campaign scenarios.</small> \n \n"..bmr_skirmish_items, subtopic_image = "help/battle.webp", subtopic_icon = "help/skirmish_items.webp"})
+table.insert(bmr_worldmap, {subtopic_id = _ "Skirmishes", subtopic_text = _ "<small>    Enemies lurk behind every snowdrift and tree, so your forces will often stumble into random skirmishes as they move over the World Map. Each skirmish is short and not usually a problem, but they can take a toll as they add up.  Sometimes you get the first move, sometimes you are ambushed, so be sure to arrange your travelling party with an eye toward both experience and survival, while still on the world map.</small> \n \n"..bmr_skirmish_items, subtopic_image = "help/skirmish.webp", subtopic_icon = "help/skirmish_items.webp"})
 
 -- to make the internal IDs look better, probably belongs either in the equipment data or in a separate function
 -- TODO translatable _ marks
 local bmr_e_g = {}
 -- positions
-bmr_e_g["arms"] = "Arm Guards"
-bmr_e_g["head"] = "Headgear"
-bmr_e_g["shield"] = "Shields"
-bmr_e_g["cloak"] = "Cloaks"
-bmr_e_g["ring"] = "Hands"
-bmr_e_g["amulet"] = "Miscellaneous"
-bmr_e_g["torso"] = "Tunics and Armor"
-bmr_e_g["foot"] = "Footgear"
-bmr_e_g["weapon"] = "Weapons"
-bmr_e_g["neck"] = "Throat Protection"
+bmr_e_g["arms"] = _ "Arm Guards"
+bmr_e_g["head"] = _ "Headgear"
+bmr_e_g["shield"] = _ "Shields"
+bmr_e_g["cloak"] = _ "Cloaks"
+bmr_e_g["ring"] = _ "Hands"
+bmr_e_g["amulet"] = _ "Miscellaneous"
+bmr_e_g["torso"] = _ "Tunics and Armor"
+bmr_e_g["foot"] = _ "Footgear"
+bmr_e_g["weapon"] = _ "Weapons"
+bmr_e_g["neck"] = _ "Throat Protection"
 -- usage types
-bmr_e_g["dog"] = "for use by canines"
-bmr_e_g["all"] = "available to all"
-bmr_e_g["orcish"] = "available to orcs"
-bmr_e_g["amulets"] = "available to magi and shamans"
-bmr_e_g["light_armor"] = "for light infantry"
-bmr_e_g["heavy_armoor"] = "for heavy infantry"
-bmr_e_g["shields"] = "for shield-bearers"
-bmr_e_g["bow"] = "for archers"
-bmr_e_g["sword"] = "for swordsmen"
-bmr_e_g["axe"] = "for ax-wielders"
-bmr_e_g["spear"] = "for spearmen"
-bmr_e_g["despair"] = "for phantoms only"
+bmr_e_g["dog"] = _ "for use by canines"
+bmr_e_g["all"] = _ "available to all"
+bmr_e_g["orcish"] = _ "available to orcs"
+bmr_e_g["amulets"] = _ "available to magi and shamans"
+bmr_e_g["light_armor"] = _ "for light infantry"
+bmr_e_g["heavy_armoor"] = _ "for heavy infantry"
+bmr_e_g["shields"] = _ "for shield-bearers"
+bmr_e_g["bow"] = _ "for archers"
+bmr_e_g["sword"] = _ "for swordsmen"
+bmr_e_g["axe"] = _ "for ax-wielders"
+bmr_e_g["spear"] = _ "for spearmen"
+bmr_e_g["despair"] = _ "for phantoms only"
 
 
 function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
@@ -127,6 +128,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 				local name = bmr_worldmap[i].subtopic_id
 				local text = bmr_worldmap[i].subtopic_text
 				local icon = bmr_worldmap[i].subtopic_icon
+				local image = bmr_worldmap[i].subtopic_image
 				local subnode, sub_page = node:add_help_page {
 					title = name,
 					page_type = "worldmap",
@@ -136,6 +138,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
                 page_element.map_caption.marked_up_text = string.format("<big><b>%s</b></big>", name)
                 page_element.map_text.marked_up_text = text
                 page_element.map_icon.label = icon
+                page_element.map_big_image.label = image
 			end
 		end
 
