@@ -3,8 +3,11 @@ local _ = wesnoth.textdomain 'Bad_Moon_Rising'
 local dialog_wml = wml.load "~add-ons/Bad_Moon_Rising/utils/help_dialog.cfg"
 
 -- This help dialog is adapted from the World Conquest help dialog
--- TODO : the enemies list (skirmishes)
-
+-- TODO :
+--[[
+ - the enemies list (skirmishes)
+ - making text links do something
+]]
 local function make_caption(text)
 	return ("<big><b>%s</b></big>"):format(text)
 end
@@ -23,7 +26,6 @@ table.insert(bmr_worldmap, {subtopic_id = _ "Battles", subtopic_text = _ "<small
 table.insert(bmr_worldmap, {subtopic_id = _ "Skirmishes", subtopic_text = _ "<small>    Enemies lurk behind every snowdrift and tree, so your forces will often stumble into random skirmishes as they move over the World Map. Each skirmish is short and not usually a problem, but they can take a toll as they add up.  Sometimes you get the first move, sometimes you are ambushed, so be sure to arrange your travelling party with an eye toward both experience and survival, while still on the world map.</small> \n \n"..bmr_skirmish_items, subtopic_image = "help/skirmish.webp", subtopic_icon = "help/skirmish_items.webp"})
 
 -- to make the internal IDs look better, probably belongs either in the equipment data or in a separate function
--- TODO translatable _ marks
 local bmr_e_g = {}
 -- positions
 bmr_e_g["arms"] = _ "Arm Guards"
@@ -71,7 +73,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 		local str_des_mechanics = cfg.mechanics_text or
 			make_caption( _ "General Help") .. "\n\n" ..
 			_ "Bad Moon Rising has game mechanics that are very similar to standard Wesnoth singleplayer campaigns, however there are a few key differences as described here.\n"..
-			_ "Questions or suggestions are always welcome and can be posted to:\n ".."https://forums.wesnoth.org" .."\n\n"..
+			_ "Questions or suggestions are always welcome and can be posted to the forums.\n\n"..
 			_ "<b>Inventory</b>\n" ..
 			_ "Player and AI units can carry items and equipment.\n\n" ..
 			_ "<b>Recruit and Recall</b>\n" ..
