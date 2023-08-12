@@ -10,6 +10,7 @@
 [apply_gear]
   id=
   gear_id=
+  show_text= (optional)
 [/apply_gear]
 
 ]]--
@@ -31,8 +32,17 @@ function wesnoth.wml_actions.apply_gear(cfg)
 --            if take_result == "pass" then
             if eq_unit[1] then
               bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
-              wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
+              if cfg.show_text == "yes" then 
+                  wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
+              end
             end
+            local eq_side = eq_unit[1].side
+            -- this known_items variable is initialized in one of the INIT macros in utils/inventory.cfg
+            local k_i = wml.variables["known_items["..eq_side.."].s"]
+            if k_i == "dummy" or (not k_i) then
+                k_i = ""
+            end
+            wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
         end
 end
 

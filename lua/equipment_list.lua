@@ -82,7 +82,7 @@ table.insert(list_usage, {
     "Swamp Monk", "Swamp Mage",
     "Primevalist Mendicant", "Primevalist Cenobite",
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Raenna", "Bad Raenna", "Orcish Archer", "Orcish Crossbowman", "Orcish Slurbow", "Hrala"},
-    usage = "amulet"
+    usage = "amulets"
 })
 table.insert(list_usage, {
     types = {"Ukian Regular", "Ukian Veteran", "Ukian Signalman", "Ukian Subcommander", "Ukian Commander", "Ukian Flareman", "Ukian Officer", "Belleros", "Belleros_Officer", "Orcish Serf", "Orcish Foreman", 
@@ -140,7 +140,7 @@ table.insert(list_usage, {
     "Scarrion_Spearman",
     "Spearman", "Swordsman", "Royal Guard",
     "Phantom Spearman", "Phantom Soldier", "Phantom Officer", "Phantom Master"},
-    usage = "shield"
+    usage = "shields"
 })
 table.insert(list_usage, {
     types = {
@@ -729,7 +729,7 @@ table.insert(the_list, {
         image = "icons/shield_wooden.png",
         icon = "items/shield-targ.png~CS(30,10,-10)",
 	cost = 20,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 2
 })
@@ -742,7 +742,7 @@ table.insert(the_list, {
         image = "icons/shield_kite.png",
         icon = "items/shield_kite.png",
 	cost = 25,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
@@ -755,7 +755,7 @@ table.insert(the_list, {
         image = "icons/orc_roundshield.png",
         icon = "items/buckler.png~CS(20,-10,-10)",
 	cost = 25,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 2
 })
@@ -768,7 +768,7 @@ table.insert(the_list, {
         image = "icons/silver_buckler.png",
         icon = "items/buckler.png~CS(20,40,60)",
 	cost = 90,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
@@ -781,7 +781,7 @@ table.insert(the_list, {
         image = "icons/shield_steel.png~CS(-10,-30,-10)",
         icon = "items/shield-iron.png",
 	cost = 70,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 3
 })
@@ -794,7 +794,7 @@ table.insert(the_list, {
         image = "icons/shield_tower.png",
         icon = "items/shield-door.png",
 	cost = 150,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 4
 })
@@ -807,7 +807,7 @@ table.insert(the_list, {
         image = "icons/shield_polished.png~GS()",
         icon = "misc/reflector-shield.png",
 	cost = 270,
-	usage = "shield",
+	usage = "shields",
 	position = "shield",
 	weight = 1
 })
@@ -932,7 +932,7 @@ table.insert(the_list, {
         image = "icons/cloak_red.png",
         icon = "items/cloak-green.png~CS(80,-60,-30)",
 	cost = 265,
-	usage = "amulet",
+	usage = "amulets",
 	position = "cloak",
 	weight = 0
 	
@@ -946,7 +946,7 @@ table.insert(the_list, {
         image = "icons/cloak_gaea.png",
         icon = "items/cloak-green.png~CS(-20,60,-20)",
 	cost = 365,
-	usage = "amulet",
+	usage = "amulets",
 	position = "cloak",
 	weight = 0
 	
@@ -961,7 +961,7 @@ table.insert(the_list, {
         image = "icons/stone_ring.png",
         icon = "items/ring-white.png",
 	cost = 38,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -975,7 +975,7 @@ table.insert(the_list, {
         image = "icons/ring_gold.png~GS()",
         icon = "items/ring-silver.png",
 	cost = 45,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -989,7 +989,7 @@ table.insert(the_list, {
         image = "icons/ring_gold.png",
         icon = "items/ring-gold.png",
 	cost = 95,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -1006,7 +1006,7 @@ table.insert(the_list, {
         image = "icons/ring_green.png",
         icon = "items/ring-green.png",
 	cost = 135,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -1020,7 +1020,7 @@ table.insert(the_list, {
         image = "icons/ring_dark.png",
         icon = "items/ring-black.png~CS(5,-5,0)",
 	cost = 55,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -1035,7 +1035,7 @@ table.insert(the_list, {
         image = "icons/jewelry_ring_prismatic.png",
         icon = "items/ring-silver.png",
 	cost = 145,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -1070,7 +1070,7 @@ table.insert(the_list, {
         image = "icons/ring_gold.png~CS(10,-20,-60)",
         icon = "items/ring-brown.png",
 	cost = 195,
-	usage = "amulet",
+	usage = "amulets",
 	position = "ring",
 	weight = 0
 	
@@ -1273,7 +1273,7 @@ table.insert(the_list, {
         image = "icons/jewelry_necklace_amber.png~CS(-10,-10,10)",
         icon = "misc/shock-charm.png",
 	cost = 165,
-	usage = "amulet",
+	usage = "amulets",
 	position = "amulet",
 	weight = 0
 	
@@ -1289,7 +1289,7 @@ table.insert(the_list, {
         image = "icons/jewelry_necklace_amber.png~CS(-30,-30,-10)",
         icon = "misc/dark-charm.png",
 	cost = 145,
-	usage = "amulet",
+	usage = "amulets",
 	position = "amulet",
 	weight = 0
 	
@@ -1304,7 +1304,7 @@ table.insert(the_list, {
         image = "icons/herb-bag.png",
         icon = "items/flower4.png",
 	cost = 75,
-	usage = "amulet",
+	usage = "amulets",
 	position = "amulet",
 	weight = 0
 	
@@ -1318,7 +1318,7 @@ table.insert(the_list, {
         image = "icons/jewelry_necklace_amber.png~CS(-30,-20,40)",
         icon = "misc/charm.png",
 	cost = 125,
-	usage = "amulet",
+	usage = "amulets",
 	position = "amulet",
 	weight = 0
 	
@@ -1332,7 +1332,7 @@ table.insert(the_list, {
         image = "icons/necklace1.png~CS(-20,-30,40)",
         icon = "items/ankh-necklace.png~CS(20,-20,60)",
 	cost = 155,
-	usage = "amulet",
+	usage = "amulets",
 	position = "amulet",
 	weight = 0
 	
