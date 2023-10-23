@@ -42,7 +42,9 @@ function wesnoth.wml_actions.apply_gear(cfg)
             if k_i == "dummy" or (not k_i) then
                 wml.variables["known_items["..eq_side.."].s"] = string.format("%s", gear_id)
             else
-                wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
+                if not string.find(k_i,gear_id) then
+                    wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
+                end
             end
         end
 end
