@@ -40,9 +40,10 @@ function wesnoth.wml_actions.apply_gear(cfg)
             -- this known_items variable is initialized in one of the INIT macros in utils/inventory.cfg
             local k_i = wml.variables["known_items["..eq_side.."].s"]
             if k_i == "dummy" or (not k_i) then
-                k_i = ""
+                wml.variables["known_items["..eq_side.."].s"] = string.format("%s", gear_id)
+            else
+                wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
             end
-            wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
         end
 end
 
