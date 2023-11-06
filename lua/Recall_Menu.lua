@@ -28,7 +28,7 @@ Gui_recall.new = function()
 --			    T.column { T.spacer{ id = "tl_spacer" }},
 			    T.column { horizontal_alignment = "left", T.grid {
 			                T.row { 
-			                    T.column { horizontal_alignment = "left", T.toggle_button { id = "the_skip_skirmish_button", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit", definition = 'default'}},
+			                    T.column { horizontal_alignment = "left", T.toggle_button { id = "the_skip_skirmish_button", tooltip = "Unless ambushed, you automatically flee from skirmishes, at the cost of 1 XP for each unit.", definition = 'default'}},
 			                    T.column { horizontal_alignment = "left", T.label { id = "the_skip_skirmish_label", tooltip = "automatically flee from skirmishes, at the cost of 1 XP for each unit"}}
 			                    }
 			    		}},
