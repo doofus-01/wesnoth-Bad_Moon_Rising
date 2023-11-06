@@ -22,7 +22,7 @@ table.insert(list_usage, {
     "Ukian Archer", "Ukian Hawkeye", "Ukian Deadeye", "Orcish Archer", "Orcish Crossbowman", "Orcish FlameThrower",
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Orcish Raider", "Orcish Terror",
     "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Juggernaught",
-    "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2",
+    "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2", "Orcish Nightblade",
     "Spearman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Thug", "Sergeant","Lieutenant","General",
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Heavy Infantryman","Shock Trooper","Iron Mauler",
@@ -72,7 +72,7 @@ table.insert(list_usage, {
 })
 table.insert(list_usage, {
     types = {"Ukian Runner", "Ukian Courrier", "Ukian Commando", "Orcish Slinger", "Orcish Hunter", "Orcish Stalker", "Orcish Drifter", "Orcish Wanderer", "Orcish Vagrant", "Orcish Traveler", "Ukian Seeress", "Ukian Witch", 
-    "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2",
+    "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2", "Orcish Nightblade",
     "Red Mage", "Arch Mage", "Silver Mage", "Great Mage", "Dark Messiah",
     "Phantom Cloak", "Phantom Shadow", "Phantom Master","Phantom Widow","Phantom Midnight","Phantom White","Phantom Banshee",
     "Lich", "Ancient Lich",
@@ -633,7 +633,7 @@ table.insert(the_list, {
         name = _ "Great Helm",
 	id = "great_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is an older design of helmet used, still used by some kings and knights.  It is sturdier, but more restricting than the bascinet, so while stronger against blunt-force trauma, it offers less protection against attacks to the neck.  Bonus: + 20 impact resistance, + 5 blade resistance, + 5 pierce resistance, + 10 HP",
+        text = _ "This is an older design of helmet still used by some kings and knights.  It is sturdier, but more restricting than the bascinet, so while stronger against blunt-force trauma, it offers less protection against attacks to the neck.  Bonus: + 20 impact resistance, + 5 blade resistance, + 5 pierce resistance, + 10 HP",
         image = "icons/helmet_great2.png",
         icon = "items/helmet2.png~CS(-20,-20,0)",
 	cost = 160,
@@ -1179,7 +1179,7 @@ table.insert(the_list, {
 })
 table.insert(the_list, {
 	eq_effect = { id = "gold_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -8, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
-        name = _ "Goldmaill Gauntlets",
+        name = _ "Goldmail Gauntlets",
         id = "gold_gloves",
         tooltip = _ "protection for the hands",
         text = _ "These gauntlets are made of the odd golden alloy of the primeval civilization.  They provide full metal protection for the hands and wrist, but they do interfere with normal movement, so they are not for everyone.  Bonus: +7 blade, +6 impact, +3 cold, +5 fire resistances;  +4 hitpoints.",
@@ -1809,6 +1809,20 @@ table.insert(the_list, {
 	usage = "all",
 	position = "foot",	
 	weight = -2
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "snow_boots", {"effect", { apply_to = "defense", replace = "no",{"defense", {frozen = -10}}}} },
+        name = _ "Snow Boots",
+        id = "snow_boots",
+        tooltip = _ "Footwear usually affects movement",
+        text = _ "These bulky boots distribute weight and give better traction on frozen and snowy ground.  Increases frozen defense by 10%.",
+        image = "icons/boots_snow.png",
+        icon = "misc/boots.png~GS()",
+	cost = 25,
+	usage = "all",
+	position = "foot",	
+	weight = 1
 	
 })
 table.insert(the_list, {
