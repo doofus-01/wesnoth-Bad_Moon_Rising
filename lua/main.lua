@@ -23,7 +23,7 @@ end
 
 Gui_recall2 = z_require("Recall_Menu")
 Status_test2 = z_require("Status_Test")
---Debug_test2 = z_require("debug_utils")
+Debug_test2 = z_require("bmr_debug_menu")
 bmr_utils = z_require("bmr_utils")
 equipment_list = z_require("equipment_list")
 equipment_write = z_require("equipment_write")
