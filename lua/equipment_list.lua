@@ -2447,8 +2447,46 @@ table.insert(the_list, {
 	weight = 2
 	
 })
+-------------------------------single-use-items-----------------------------
 
+-- eq_effect gets wrapped immediately in an [object], so we can use [then] to create a remove event?  No, this does not work
+-- instead, we use a separately defined event that filters on su_* glob
+-- local single_use_event = function(obj_id)
+--        return { "then", {"event", { name = "attack end", {"filter_attack", { name = obj_id }}, {"remove_object", { id = "$unit.id", object_id = obj_id }} }} }
+-- end
 
+-- local su_bomb_arrow_event = single_use_event("su_bomb_arrow")
+table.insert(the_list, {
+	eq_effect = { id = "suw_bomb_arrow", {"effect", { apply_to = "new_attack", name = "suw_bomb_arrow", description = "bomb arrow", range = "ranged", type = "fire", damage = 25, number = 1, icon = "icons/bomb-arrow.png", defense_weight = 0,
+							{"specials", {{"chance_to_hit", {id="splash", name= _ "Fire Splash", value=70, cumulative="yes",
+							description= _ "This attack does not require a direct hit to cause damage, therefore it has a very high effective chance to hit."
+							}}}}
+							}},
+					     {"effect", {apply_to = "new_animation", id = "suw_bomb_arrow_anim", 
+					                {"attack_anim", {{"filter_attack", {name = "suw_bomb_arrow"}}, 
+					                                 missile_start_time = -150, 
+					                                 {"missile_frame", {duration = 150, image = "projectiles/missile-fire-n.png", image_diagonal = "projectiles/missile-fire-ne.png"}},
+					                                 {"if", {hits = "yes",
+					                                         {"missile_frame", {offset = "0.8~1.0", duration = 600, image = "projectiles/fire-burst-small-[1~8].png", image_diagonal = "projectiles/fire-burst-small-[1~8].png"}},
+					                                 }},
+					                 }
+					                 }}
+                     }
+					    --				}}, 
+                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
+                     },
+        name = _ "Bomb Arrow",
+        id = "suw_bomb_arrow",
+        tooltip = _ "this is a single-use weapon",
+        text = _ "A light-weight arrow is clad with a fist-sized clay chamber, filled with a sticky, stinking grease, as well as some small pieces of sun-flint.  When the clay is shattered, the sun-flint sets the grease splatters on fire, damaging anything in the vicinity.",
+        image = "icons/bomb-arrow.png",
+        icon = "items/bomb_arrow.png",
+	cost = 75,
+	usage = "bow",
+	position = "weapon_alt",	
+	weight = 0
+	
+})
 
 -----------------------------------------------------------------------------------------------
 
