@@ -2450,7 +2450,7 @@ table.insert(the_list, {
 -------------------------------single-use-items-----------------------------
 
 -- eq_effect gets wrapped immediately in an [object], so we can use [then] to create a remove event?  No, this does not work
--- instead, we use a separately defined event that filters on su_* glob
+-- instead, we use a separately defined event that filters on suw_* glob <- this does not work either, so we just hardcode the IDs in utils/inventory.cfg
 -- local single_use_event = function(obj_id)
 --        return { "then", {"event", { name = "attack end", {"filter_attack", { name = obj_id }}, {"remove_object", { id = "$unit.id", object_id = obj_id }} }} }
 -- end
@@ -2458,7 +2458,7 @@ table.insert(the_list, {
 -- local su_bomb_arrow_event = single_use_event("su_bomb_arrow")
 table.insert(the_list, {
 	eq_effect = { id = "suw_bomb_arrow", {"effect", { apply_to = "new_attack", name = "suw_bomb_arrow", description = "bomb arrow", range = "ranged", type = "fire", damage = 25, number = 1, icon = "icons/bomb-arrow.png", defense_weight = 0,
-							{"specials", {{"chance_to_hit", {id="splash", name= _ "Fire Splash", value=70, cumulative="yes",
+							{"specials", {{"chance_to_hit", {id="splash", name= _ "fire splash", value=70, cumulative="yes",
 							description= _ "This attack does not require a direct hit to cause damage, therefore it has a very high effective chance to hit."
 							}}}}
 							}},
@@ -2483,6 +2483,71 @@ table.insert(the_list, {
         icon = "items/bomb_arrow.png",
 	cost = 75,
 	usage = "bow",
+	position = "weapon_alt",	
+	weight = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "suw_ice_flower", {"effect", { apply_to = "new_attack", name = "suw_ice_flower", description = "ice flower", range = "ranged", type = "cold", damage = 5, number = 3, icon = "attacks/thorns.png~CS(-25,-15,50)", defense_weight = 0,
+							{"specials", {{"slow", {id="freeze", name= _ "freeze",
+							description= _ "This attack freezes the target, making flesh and fiber stiff and slow."
+							}}}}
+							}},
+					     {"effect", {apply_to = "new_animation", id = "suw_ice_flower_anim", 
+					                {"attack_anim", {{"filter_attack", {name = "suw_ice_flower"}}, 
+					                                 missile_start_time = -150,
+					                                 sparkle_start_time = -250,
+					                                 
+					                                 {"missile_frame", {duration = 150, image = "projectiles/thorns.png~CS(20,45,80)", image_diagonal = "projectiles/thorns-ne.png~CS(20,45,80)"}},
+					                                 {"sparkle_frame", {halo_y = "-30~2:540", offset = 1.0, halo = "halo/elven/ice-halo[1~9].png~O(0.35):[60*9]"}},
+					                 }
+					                 }}
+                     }
+					    --				}}, 
+                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
+                     },
+        name = _ "Ice Flower",
+        id = "suw_ice_flower",
+        tooltip = _ "this is a single-use weapon",
+        text = _ "A fragile flower made of ice, grown from some otherworldly process...",
+        image = "attacks/thorns.png~CS(-25,-15,50)", 
+        icon = "items/ice_flower.png",
+	cost = 105,
+	usage = "all",
+	position = "weapon_alt",	
+	weight = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "suw_poison_jug", {"effect", { apply_to = "new_attack", name = "suw_poison_jug", description = "toxic brew", range = "ranged", type = "impact", damage = 12, number = 3, icon = "icons/booze.png", defense_weight = 0,
+							{"specials", {{"poison", {id="poison", name= _ "poison",
+							description= _ "This attack poisons..."
+							}}}}
+							}},
+					     {"effect", {apply_to = "new_animation", id = "suw_poison_jug_anim", 
+					                {"attack_anim", {{"filter_attack", {name = "suw_poison_jug"}}, 
+					                                 missile_start_time = -300, 
+					                                 missile_y = "-2~-18:100,-18~-22:50,-22~-19:50,-16~-3:100", 
+					                                 {"missile_frame", {offset = "0.0~1.2", auto_vflip = "no", duration = 300, image = "misc/jug.png", image_diagonal = "misc/jug.png"}},
+					                                 {"if", {hits = "yes",
+					                                         splash_start_time=-100,
+					                                         splash_y = -6,
+					                                         {"splash_frame", {offset = "1.0~1.2", auto_vflip = "no", image = "projectiles/fireball-fail-[1~7].png~CS(-25,20,5):[80*7]", image_diagonal = "projectiles/fireball-fail-[1~7].png~CS(-25,20,5):[80*7]"}},
+					                                 }},
+					                 }
+					                 }}
+                     }
+					    --				}}, 
+                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
+                     },
+        name = _ "Toxic Brew",
+        id = "suw_poison_jug",
+        tooltip = _ "this is a single-use weapon",
+        text = _ "A foul, poisonous liquid...",
+        image = "icons/booze.png",
+        icon = "items/booze.png",
+	cost = 35,
+	usage = "all",
 	position = "weapon_alt",	
 	weight = 0
 	
