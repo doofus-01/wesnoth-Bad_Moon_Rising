@@ -25,6 +25,10 @@ table.insert(bmr_worldmap, {subtopic_id = _ "Shops", subtopic_text = _ "<small> 
 table.insert(bmr_worldmap, {subtopic_id = _ "Battles", subtopic_text = _ "<small>    The enemy units on the World Map represent another roaming army, and any interaction with them leads to a Battle Scenario. Such scenarios are bigger than the random skirmishes, but lesser than the core campaign scenarios.</small> \n \n"..bmr_skirmish_items, subtopic_image = "help/battle.webp", subtopic_icon = "help/skirmish_items.webp"})
 table.insert(bmr_worldmap, {subtopic_id = _ "Skirmishes", subtopic_text = _ "<small>    Enemies lurk behind every snowdrift and tree, so your forces will often stumble into random skirmishes as they move over the World Map. Each skirmish is short and not usually a problem, but they can take a toll as they add up.  Sometimes you get the first move, sometimes you are ambushed, so be sure to arrange your travelling party with an eye toward both experience and survival, while still on the world map.  These skirmishes can be avoided, at a price, by checking the 'Auto-flee' option in the 'Marching Formation' dialog.</small> \n \n"..bmr_skirmish_items, subtopic_image = "help/skirmish.webp", subtopic_icon = "help/skirmish_items.webp"})
 
+local bmr_units ={}
+table.insert(bmr_units, {subtopic_id = _ "Recruits and Recalls", subtopic_text = _ "<small>    There is a limited pool of new recruits available to your forces, and while you can pick up more along the way, each life is precious.\n".." \n  Experience is handled differently than standard Wesnoth; it is not reset to zero upon advancement as total experience is an important measure of campaign progression.  It is still displayed normally in some contexts, most importantly the XP bar.</small> \n ", subtopic_image = "help/recruiting.webp", subtopic_icon = "help/recruit_small.webp"})
+table.insert(bmr_units, {subtopic_id = _ "Enemies", subtopic_text = _ "<small>    Enemies can use most of the same weapons and armor as your forces, and also become slightly stronger as the campaign progresses.\n <i>Tuning the enemy strength progression is a long work in progress, you can change some of the parameters in the context menu shown above, available when in debug mode.  Changes will be in effect next scenario.</i>\n".."\n There is a visual indication of the enemy unit strength in their image on the side panel. </small> \n ", subtopic_image = "help/ai_debug.webp", subtopic_icon = "help/enemy_panel.webp"})
+
 -- to make the internal IDs look better, probably belongs either in the equipment data or in a separate function
 local bmr_e_g = {}
 -- positions
@@ -57,6 +61,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
     local curr_side = wesnoth.current.side
     local discovery_list = wml.variables["known_items["..curr_side.."].s"]
 	local show_help_mechanics = cfg.show_mechanics ~= false
+	local show_help_units = cfg.show_units ~= false
 	local show_help_recruit = cfg.show_recruit ~= false
 	local show_help_worldmap = cfg.show_worldmap ~= false
 	local show_help_equipment = cfg.show_equipment ~= false
@@ -83,7 +88,7 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 			""
 		local str_cat_worldmap, str_des_worldmap = help_page_text( _ "Campaign Navigation", _ "The world map is a psuedo-scenario that allows the player to move between campaign scenarios, shop scenarios, battles, and random skirmishes.")
 		local str_cat_items, str_des_items = help_page_text( _ "Inventory", _ "Various weapons, armor, and other gear can be acquired throughout the campaign.  As they are discovered, they will show up in the list here, meaning that you have discovered them - it does not mean you currently posses them.  Not every unit can use every item.")
-		local str_cat_recruit, str_des_recruit = help_page_text( _ "Recruit and Recall" , _ "There is a limited pool of new recruits available to your forces, and while you can pick up more along the way, each life is precious.")
+		local str_cat_recruit, str_des_recruit = help_page_text( _ "Units and Advancements" , _ "Availability and progression of units is slightly different in this campaign than in standard Wesnoth.")
 		--local str_cat_settings = _ "Settings"
 
 		local root_node = dialog:find("treeview_topics")
@@ -111,12 +116,29 @@ function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
 			page.label_content.marked_up_text = str_des_mechanics
 		end
 
-		---- add general recruit topic ----
-		if show_help_mechanics then
-			local node, page = root_node:add_help_page {
+		---- add unit and advancement topic ----
+		if show_help_units then
+			local node, root_page = root_node:add_help_page {
 				title = str_cat_recruit
 			}
-			page.label_content.marked_up_text = str_des_recruit
+			root_page.label_content.marked_up_text = str_des_recruit
+			-- add specific worldmap pages
+			for i = 1, #bmr_units do
+				local name = bmr_units[i].subtopic_id
+				local text = bmr_units[i].subtopic_text
+				local icon = bmr_units[i].subtopic_icon
+				local image = bmr_units[i].subtopic_image
+				local subnode, sub_page = node:add_help_page {
+					title = name,
+					page_type = "worldmap",
+					node_type = "subcategory",
+				}
+                local page_element = sub_page.treeview_map:add_item_of_type("map_details")
+                page_element.map_caption.marked_up_text = string.format("<big><b>%s</b></big>", name)
+                page_element.map_text.marked_up_text = text
+                page_element.map_icon.label = icon
+                page_element.map_big_image.label = image
+			end
 		end
 
 		-- add general worldmap topic.
