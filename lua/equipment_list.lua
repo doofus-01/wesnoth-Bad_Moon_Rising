@@ -23,7 +23,7 @@ table.insert(list_usage, {
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Orcish Raider", "Orcish Terror",
     "Orcish Cleverman", "Orcish RimeRunner", "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Juggernaught",
     "Orcish Assassin", "Orcish Slayer", "Orcish Slayer2", "Orcish Nightblade",
-    "Spearman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Thug", "Sergeant","Lieutenant","General",
+    "Spearman", "Patrolman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Thug", "Sergeant","Lieutenant","General",
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Heavy Infantryman","Shock Trooper","Iron Mauler",
     "Skeleton", "Revenant", "Draug", "Death Knight",
@@ -88,7 +88,7 @@ table.insert(list_usage, {
     types = {"Ukian Regular", "Ukian Veteran", "Ukian Signalman", "Ukian Subcommander", "Ukian Commander", "Ukian Flareman", "Ukian Officer", "Belleros", "Belleros_Officer", "Orcish Serf", "Orcish Foreman", 
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
     "Ukian Courrier", "Ukian Commando", "Orcish Slinger", "Orcish Hunter", "Orcish Stalker", "Orcish Traveler", "Orcish Overseer", "Orcish Fireline", "Orcish Firebreather", "Orcish Grunt", "Orcish Warrior", "Orcish Warrior2", "Orcish Warlord", 
-    "Spearman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Sergeant","Lieutenant",
+    "Spearman", "Patrolman", "Swordsman", "Pikeman" ,"Javelineer", "Royal Guard", "Halberdier", "General", "Sergeant","Lieutenant",
     "Horseman", "Lancer", "Knight", "Paladin", "Grand Knight", "Cavalryman", "Dragoon", "Cavalier",
     "Bowman", "Longbowman", "Master Bowman",
     "Orcish SnowWalker", "Orcish IceStalker", "Great Orc", "Orcish Raider", "Orcish Terror", "Orcish FlameThrower",
@@ -138,7 +138,7 @@ table.insert(list_usage, {
     "Northern Soldier", "Northern Fighter", "Northern Elite",
     "Revenant", "Draug",
     "Scarrion_Spearman",
-    "Spearman", "Swordsman", "Royal Guard",
+    "Spearman", "Patrolman", "Swordsman", "Royal Guard",
     "Phantom Spearman", "Phantom Soldier", "Phantom Officer", "Phantom Master"},
     usage = "shields"
 })
