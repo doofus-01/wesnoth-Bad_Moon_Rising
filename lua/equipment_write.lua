@@ -43,6 +43,23 @@ bmr_equipment.filter = function(unit_id, gear_id)
       for j in ipairs(equipment_list.the_list) do  
         if equipment_list.the_list[j].id == gear_id then
           gear_usage = equipment_list.the_list[j].usage
+-- TO DO: filter for usage = potion, then apply the eq_eff, don't bother with the rest, set the result to "pass"
+-- this makes it get used right away
+--[[
+          if gear_usage == "potion" then
+              eq_eff = equipment_list.the_list[j].eq_effect
+	      wesnoth.units.add_modification(units[1], "object", eq_eff)
+	      result = "pass"
+	      return result
+	  end
+-- ]]
+-- this makes it get put to pool right away
+--[ [
+          if gear_usage == "potion" then
+              result = "potion"
+	      return result
+	  end
+-- ]]
           -- make sure the unit has an open position before continuing
           gear_position = equipment_list.the_list[j].position
 --          wesnoth.message("Filter_debugging", string.format("gear_position= %s", gear_position))
@@ -234,6 +251,9 @@ bmr_equipment.unit = function(unit_id, gear_id)
       output = "fail"
     elseif filter_result == "pass" then
       output = "pass"
+    elseif filter_result == "potion" then
+      output = "potion"
+      bmr_equipment.pool_add(gear_id)
     elseif filter_result == "no room" or filter_result == "wrong type" then
       bmr_equipment.pool_add(gear_id)
       output = "pass"

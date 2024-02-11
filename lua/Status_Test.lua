@@ -282,6 +282,11 @@ local function call_from_pool(u_i,sp_i)
   if pter == "pass" or pter == "no room" then
     bmr_equipment.pool_remove(sp_i)
   end
+  if pter == "potion" then
+    bmr_equipment.pool_remove(sp_i)
+    bmr_equipment.pool_remove(sp_i) -- this is to get rid of the copy made by bmr_equipment.unit, there is probably a better way to do this
+    -- TO DO: bmr_equipment.consume(u_i,sp_i)
+  end
 end
 
 local function delete_from_pool(sp_i)

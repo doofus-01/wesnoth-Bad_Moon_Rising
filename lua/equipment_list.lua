@@ -2552,6 +2552,22 @@ table.insert(the_list, {
 	weight = 0
 	
 })
+----potions---------
+-- mostly dummy items
+table.insert(the_list, {
+	eq_effect = { id = "potion_heal", {"effect", { apply_to = "hitpoints", increase = 28}}},
+        name = _ "Healing Potion",
+        id = "potion_heal",
+        tooltip = _ "potions can be used once, not worn",
+        text = _ "This potion heals up to 28 HP",
+        image = "icons/potion_red_small.png",
+        icon = "items/potion-red.png~SCALE(56,56)",
+	cost = 35,
+	usage = "potion",
+	position = "for_use",
+	weight = 0
+	
+})
 
 -----------------------------------------------------------------------------------------------
 
