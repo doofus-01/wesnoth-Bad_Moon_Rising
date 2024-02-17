@@ -9,9 +9,45 @@ bmr_equipment = {}
 --   "no room" if unit already has equipment for that usage type
 --   "is ai" if unit cannot accept equipment and is ai controlled side
 --   "pass" if unit can accept equipment
-bmr_equipment.filter = function(unit_id, gear_id)    
+bmr_equipment.consume = function(unit_id, gear_id)
+      -- same unit check as bmr_equipment.filter, maybe it should be a separate function
       local result = "wrong type"
       local units = {}  
+      units = wesnoth.units.find_on_map({ id = unit_id })
+      if units[1] then
+      else
+        units = wesnoth.get_recall_units({ id = unit_id })
+	if units[1] then
+        else
+          result = "not found"
+          return result
+	end
+      end
+      if wesnoth.sides[units[1].side].controller == "ai" then
+        result = "is ai"
+      end
+      -- end of unit check
+      -- find the gear_usage for gear_id in equipment_list.the_list (not eqipment_list.list_usage)
+      -- won't need all the keys, just these two
+      local gear_usage = ""
+      local eq_eff = ""
+      for j in ipairs(equipment_list.the_list) do  
+        if equipment_list.the_list[j].id == gear_id then
+          gear_usage = equipment_list.the_list[j].usage
+          -- filter for usage = potion, then apply the eq_eff, don't bother with the rest
+          if gear_usage == "potion" then
+              eq_eff = equipment_list.the_list[j].eq_effect
+	      wesnoth.units.add_modification(units[1], "object", eq_eff)
+	      result = "pass"
+	      return result
+	  end
+        end
+      end
+end
+
+bmr_equipment.filter = function(unit_id, gear_id)    
+      local result = "wrong type"
+      local units = {}
       units = wesnoth.units.find_on_map({ id = unit_id })
       if units[1] then
       else

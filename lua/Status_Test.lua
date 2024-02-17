@@ -176,15 +176,20 @@ local function preshow(self)
     -- set markp for pool list entry to red italic, then check unit can use it and change markup if yes
         local gpf_style = "italic"    
         local gpf_color = "#bf6655"    
+        local gpf_weight = "light"
 	local gear_pool_id = equipment_list.the_list[j].id
 	local gear_pool_name = equipment_list.the_list[j].name
 	local gear_pool_usage = equipment_list.the_list[j].usage
 	local gear_pool_position = equipment_list.the_list[j].position
-
 --	local gear_pool_tooltip = equipment_list.the_list[j].tooltip
     -- local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
-    local gear_pool_number = wml.variables["gear_pool[0]."..gear_pool_id]
+        local gear_pool_number = wml.variables["gear_pool[0]."..gear_pool_id]
 	if gear_pool_number == nil then gear_pool_number = 0 end
+        if gear_pool_usage == "potion" then
+                  gpf_style = "normal"    -- normal and light orange if useable
+                  gpf_color = "#cfffaa"
+                  gpf_weight = "ultrabold"
+        end
         if gear_pool_number > 0 then
             for k in ipairs(equipment_list.list_usage) do
                 if equipment_list.list_usage[k].usage == gear_pool_usage then
@@ -192,6 +197,7 @@ local function preshow(self)
                     if equipment_list.list_usage[k].types[l] == unit_type then
                       gpf_style = "normal"    -- normal and light blue if useable
                       gpf_color = "#cfdfff"
+                      gpf_weight = "bold"
                       -- now check that the position isn't already taken
                       local gp_index = 0
                       local gp_index_max = 9 -- this should be improved on
@@ -204,6 +210,7 @@ local function preshow(self)
                         if gear_position_iter == gear_pool_position then
                           gpf_color = "#44a9cb" -- darker and oblique if position is not available
                           gpf_style = "oblique"
+                          gpf_weight = "normal"
                         end
                         gp_index = gp_index + 1
                       end
@@ -214,7 +221,7 @@ local function preshow(self)
 --	     wesnoth.add_dialog_tree_node("node1", i, "the_poollist")
 	     -- wesnoth.set_dialog_value(string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
          widget_handle = self:find('the_poollist', p_i, 'the_poollist_entry')
-         widget_handle.value_compat = string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number)
+         widget_handle.value_compat = string.format("<span size='x-small' font-style='%s' weight='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_weight, gpf_color, gear_pool_name, gear_pool_number)
          -- wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
 	     select_pool_id[p_i] = gear_pool_id
 	     p_i = p_i + 1
@@ -285,7 +292,7 @@ local function call_from_pool(u_i,sp_i)
   if pter == "potion" then
     bmr_equipment.pool_remove(sp_i)
     bmr_equipment.pool_remove(sp_i) -- this is to get rid of the copy made by bmr_equipment.unit, there is probably a better way to do this
-    -- TO DO: bmr_equipment.consume(u_i,sp_i)
+    bmr_equipment.consume(u_i,sp_i)
   end
 end
 
