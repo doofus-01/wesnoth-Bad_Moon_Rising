@@ -21,7 +21,7 @@ function wesnoth.wml_actions.apply_gear(cfg)
         local result = bmr_equipment.unit(unit_id, gear_id)
         -- pass if the unit could equip the item, or was a player side that had a pool
         -- fail if the unit couldn't equip and was ai, or was not found
-        if result == "pass" then
+        if result == "pass" or result == "potion" then
 --           wesnoth.message(string.format("%s on map", unit_id))
 --           wesnoth.message(string.format("%s on map", gear_id))
             local eq_unit = wesnoth.units.find_on_map({ id = unit_id })

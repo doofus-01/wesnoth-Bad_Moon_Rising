@@ -2555,18 +2555,56 @@ table.insert(the_list, {
 ----potions---------
 -- mostly dummy items
 table.insert(the_list, {
-	eq_effect = { id = "potion_heal", {"effect", { apply_to = "hitpoints", increase = 28}}},
+	eq_effect = { id = "potion_heal", {"effect", { apply_to = "hitpoints", increase = 24}}},
         name = _ "Healing Potion",
         id = "potion_heal",
         tooltip = _ "potions can be used once, not worn",
-        text = _ "This potion heals up to 28 HP",
+        text = _ "This potion heals up to 24 HP",
         image = "icons/potion_red_small.png",
-        icon = "items/potion-red.png~SCALE(56,56)",
+        icon = "items/potion-red.png~SCALE(46,46)",
 	cost = 35,
 	usage = "potion",
 	position = "for_use",
 	weight = 0
-	
+})
+table.insert(the_list, {
+	eq_effect = { id = "super_potion_heal", {"effect", { apply_to = "hitpoints", increase = 50}}},
+        name = _ "Super Healing Potion",
+        id = "super_potion_heal",
+        tooltip = _ "potions can be used once, not worn",
+        text = _ "This potion heals up to 50 HP",
+        image = "icons/potion_red_medium.png",
+        icon = "items/potion-red.png",
+	cost = 70,
+	usage = "potion",
+	position = "for_use",
+	weight = 0
+})
+table.insert(the_list, {
+	eq_effect = { id = "potion_cure", {"effect", { apply_to = "status", remove = "poisoned" }}},
+        name = _ "Curative Potion",
+        id = "potion_cure",
+        tooltip = _ "potions can be used once, not worn",
+        text = _ "This potion cures poison",
+        image = "icons/potion_green_small.png~CS(-40,-30,80)",
+        icon = "items/potion-blue.png~SCALE(48,54)",
+	cost = 40,
+	usage = "potion",
+	position = "for_use",
+	weight = 0
+})
+table.insert(the_list, {
+	eq_effect = { id = "panacea", {"effect", { apply_to = "hitpoints", increase = 24}}, {"effect", { apply_to = "status", remove = "poisoned, slowed, unhealable" }}},
+        name = _ "Panacea",
+        id = "panacea",
+        tooltip = _ "potions can be used once, not worn",
+        text = _ "This potion cures poison, slowness, and the unhealable state",
+        image = "icons/potion_green_medium.png~CS(-40,-30,80)",
+        icon = "items/potion-blue.png~CS(15,35,80)",
+	cost = 100,
+	usage = "potion",
+	position = "for_use",
+	weight = 0
 })
 
 -----------------------------------------------------------------------------------------------
