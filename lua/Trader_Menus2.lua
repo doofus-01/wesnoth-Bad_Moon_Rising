@@ -58,21 +58,21 @@ local sell_list = {}
 local sell_list_short = {}
 -- had to make the lists smaller for sizing issues at smaller resolutions
 if list_id == 1 then
-  sell_list_short = {"cap_helmet", "wooden_shield", "kidney_belt", "stone_ring", "leather_armor", "elven_tunic", "boot_cleat", "small_dagger"}
+  sell_list_short = {"cap_helmet", "wooden_shield", "kidney_belt", "stone_ring", "potion_heal", "elven_tunic", "boot_cleat", "small_dagger"}
 elseif list_id == 2 then
-  sell_list_short = {"light_helmet", "leather_gloves", "steel_ring", "leather_vambrace", "scale_armor", "leather_boots", "steel_spear", "elf_blade"}
+  sell_list_short = {"light_helmet", "leather_gloves", "steel_ring", "potion_heal", "scale_armor", "leather_boots", "steel_spear", "elf_blade"}
 elseif list_id == 21 then
   sell_list_short = {"chain_helmet", "white_gloves", "steel_ring", "elf_cloak", "scale_armor", "miner_boots", "suw_bomb_arrow", "steel_arrows"}
 elseif list_id == 3 then
-  sell_list_short = {"steel_helmet", "iron_shield", "iron_vambrace", "chain_armor", "scale_armor", "steel_arrows", "steel_axe", "steel_blade"}
+  sell_list_short = {"steel_helmet", "iron_shield", "iron_vambrace", "chain_armor", "potion_cure", "steel_arrows", "steel_axe", "steel_blade"}
 elseif list_id == 4 then
   sell_list_short = {"crested_helmet", "atlas_belt", "iron_shield", "steel_greaves", "gold_ring", "breastplate", "suw_bomb_arrow", "silver_dagger", "steel_blade"}
 elseif list_id == 5 then
-  sell_list_short = {"silver_chain_helmet", "atlas_belt", "elf_cloak", "gold_ring", "elven_armor", "silver_vambrace", "silver_axe", "steel_spear"}
+  sell_list_short = {"silver_chain_helmet", "atlas_belt", "elf_cloak", "panacea", "elven_armor", "silver_vambrace", "silver_axe", "steel_spear"}
 elseif list_id == 6 then
-  sell_list_short = {"cap_gem", "door_shield", "silver_shield", "atlas_belt", "green_ring", "mage_tunic", "bronze_gauntlets", "steel_axe"}
+  sell_list_short = {"cap_gem", "door_shield", "silver_shield", "atlas_belt", "green_ring", "mage_tunic", "bronze_gauntlets", "potion_heal"}
 else
-  sell_list_short = {"fur_hat", "cap_helmet", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "small_dagger"}
+  sell_list_short = {"fur_hat", "cap_helmet", "wooden_shield", "fur_cloak", "stone_ring", "leather_armor", "potion_heal"}
 end
 local li = 0
 local pool_value = 0
