@@ -42,6 +42,8 @@ bmr_e_g["torso"] = _ "Tunics and Armor"
 bmr_e_g["foot"] = _ "Footgear"
 bmr_e_g["weapon"] = _ "Weapons"
 bmr_e_g["neck"] = _ "Throat Protection"
+bmr_e_g["weapon_alt"] = _ "Single-use Weapons"
+bmr_e_g["for_use"] = _ "Single-use Items"
 -- usage types
 bmr_e_g["dog"] = _ "for use by canines"
 bmr_e_g["all"] = _ "available to all"
@@ -55,6 +57,7 @@ bmr_e_g["sword"] = _ "for swordsmen"
 bmr_e_g["axe"] = _ "for ax-wielders"
 bmr_e_g["spear"] = _ "for spearmen"
 bmr_e_g["despair"] = _ "for phantoms only"
+bmr_e_g["potion"] = _ "anyone may use from inventory"
 
 
 function wesnoth.wml_actions.bmr_show_campaign_help(cfg)
