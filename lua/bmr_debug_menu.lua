@@ -163,12 +163,25 @@ bmr_debug_menu.new = function()
     end
 
 -- Assign values if OK selected (1) or return key hit (-1), don't do anything if cancel was selected or escape key hit    
+--[[ then assign to persistent variables
+   [set_global_variable]
+     namespace=my_addon
+     from_local=foo
+     to_global=my_variable_name
+     side=1
+     immediate=no
+   [/set_global_variable]
+]]
     local rv = gui.show_dialog(dialog, preshow, postshow)
     if rv == 1 or rv == -1 then
         wml.variables['BMR_progression'] = bv_progression
+        wml.fire("set_global_variable", { namespace = 'Bad_Moon_Rising', from_local = 'BMR_progression', to_global = 'XPS_BMR_progression', immediate = 'yes'})
         wml.variables['aaa'] = bv_resistance
+        wml.fire("set_global_variable", { namespace = 'Bad_Moon_Rising', from_local = 'aaa', to_global = 'XPS_aaa', immediate= 'yes'})
         wml.variables['bbb'] = bv_HP
+        wml.fire("set_global_variable", { namespace = 'Bad_Moon_Rising', from_local = 'bbb', to_global = 'XPS_bbb', immediate= 'yes'})
         wml.variables['ccc'] = bv_damage
+        wml.fire("set_global_variable", { namespace = 'Bad_Moon_Rising', from_local = 'ccc', to_global = 'XPS_ccc', immediate= 'yes'})
     end
                                                                                                        
 return bmr_debug_menu
