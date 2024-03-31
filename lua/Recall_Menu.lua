@@ -227,6 +227,8 @@ Gui_recall.new = function()
 	    local ut = uor[i].__cfg
 	    local hp_color = "color='#999999'"
 	    local xp_color = "color='#999999'"
+            --[[ This used to work, but now auto-healing after a scenario makes it meaningless
+            -- therefore we store this info in a unit.variables.sk_thing
 	    local uor_status = wml.get_child(ut, "status")
 	    if uor_status.poisoned then
 	      hp_color = "color='#44ff44'"
@@ -236,7 +238,18 @@ Gui_recall.new = function()
 	      if calc_temp < 0.25 then
 	        hp_color = "color='#dd3322'"
 	      end
-	    end			           
+	    end
+	    ]]
+	    local uor_status = wml.get_child(ut, "variables")
+	    if uor_status.sk_poison == "yes" then
+	      hp_color = "color='#44ff44'"
+	    else
+	      local calc_temp = uor_status.sk_hitpoints
+	      calc_temp = calc_temp / ut.max_hitpoints
+	      if calc_temp < 0.25 then
+	        hp_color = "color='#dd3322'"
+	      end
+	    end
 	    calc_temp = ut.experience
 	      calc_temp = calc_temp / ut.max_experience
 	      if calc_temp > 0.9 then
@@ -255,7 +268,8 @@ Gui_recall.new = function()
 	    -- wesnoth.set_dialog_markup(true, "the_on_list", i, "the_HP")
         -- wesnoth.set_dialog_value(string.format("<span size='x-small' "..hp_color..">HP: %s</span>", ut.hitpoints), "the_on_list", i, "the_HP") 
         widget_handle = self:find("the_on_list", i, "the_HP")
-        widget_handle.label = string.format("<span size='x-small' "..hp_color..">HP: %s</span>", ut.hitpoints)
+        -- widget_handle.label = string.format("<span size='x-small' "..hp_color..">HP: %s</span>", ut.hitpoints)
+        widget_handle.label = string.format("<span size='x-small' "..hp_color..">HP: %s</span>", uor_status.sk_hitpoints)
         widget_handle.use_markup = true
         -- wesnoth.set_dialog_value(string.format("%s~RC(magenta>red)", ut.image), "the_on_list", i, "the_icon")
         widget_handle = self:find("the_on_list", i, "the_icon")
@@ -264,6 +278,7 @@ Gui_recall.new = function()
 -- make the off-duty text and icons grey
 	for i in ipairs(uor_noc) do
 	    local ut = uor_noc[i].__cfg
+	    local uor_status = wml.get_child(ut, "variables")
         -- wesnoth.set_dialog_value(string.format("<span size='small' color='#777777' > %s </span>" , ut.name), "the_off_list", i, "the_label")
 	    -- wesnoth.set_dialog_markup(true, "the_off_list", i, "the_label")
         widget_handle = self:find("the_off_list", i, "the_label")
@@ -277,7 +292,8 @@ Gui_recall.new = function()
 	    -- wesnoth.set_dialog_markup(true, "the_off_list", i, "the_HP")
         -- wesnoth.set_dialog_value(string.format("<span size='x-small' color='#777777' > HP: %s </span>", ut.hitpoints), "the_off_list", i, "the_HP") 
         widget_handle = self:find("the_off_list", i, "the_HP")
-        widget_handle.label = string.format("<span size='x-small' color='#777777' >HP: %s</span>", ut.hitpoints)
+        -- widget_handle.label = string.format("<span size='x-small' color='#777777' >HP: %s</span>", ut.hitpoints)
+        widget_handle.label = string.format("<span size='x-small' color='#777777' >HP: %s</span>", uor_status.sk_hitpoints)
         widget_handle.use_markup = true
         -- wesnoth.set_dialog_value(string.format("%s~GS()", ut.image), "the_off_list", i, "the_icon")
         widget_handle = self:find("the_off_list", i, "the_icon")
