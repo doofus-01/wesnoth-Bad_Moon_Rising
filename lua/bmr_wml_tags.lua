@@ -15,7 +15,7 @@
 
 ]]--
 
-function wesnoth.wml_actions.apply_gear(cfg)
+function wesnoth.custom_synced_commands.apply_gear(cfg)
         local unit_id = cfg.id or wml.error "[apply_gear] expects an id= attribute."
         local gear_id = cfg.gear_id or wml.error "[apply_gear] expects a gear_id= attribute."
         local result = bmr_equipment.unit(unit_id, gear_id)
@@ -49,6 +49,9 @@ function wesnoth.wml_actions.apply_gear(cfg)
         end
 end
 
+function wesnoth.wml_actions.apply_gear(cfg)
+    wesnoth.sync.invoke_command("apply_gear",cfg)
+end
 
 -- removes gear with gear_id from unit with id
 --[[
@@ -60,7 +63,7 @@ end
 
 ]]--
 
-function wesnoth.wml_actions.remove_gear(cfg)
+function wesnoth.custom_synced_commands.remove_gear(cfg)
         local unit_id = cfg.id or wml.error "[remove_gear] expects an id= attribute."
         local gear_id = cfg.gear_id or wml.error "[remove_gear] expects a gear_id= attribute."
         local result = bmr_equipment.remove(unit_id, gear_id)
@@ -76,6 +79,10 @@ function wesnoth.wml_actions.remove_gear(cfg)
         end
 end
 
+function wesnoth.wml_actions.remove_gear(cfg)
+    wesnoth.sync.invoke_command("remove_gear",cfg)
+end
+
 
 -- places gear on map, like [item] does for images
 --[[
@@ -87,11 +94,15 @@ end
 
 ]]--
 
-function wesnoth.wml_actions.gear_item(cfg)
+function wesnoth.custom_synced_commands.gear_item(cfg)
         local x_1 = cfg.x or wml.error "[gear_item] expects an x= attribute."
         local y_1 = cfg.y or wml.error "[gear_item] expects an y= attribute."
         local gear_id = cfg.gear_id or wml.error "[gear_item] expects a gear_id= attribute."
         bmr_equipment.item_drop(x_1, y_1, gear_id)
+end
+
+function wesnoth.wml_actions.gear_item(cfg)
+    wesnoth.sync.invoke_command("gear_item",cfg)
 end     
         
 -- deletes gear on map, like [remove_item] does for images
@@ -104,26 +115,38 @@ end
 
 ]]--
 
-function wesnoth.wml_actions.remove_gear_item(cfg)
+function wesnoth.custom_synced_commands.remove_gear_item(cfg)
         local x_1 = cfg.x or wml.error "[remove_gear_item] expects an x= attribute."
         local y_1 = cfg.y or wml.error "[remove_gear_item] expects an y= attribute."
         local gear_id = cfg.gear_id or wml.error "[remove_gear_item] expects a gear_id= attribute."
         bmr_equipment.item_take(x_1, y_1, gear_id)
+end
+
+function wesnoth.wml_actions.remove_gear_item(cfg)
+    wesnoth.sync.invoke_command("remove_gear_item",cfg)
 end     
         
 ----------------------------------------
 -- shopping tags, WIP
 ----------------------------------------
 
-function wesnoth.wml_actions.sell_gear_menu(cfg)
+function wesnoth.custom_synced_commands.sell_gear_menu(cfg)
     local side_number = cfg.side or wml.error "[sell_gear_menu] expects a side= attribute." -- trying to get away from hardcoded side=1, but not fully implemented yet
     Trader_Menus.seller(side_number)
+end
+
+function wesnoth.wml_actions.sell_gear_menu(cfg)
+    wesnoth.sync.invoke_command("sell_gear_menu",cfg)
 end     
 
-function wesnoth.wml_actions.buy_gear_menu(cfg)
+function wesnoth.custom_synced_commands.sell_gear_menu(cfg)
     local side_number = cfg.side or wml.error "[buy_gear_menu] expects a side= attribute." -- trying to get away from hardcoded side=1, but not fully implemented yet
     local list_id = cfg.list_id or wml.error "[buy_gear_menu] expects a list_id= attribute." 
     Trader_Menus.buyer(side_number,list_id)
+end
+
+function wesnoth.wml_actions.buy_gear_menu(cfg)
+    wesnoth.sync.invoke_command("buy_gear_menu",cfg)
 end     
 
 ------------------------------------------
