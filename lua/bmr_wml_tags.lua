@@ -130,24 +130,16 @@ end
 -- shopping tags, WIP
 ----------------------------------------
 
-function wesnoth.custom_synced_commands.sell_gear_menu(cfg)
+function wesnoth.wml_actions.sell_gear_menu(cfg)
     local side_number = cfg.side or wml.error "[sell_gear_menu] expects a side= attribute." -- trying to get away from hardcoded side=1, but not fully implemented yet
     Trader_Menus.seller(side_number)
 end
 
-function wesnoth.wml_actions.sell_gear_menu(cfg)
-    wesnoth.sync.invoke_command("sell_gear_menu",cfg)
-end     
-
-function wesnoth.custom_synced_commands.sell_gear_menu(cfg)
+function wesnoth.wml_actions.buy_gear_menu(cfg)
     local side_number = cfg.side or wml.error "[buy_gear_menu] expects a side= attribute." -- trying to get away from hardcoded side=1, but not fully implemented yet
     local list_id = cfg.list_id or wml.error "[buy_gear_menu] expects a list_id= attribute." 
     Trader_Menus.buyer(side_number,list_id)
 end
-
-function wesnoth.wml_actions.buy_gear_menu(cfg)
-    wesnoth.sync.invoke_command("buy_gear_menu",cfg)
-end     
 
 ------------------------------------------
 --  Interface tags
