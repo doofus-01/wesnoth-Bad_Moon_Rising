@@ -229,6 +229,8 @@ Gui_recall.new = function()
 	    local xp_color = "color='#999999'"
             --[[ This used to work, but now auto-healing after a scenario makes it meaningless
             -- therefore we store this info in a unit.variables.sk_thing
+            -- those unit variables are set in a skirmish or worldmap prestart event
+            -- that should cover all units, but maybe we need more checks here?
 	    local uor_status = wml.get_child(ut, "status")
 	    if uor_status.poisoned then
 	      hp_color = "color='#44ff44'"
@@ -245,6 +247,9 @@ Gui_recall.new = function()
 	      hp_color = "color='#44ff44'"
 	    else
 	      local calc_temp = uor_status.sk_hitpoints
+	      if not calc_temp then
+	          calc_temp = ut.hitpoints
+	      end
 	      calc_temp = calc_temp / ut.max_hitpoints
 	      if calc_temp < 0.25 then
 	        hp_color = "color='#dd3322'"
