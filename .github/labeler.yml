@@ -1,0 +1,21 @@
+Graphics:
+  - changed-files:
+    - any-glob-to-any-file:
+      - images/**
+
+Lua:
+  - changed-files:
+    - any-glob-to-any-file:
+      - lua/**
+
+Terrain:
+  - changed-files:
+    - any-glob-to-any-file:
+      - images/terrain/**
+      - utils/terrain.cfg
+
+Units:
+  - changed-files:
+    - any-glob-to-any-file:
+      - images/units/**
+      - units/**/*.cfg
