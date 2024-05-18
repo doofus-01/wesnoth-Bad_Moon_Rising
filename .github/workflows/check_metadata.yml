@@ -3,7 +3,7 @@ name: Image metadata check CI
 on:
   push:
     branches: [master]
-  - pull_request_target
+  pull_request_target:
     paths:
       - **.webp
       # - **.png
