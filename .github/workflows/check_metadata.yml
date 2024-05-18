@@ -17,17 +17,17 @@ jobs:
       contents: read
       pull-requests: write
 
-  steps:
-    env:
-      SHA: ${{ github.event.pull_request.head.sha }}
-    - name: exiftool installation
-      run: |
+    steps:
+      env:
+        SHA: ${{ github.event.pull_request.head.sha }}
+      - name: exiftool installation
+        run: |
         # not sure if this should be used
         # apt update
-        apt-get install --assume-yes exiftool
-    - name: read/export image metadata
-      run: |
-        mapfile -t image_files < <(git diff --name-only HEAD "$SHA" | grep '\.webp$')
-        for file in "${image_files[@]}"; do
-          exiftool -UserComment $file
-        done
+          apt-get install --assume-yes exiftool
+      - name: read/export image metadata
+        run: |
+          mapfile -t image_files < <(git diff --name-only HEAD "$SHA" | grep '\.webp$')
+          for file in "${image_files[@]}"; do
+            exiftool -UserComment $file
+          done
