@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: exiftool installation
         run: |
-          apt-get install --assume-yes exiftool
+          sudo apt-get install --assume-yes exiftool
 
       - name: read/export image metadata
         run: |
