@@ -11,15 +11,16 @@ on:
   
 jobs:
   build:
+    name: My Job
     runs-on: ubuntu-latest
     
     permissions:
       contents: read
       pull-requests: write
 
+    env:
+      SHA: ${{ github.event.pull_request.head.sha }}
     steps:
-      env:
-        SHA: ${{ github.event.pull_request.head.sha }}
       - name: exiftool installation
         run: |
         # not sure if this should be used
