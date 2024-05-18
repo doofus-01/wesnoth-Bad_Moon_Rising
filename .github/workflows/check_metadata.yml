@@ -25,7 +25,7 @@ jobs:
       - name: exiftool installation
         run: |
           sudo apt-get install --assume-yes exiftool
-          
+
       - name: checkout repository
         uses: actions/checkout@v4
 
