@@ -32,6 +32,9 @@ jobs:
         run: |
           git fetch --depth=1 origin "$SHA"
           mapfile -t image_files < <(git diff --name-only HEAD ${SHA::6} | grep '\.webp$')
+
+          echo "file is ${image_files[0]}"
+
           for file in "${image_files[@]}"; do
             echo "file is $file"
             exiftool -Artist -Copyright $file
