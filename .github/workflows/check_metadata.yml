@@ -30,7 +30,8 @@ jobs:
 
       - name: read/export image metadata
         run: |
-          mapfile -t image_files < <(git diff --name-only `git merge-base FETCH_HEAD HEAD` | grep '\.webp$')
+          git fetch --depth=1 origin "$SHA"
+          mapfile -t image_files < <(git diff --name-only HEAD ${SHA::6} | grep '\.webp$')
           for file in "${image_files[@]}"; do
             echo "file is $file"
             exiftool -Artist -Copyright $file
