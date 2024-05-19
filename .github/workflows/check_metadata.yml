@@ -32,5 +32,6 @@ jobs:
         run: |
           mapfile -t image_files < <(git diff --name-only `git merge-base FETCH_HEAD HEAD` | grep '\.webp$')
           for file in "${image_files[@]}"; do
+            echo "file is $file"
             exiftool -Artist -Copyright $file
           done
