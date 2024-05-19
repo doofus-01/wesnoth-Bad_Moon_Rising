@@ -3,7 +3,7 @@ name: Image metadata check CI
 on:
   #push:
   #  branches: [master]
-  pull_request_target:
+  pull_request:
     paths:
       - '**.webp'
       - '**.png'
@@ -32,5 +32,5 @@ jobs:
         run: |
           mapfile -t image_files < <(git diff --name-only HEAD ${SHA::6} | grep '\.webp$')
           for file in "${image_files[@]}"; do
-            exiftool -UserComment $file
+            exiftool -Artist -Copyright $file
           done
