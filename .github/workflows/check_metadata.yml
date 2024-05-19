@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
 
     env:
-      SHA: ${{ github.event.pull_request.head.sha }}
+      SHA: ${{ github.event.pull_request.head.sha }::6}
 
     steps:
       - uses: actions/checkout@v4
