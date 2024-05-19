@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
 
     env:
-      SHA: ${{ github.event.pull_request.head.sha }::6}
+      SHA: ${{ github.event.pull_request.head.sha }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
 
       - name: read/export image metadata
         run: |
-          mapfile -t image_files < <(git diff --name-only HEAD "$SHA" | grep '\.webp$')
+          mapfile -t image_files < <(git diff --name-only HEAD ${SHA::6} | grep '\.webp$')
           for file in "${image_files[@]}"; do
             exiftool -UserComment $file
           done
