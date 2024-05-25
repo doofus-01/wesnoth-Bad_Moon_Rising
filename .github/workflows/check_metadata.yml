@@ -11,7 +11,7 @@ on:
   
 jobs:
   build:
-    name: My Job
+    name: Ubuntu - Image Metadata
     runs-on: ubuntu-latest
     
     permissions:
@@ -19,6 +19,7 @@ jobs:
       pull-requests: write
 
     env:
+      # figured this out from here: https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=edited#pull_request
       SHA: ${{ github.event.pull_request.head.sha }}
       BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
@@ -34,14 +35,37 @@ jobs:
           # ref: ${{ github.event.pull_request.head.sha }}
 
       - name: read/export image metadata
+        -d: image_check
         run: |
           mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.webp$')
 
           git status
-
-          echo "file is ${image_files[0]}"
-
+          # array of accepted copyright strings
+          accepted_cr=("GNU GPL v2+" "CC BY-SA 4.0")
+          # cycle through the changed image files, make sure they have the right fields
           for file in "${image_files[@]}"; do
-            echo "file is $file"
-            exiftool -Artist -Copyright $file
+            # check -Artist tag, fail if missing
+            artist="$(exiftool -Artist $file)"
+            artist="${artist#*: }"
+            if [ -z "$artist" ] ; then
+              echo "no Artist EXIF tag in $file"
+              exit 1
+            else
+              echo "Artist tag in $file is $artist"
+            fi
+            # check -Copyright tag, fail if missing or wrong type
+            copyright="$(exiftool -Copyright $file)"
+            copyright="${copyright#*: }"
+            if [ -z "$copyright" ] ; then
+              echo "no Copyright EXIF tag in $file"
+              exit 1
+            elif [[ ( "$copyright" != ${accepted_cr[0]} ) && ( "$copyright" != ${accepted_cr[1]}) ]] ; then
+              echo "$copyright is not an accepted license"
+              exit 1
+            else
+              echo "Copyright tag in $file is $copyright"
+            fi
           done
+      - name: The image_check step has failed
+        if: ${{ failure() && steps.image_check.conclusion == 'failure' }}
+        
