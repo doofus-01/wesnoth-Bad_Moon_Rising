@@ -66,6 +66,6 @@ jobs:
               echo "Copyright tag in $file is $copyright"
             fi
           done
-      - name: The image_check step has failed
-        if: ${{ failure() && steps.image_check.conclusion == 'failure' }}
+#      - name: The image_check step has failed
+#        if: ${{ failure() && steps.image_check.conclusion == 'failure' }}
         
