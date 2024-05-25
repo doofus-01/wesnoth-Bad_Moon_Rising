@@ -35,7 +35,7 @@ jobs:
           # ref: ${{ github.event.pull_request.head.sha }}
 
       - name: read/export image metadata
-        -d: image_check
+        -id: image_check
         run: |
           mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.webp$')
 
