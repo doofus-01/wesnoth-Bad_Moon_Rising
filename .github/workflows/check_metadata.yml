@@ -33,6 +33,7 @@ jobs:
 
       - name: read/export image metadata
         run: |
+          git fetch origin "$SHA"
           mapfile -t image_files < <(git diff --name-only ${{github.base_ref}} ${SHA} | grep '\.webp$')
 
           git status
