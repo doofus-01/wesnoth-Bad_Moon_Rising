@@ -36,7 +36,7 @@ jobs:
           # git fetch --depth=1 origin "$SHA"
           # mapfile -t image_files < <(git diff --name-only $(git merge-base --fork-point HEAD)...${SHA::6} | grep '\.webp$')
           # mapfile -t image_files < <(git diff --name-only HEAD...FETCH_HEAD | grep '\.webp$')
-          mapfile -t image_files < <(git diff --name-only ${{github.base_ref}}...${{github.sha}} | grep '\.webp$')
+          mapfile -t image_files < <(git diff --name-only ${{github.base_ref}}...HEAD | grep '\.webp$')
 
           git status
 
