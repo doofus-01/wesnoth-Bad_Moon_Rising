@@ -20,24 +20,22 @@ jobs:
 
     env:
       SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - name: exiftool installation
         run: |
           sudo apt-get install --assume-yes exiftool
 
-      - name: Set git safe directory
-        run: |
-          git config --global --add safe.directory '*'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # this makes the HEAD be the last commit on the PR, not the merge commit, so wrong older commits would get buried
+          # ref: ${{ github.event.pull_request.head.sha }}
 
       - name: read/export image metadata
         run: |
-          mapfile -t image_files < <(git diff --name-only $GITHUB_BASE_REF ${SHA} | grep '\.webp$')
+          mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.webp$')
 
           git status
 
