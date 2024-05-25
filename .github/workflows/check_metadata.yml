@@ -33,10 +33,7 @@ jobs:
 
       - name: read/export image metadata
         run: |
-          # git fetch --depth=1 origin "$SHA"
-          # mapfile -t image_files < <(git diff --name-only $(git merge-base --fork-point HEAD)...${SHA::6} | grep '\.webp$')
-          # mapfile -t image_files < <(git diff --name-only HEAD...FETCH_HEAD | grep '\.webp$')
-          mapfile -t image_files < <(git diff --name-only ${{github.base_ref}}...${SHA} | grep '\.webp$')
+          mapfile -t image_files < <(git diff --name-only ${{github.base_ref}} ${SHA} | grep '\.webp$')
 
           git status
 
