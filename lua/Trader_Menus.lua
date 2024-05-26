@@ -94,7 +94,7 @@ local function preshow(self)
     widget_handle.label = "<span size='xx-large' color='#eeffb7'> Selling Inventory </span>"
     -- wesnoth.set_dialog_value("portraits/merchant-female.png~SCALE(250,250)~CROP(0,0,250,200)" , "the_image")
     widget_handle = self:find('the_image')
-    widget_handle.label = "portraits/merchant-female.png~SCALE(250,250)~CROP(0,0,250,200)"
+    widget_handle.label = "portraits/merchant-female.webp~SCALE(250,250)~CROP(0,0,250,200)"
     --wesnoth.set_dialog_markup(true, "the_sell_title")
     -- wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Offering to Merchant </span>" , "the_sell_title")
     widget_handle = self:find('the_sell_title')

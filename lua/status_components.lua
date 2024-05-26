@@ -230,7 +230,7 @@ function set_simple_grid_values(unit,self)
     --widget_handle.value_compat = string.format("<span size='small' color='#90d4ef'> XP: %s </span> <span size='small' "..xp_color.."> (-%s) </span>", total_xp + unit.experience, total_xp + unit.max_experience)
     -- wesnoth.set_dialog_value(string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile) , "the_image")
     widget_handle = self:find('the_image')
-    widget_handle.value_compat = string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile)
+    widget_handle.value_compat = string.format("portraits/status_pane.webp~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.webp~SCALE(220,220))", unit.profile)
     -- wesnoth.set_dialog_value(unit.image, "the_icon")
     widget_handle = self:find('the_icon')
     widget_handle.value_compat = unit.image
