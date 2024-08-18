@@ -181,8 +181,8 @@ function misc_status_grid()
 end
 
 function set_simple_grid_values(unit,self)
-	local u_vars = wml.get_child(unit, "variables")
-        local total_xp = u_vars.total_xp
+--	local u_vars = wml.get_child(unit, "variables")
+--        local total_xp = u_vars.total_xp
 --        total_xp = tonumber(total_xp)
 	local unit_hp = unit.hitpoints
 	unit_hp = unit_hp / unit.max_hitpoints
@@ -226,7 +226,8 @@ function set_simple_grid_values(unit,self)
     -- wesnoth.set_dialog_value(string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience) , "the_unit_XP")
     widget_handle = self:find('the_unit_XP')
 --    widget_handle.value_compat = string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience)
-    widget_handle.value_compat = string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", total_xp + unit.experience, total_xp + unit.max_experience)
+    widget_handle.value_compat = string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", unit.experience, unit.max_experience)
+    --widget_handle.value_compat = string.format("<span size='small' "..xp_color.."> XP: %s / %s </span>", total_xp + unit.experience, total_xp + unit.max_experience)
     --widget_handle.value_compat = string.format("<span size='small' color='#90d4ef'> XP: %s </span> <span size='small' "..xp_color.."> (-%s) </span>", total_xp + unit.experience, total_xp + unit.max_experience)
     -- wesnoth.set_dialog_value(string.format("portraits/status_pane.png~SCALE(220,220)~BLIT(%s~SCALE(220,220))~BLIT(portraits/status_pane_top.png~SCALE(220,220))", unit.profile) , "the_image")
     widget_handle = self:find('the_image')
