@@ -1,8 +1,8 @@
 name: Image metadata check CI
 
 on:
-  # push:
-  #  branches: [master]
+  push:
+    branches: [master]
   pull_request:
     paths:
       - '**.webp'
@@ -18,11 +18,6 @@ jobs:
       contents: read
       pull-requests: write
 
-    env:
-      # figured this out from here: https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=edited#pull_request
-      SHA: ${{ github.event.pull_request.head.sha }}
-      BASE_SHA: ${{ github.event.pull_request.base.sha }}
-
     steps:
       - name: exiftool installation
         run: |
@@ -33,6 +28,21 @@ jobs:
           fetch-depth: 0
           # this makes the HEAD be the last commit on the PR, not the merge commit, so wrong older commits would get buried
           # ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: PR env setup
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          # figured this out from here: https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=edited#pull_request
+          SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: echo SHA is $SHA
+
+      - name: push env setup
+        if: ${{ github.event_name == 'push' }}
+        env:
+          SHA: ${{ github.event.push.after }}
+          BASE_SHA: ${{ github.event.push.before }}
+        run: echo SHA is $SHA
 
       - name: read/export image metadata
         # -id: image_check
