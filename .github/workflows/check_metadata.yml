@@ -1,8 +1,8 @@
 name: Image metadata check CI
 
 on:
-  push:
-    branches: [master]
+  #push:
+  #  branches: [master]
   pull_request:
     paths:
       - '**.webp'
@@ -13,10 +13,16 @@ jobs:
   build:
     name: Ubuntu - Image Metadata
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     
     permissions:
       contents: read
       pull-requests: write
+
+    env:
+        # figured this out from here: https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=edited#pull_request
+        SHA: ${{ github.event.pull_request.head.sha }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
     steps:
       - name: exiftool installation
@@ -29,25 +35,9 @@ jobs:
           # this makes the HEAD be the last commit on the PR, not the merge commit, so wrong older commits would get buried
           # ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: PR env setup
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          # figured this out from here: https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=edited#pull_request
-          SHA: ${{ github.event.pull_request.head.sha }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: echo SHA is $SHA
-
-      - name: push env setup
-        if: ${{ github.event_name == 'push' }}
-        env:
-          SHA: ${{ github.event.push.after }}
-          BASE_SHA: ${{ github.event.push.before }}
-        run: echo SHA is $SHA
-
       - name: read/export image metadata
-        # -id: image_check
         run: |
-          mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.webp$')
+          mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.(webp|png|je?pg)$')
 
           git status
           # array of accepted copyright strings
@@ -69,7 +59,6 @@ jobs:
             if [ -z "$copyright" ] ; then
               echo "no Copyright EXIF tag in $file"
               exit 1
-            # elif [[ ( "$copyright" != ${accepted_cr[0]} ) && ( "$copyright" != ${accepted_cr[1]}) ]] ; then
             elif [[ ! "|${accepted_cr[*]}|" =~ "|${copyright}|" ]]; then
               echo "$copyright is not an accepted license"
               exit 1
