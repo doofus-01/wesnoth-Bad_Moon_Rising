@@ -37,7 +37,8 @@ jobs:
 
       - name: read/export image metadata
         run: |
-          mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.(webp|png|je?pg)$')
+          mapfile -t image_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.(webp|je?pg)$')
+          mapfile -t png_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.(png)$')
 
           git status
           # array of accepted copyright strings
@@ -58,6 +59,29 @@ jobs:
             copyright="${copyright#*: }"
             if [ -z "$copyright" ] ; then
               echo "no Copyright EXIF tag in $file"
+              exit 1
+            elif [[ ! "|${accepted_cr[*]}|" =~ "|${copyright}|" ]]; then
+              echo "$copyright is not an accepted license"
+              exit 1
+            else
+              echo "Copyright tag in $file is $copyright"
+            fi
+          done
+          for file in "${png_files[@]}"; do
+            # check -Artist tag, fail if missing
+            artist="$(exiftool -XMP:Creator $file)"
+            artist="${artist#*: }"
+            if [ -z "$artist" ] ; then
+              echo "no Creator XMP tag in $file"
+              exit 1
+            else
+              echo "Creator tag in $file is $artist"
+            fi
+            # check -Copyright tag, fail if missing or wrong type
+            copyright="$(exiftool -XMP:Rights $file)"
+            copyright="${copyright#*: }"
+            if [ -z "$copyright" ] ; then
+              echo "no Rights XMP tag in $file"
               exit 1
             elif [[ ! "|${accepted_cr[*]}|" =~ "|${copyright}|" ]]; then
               echo "$copyright is not an accepted license"
