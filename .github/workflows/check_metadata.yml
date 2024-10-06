@@ -71,6 +71,10 @@ jobs:
         run: |
           mapfile -t png_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.png$')
 
+          git status
+          # array of accepted copyright strings
+          accepted_cr=("GNU GPL v2+|CC BY-SA 4.0|CC0")
+
           for file in "${png_files[@]}"; do
             # check -Artist tag, fail if missing
             artist="$(exiftool -XMP:Creator $file)"
