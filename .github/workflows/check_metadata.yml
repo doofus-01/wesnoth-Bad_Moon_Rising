@@ -69,7 +69,7 @@ jobs:
 
       - name: read/export .png XMP metadata
         run: |
-          mapfile -t png_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.(png)$')
+          mapfile -t png_files < <(git diff --name-only ${BASE_SHA} ${SHA} | grep '\.png$')
 
           for file in "${png_files[@]}"; do
             # check -Artist tag, fail if missing
