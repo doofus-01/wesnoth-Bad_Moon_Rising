@@ -315,7 +315,7 @@ table.insert(the_list, {
 	            },
         name = _ "Leather Vambrace",
 	id = "leather_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "These boiled leather coverings for the forearm offer only minimal protection, but they are light-weight and available to all..  Bonus: + 2 each impact and blade resistance, + 1 HP",
         image = "icons/leather_vambrace.png",
         icon = "items/leather_vambrace.png",
@@ -330,7 +330,7 @@ table.insert(the_list, {
 	            },
         name = _ "Wooden Vambrace",
 	id = "wooden_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "Light and hard, these wooden arm-guards provide effective protection without encumbering the wearer.  Bonus: + 2 impact and +3 blade resistance, + 2 HP",
         image = "icons/wooden_vambrace.png",
         icon = "items/wooden_vambrace.png",
@@ -346,7 +346,7 @@ table.insert(the_list, {
 	            },
         name = _ "Iron Vambrace",
 	id = "iron_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "This is sturdy iron cladding for the forearms, a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and blade resistance, + 3 HP",
         image = "icons/iron_vambrace.png",
         icon = "items/iron_vambrace.png",
@@ -362,7 +362,7 @@ table.insert(the_list, {
 	            },
         name = _ "Silver Vambrace",
 	id = "silver_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "The bright metal of this vambrace is only a bit stronger than common iron, but it also provides a barrier to magical assaults. It is a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and arcane, +5 blade resistance, + 4 HP",
         image = "icons/iron_vambrace.png~GS()",
         icon = "items/iron_vambrace.png~GS()",
@@ -379,7 +379,7 @@ table.insert(the_list, {
 	            },
         name = _ "Obsidian Bracelet",
 	id = "obsidian_bracelet",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "A broad. stitched hide bracelet with black, glassy shards sewn into the outer surface.  Bonus: + 2 each impact and arcane resistance, increases ranged accuracy by 5, + 1 HP",
         image = "icons/obsidian_bracelet.png",
         icon = "items/obsidian_bracelet.png",
@@ -396,7 +396,7 @@ table.insert(the_list, {
 	            },
         name = _ "Jade Bracelet",
 	id = "jade_bracelet",
-        tooltip = _ "protection for the forearms, can be work with gloves",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
         text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.  Bonus: + 4 each impact, cold, and arcane resistance, increases ranged parry by 5, + 2 HP",
         image = "icons/jade_bracelet.png",
         icon = "items/jade_bracelet.png",
@@ -479,6 +479,22 @@ table.insert(the_list, {
         image = "icons/helmet_leather-cap.png",
         icon = "items/leather_cap.png",
 	cost = 25,
+	usage = "all",
+	position = "head",
+	weight = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "cap_helmet_silver", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -4, arcane = -5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            },
+        name = _ "Silver-Badge Cap",
+	id = "cap_silver_helmet",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This is a simple leather cap, with some silver badges that offer some slight addition protection, but are mostly a status symbol. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it. Bonus: + 2 impact resistance, + 1 HP",
+        image = "icons/helmet_silver_cap.png",
+        icon = "items/silver_cap.png",
+	cost = 35,
 	usage = "all",
 	position = "head",
 	weight = 0
@@ -1136,6 +1152,20 @@ table.insert(the_list, {
 	
 })
 table.insert(the_list, {
+	eq_effect = { id = "chain_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -7, fire = -3, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Chainmail Gloves",
+        id = "chain_gloves",
+        tooltip = _ "protection for the hands",
+        text = _ "A thin coat of chain rings and woven metal wire stiched over leather gloves make for cut-resistant hand protection, without being too restrictive.  Bonus: +7 blade, +3 impact, +2 pierce, +3 fire resistances;  +3 hitpoints.",
+        image = "icons/gloves-chain.png",
+        icon = "items/gloves-chain.png",
+	cost = 75,
+	usage = "light_armor",
+	position = "ring",
+	weight = 2
+	
+})
+table.insert(the_list, {
 	eq_effect = { id = "thunder_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, arcane = -5, fire = -8, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Thunder Gauntlets",
         id = "thunder_gloves",
@@ -1243,6 +1273,20 @@ table.insert(the_list, {
         image = "icons/fang_charm.png",
         icon = "items/fang_charm.png",
 	cost = 75,
+	usage = "all",
+	position = "amulet",
+	weight = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = { id = "bigfang_charm", {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
+        name = _ "Big Fang Charm",
+        id = "bigfang_charm",
+        tooltip = _ "amulets can have special effects",
+        text = _ "This fang of some large beast is believed by many to grant the wearer extra strength and vitality.  The effect is most likely psychological, but maybe it is real.  Anyone can use it.  Bonus: +5 hitpoints",
+        image = "icons/bigfang_charm.png",
+        icon = "items/bigfang_charm.png",
+	cost = 95,
 	usage = "all",
 	position = "amulet",
 	weight = 0
