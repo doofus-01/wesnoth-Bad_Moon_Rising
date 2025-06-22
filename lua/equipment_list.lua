@@ -159,7 +159,7 @@ table.insert(list_usage, {
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Great Orc",
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
-    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal",
+    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal","Elvish Ranger","Elvish Avenger",
     "Carusoe", "Carusoe2", "Bad Raenna", "Huric"},
     usage = "sword"
 })
