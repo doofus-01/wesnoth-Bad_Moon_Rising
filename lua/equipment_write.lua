@@ -48,6 +48,7 @@ end
 bmr_equipment.filter = function(unit_id, gear_id)    
       local result = "wrong type"
       local units = {}
+      local gear_stats = {}
       units = wesnoth.units.find_on_map({ id = unit_id })
       if units[1] then
       else
@@ -66,7 +67,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
 --      if wesnoth.sides[units[1].side].controller == "human" then
 --        wesnoth.message("Filter_debugging5", string.format("bmr_equipment.filter returns result= %s", result))
 --      end
-      local gear_usage = ""
+--[[      local gear_usage = ""
       local gear_name = ""
       local gear_cost = ""
       local gear_image = ""
@@ -75,10 +76,11 @@ bmr_equipment.filter = function(unit_id, gear_id)
       local gear_position = ""
       local gear_weight = ""
       local eq_eff = ""
+      ]]
       -- find the gear usage for gear_id in equipment_list.the_list (not eqipment_list.list_usage)
       for j in ipairs(equipment_list.the_list) do  
         if equipment_list.the_list[j].id == gear_id then
-          gear_usage = equipment_list.the_list[j].usage
+          gear_stats.usage = equipment_list.the_list[j].usage
 -- TO DO: filter for usage = potion, then apply the eq_eff, don't bother with the rest, set the result to "pass"
 -- this makes it get used right away
 --[[
@@ -91,13 +93,13 @@ bmr_equipment.filter = function(unit_id, gear_id)
 -- ]]
 -- this makes it get put to pool right away
 --[ [
-          if gear_usage == "potion" then
+          if gear_stats.usage == "potion" then
               result = "potion"
 	      return result
 	  end
 -- ]]
           -- make sure the unit has an open position before continuing
-          gear_position = equipment_list.the_list[j].position
+          gear_stats.position = equipment_list.the_list[j].position
 --          wesnoth.message("Filter_debugging", string.format("gear_position= %s", gear_position))
 --        FLAG: This part isn't quite right, I need to figure out/remember how to access the length of unit.variables.gear array
 --          local gear_index_max = #units[1].variables["gear"] -- this isn't working, maybe I need to use the get_child stuff?
@@ -114,7 +116,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
             else
 	      break
 	    end
-            if gear_position_iter == gear_position then
+            if gear_position_iter == gear_stats.position then
 --            if units[1].variables["gear["..gear_index.."].position"] == gear_position then
               if result ~= "is ai" then
                 result = "no room"
@@ -125,40 +127,54 @@ bmr_equipment.filter = function(unit_id, gear_id)
             -- this is a wml array, not lua, so it starts at [0]
             gear_index=gear_index + 1 
           end
-          eq_eff = equipment_list.the_list[j].eq_effect
-          gear_name = equipment_list.the_list[j].name
-          gear_cost = equipment_list.the_list[j].cost
-          gear_image = equipment_list.the_list[j].image
-          gear_text = equipment_list.the_list[j].text
-          gear_usage = equipment_list.the_list[j].usage
-          gear_position = equipment_list.the_list[j].position
-          gear_weight = equipment_list.the_list[j].weight
+          gear_stats.eq_eff = equipment_list.the_list[j].eq_effect
+          gear_stats.id = equipment_list.the_list[j].id
+          gear_stats.name = equipment_list.the_list[j].name
+          gear_stats.cost = equipment_list.the_list[j].cost
+          gear_stats.image = equipment_list.the_list[j].image
+          gear_stats.text = equipment_list.the_list[j].text
+          gear_stats.usage = equipment_list.the_list[j].usage
+          gear_stats.position = equipment_list.the_list[j].position
+          gear_stats.weight = equipment_list.the_list[j].weight
+          gear_stats.xp_needed = equipment_list.the_list[j].xp_needed
+          gear_stats.hp = equipment_list.the_list[j].hp
+          gear_stats.luck = equipment_list.the_list[j].luck
+          gear_stats.dodge = equipment_list.the_list[j].dodge
+          gear_stats.accuracy = equipment_list.the_list[j].accuracy
+          gear_stats.damage = equipment_list.the_list[j].damage
+          gear_stats.resist_blade = equipment_list.the_list[j].resist_blade
+          gear_stats.resist_impact = equipment_list.the_list[j].resist_impact
+          gear_stats.resist_pierce = equipment_list.the_list[j].resist_pierce
+          gear_stats.resist_cold = equipment_list.the_list[j].resist_cold
+          gear_stats.resist_fire = equipment_list.the_list[j].resist_fire
+          gear_stats.resist_arcane = equipment_list.the_list[j].resist_arcane
           break
         end
       end
       -- make sure the unit is the right unit_type to use this thing
       for j in ipairs(equipment_list.list_usage) do
-        if equipment_list.list_usage[j].usage == gear_usage then
+        if equipment_list.list_usage[j].usage == gear_stats.usage then
           for k in ipairs(equipment_list.list_usage[j].types) do 
             if equipment_list.list_usage[j].types[k] == units[1].type then
               result = "pass"
               wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
 	      local gindex = wml.variables["my_unit.variables.gear.length"]
               wml.variables["my_unit.variables.gear[" .. gindex .. "]"] = {
-                name = gear_name,
-                cost = gear_cost,
-                image = gear_image,
-                text = gear_text,
-                id = gear_id,
-                position = gear_position,
-                weight = gear_weight
+                name = gear_stats.name,
+                cost = gear_stats.cost,
+                image = gear_stats.image,
+                text = gear_stats.text,
+                id = gear_stats.id,
+                position = gear_stats.position,
+                weight = gear_stats.weight,
+                luck = gear_stats.luck
       	      }
               local old_weight = wml.variables["my_unit.variables.weight"]
               if old_weight then
               else
                   old_weight = 0
               end
-              temp_weight = old_weight + gear_weight
+              temp_weight = old_weight + gear_stats.weight
               wml.variables["my_unit.variables.weight"] = temp_weight 
               wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
@@ -172,7 +188,8 @@ bmr_equipment.filter = function(unit_id, gear_id)
                    end
               end
               local wt_effects = {
-                  id = "wt_moves_id",
+                  -- combine everything into one object
+                  -- id = "wt_moves_id",
                   wml.tag.effect {
                       apply_to = "movement",
                       increase = movep
@@ -197,59 +214,141 @@ bmr_equipment.filter = function(unit_id, gear_id)
                       }}
                   }
               }
-              -- 
+              -- did something get deleted?
               local wt_def_effect = function (wt)
                   local weight_defense_effect = {"effect", {apply_to = "defense", replace = "no", 
                   }
                   }
                   return weight_defense_effect
               end
+              local accuracy_specials = "accuracy_ws"..gear_stats.accuracy -- break out the weapon accuracy from any general accuracy boost, and these specials are defined in WML elsewhere
               -- for updating the attack dialog icon - only applies to blades (axes + swords), spears and bows.
               -- Everything else gets its own "new attack", so we don't worry about it here
               local blade_icons_effects = {
-                  id = "new_attack_icon_id",
+                  -- combine everything into one object
+                  -- id = "new_attack_icon_id" 
                   wml.tag.effect {
                       apply_to = "attack",
                       range = "melee",
                       type = "blade",
-                      set_icon = gear_image
+                      increase_damage = gear_stats.damage,
+                      { "set_specials", { specials_list = accuracy_specials, mode = "append" }},
+                      set_icon = gear_stats.image
                   }
               }
               local spear_icons_effects = {
-                  id = "new_attack_icon_id",
+                  --id = "new_attack_icon_id",
                   wml.tag.effect {
                       apply_to = "attack",
                       name = "spear",
-                      set_icon = gear_image
+                      increase_damage = gear_stats.damage,
+                      { "set_specials", { specials_list = accuracy_specials, mode = "append" }},
+                      set_icon = gear_stats.image
                   }
               }
               local bow_icons_effects = {
-                  id = "new_attack_icon_id",
+                  --id = "new_attack_icon_id",
                   wml.tag.effect {
                       apply_to = "attack",
                       {"and", {
                           range = "ranged",
                           type = "pierce"
                       }},
-                      set_icon = gear_image
+                      increase_damage = gear_stats.damage,
+                      { "set_specials", { specials_list = accuracy_specials, mode = "append" }},
+                      set_icon = gear_stats.image
                   }
               }
-
-              if gear_position == "weapon" then
---                  wesnoth.interface.add_chat_message("Filter_debugging", string.format("gear_usage= %s", gear_usage))
-                  if gear_usage == "axe" or gear_usage == "sword" then
-                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is axe/sword", gear_usage))
-	              wesnoth.units.add_modification(units[1], "object", blade_icons_effects)
-	          elseif gear_usage == "spear" then
-                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is spear", gear_usage))
-	              wesnoth.units.add_modification(units[1], "object", spear_icons_effects)
-	          elseif gear_usage == "bow" then
-                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is bow", gear_usage))
-	              wesnoth.units.add_modification(units[1], "object", bow_icons_effects)
+              local accuracy_effects = -- {
+                  wml.tag.effect {
+                      apply_to = "attack",
+                      --[[ 
+                      {"and", {
+                          range = "ranged",
+                          type = "pierce"
+                      }}, ]] -- no filter so all are affected
+                      { "set_specials", { specials_list = accuracy_specials, mode = "append" }}
+                  }
+              --}
+              local general_effects = {
+	          id = gear_stats.id, 
+                  wml.tag.effect {
+                      apply_to = "hitpoints",
+                      increase_total = gear_stats.hp,
+                      heal_full = "no"
+                  },
+                  wml.tag.effect {
+                      apply_to = "defense",
+                      replace = "no",
+                      -- civilized terrain types, like castle and village, are left off
+                      {"defense", {
+                          shallow_water= gear_stats.dodge,
+                          deep_water= gear_stats.dodge,
+                          reef= gear_stats.dodge,
+                          swamp_water= gear_stats.dodge,
+                          flat= gear_stats.dodge,
+                          sand= gear_stats.dodge,
+                          forest= gear_stats.dodge,
+                          hills= gear_stats.dodge,
+                          mountains= gear_stats.dodge,
+                          cave= gear_stats.dodge,
+                          frozen= gear_stats.dodge,
+                          fungus= gear_stats.dodge,
+                          castle= gear_stats.dodge,
+                          village= gear_stats.dodge
+                      }}
+                  },
+                  wml.tag.effect {
+                      apply_to = "resistance",
+                      replace = "no",
+                      {"resistance", {
+                          arcane = gear_stats.resist_arcane,
+                          blade = gear_stats.resist_blade,
+                          cold = gear_stats.resist_cold,
+                          fire = gear_stats.resist_fire,
+                          impact = gear_stats.resist_impact,
+                          pierce = gear_stats.resist_pierce
+                      }}
+                  }
+              }
+              if gear_stats.eq_eff then
+                  local tabi_a = #general_effects
+                  for i=1,tabi_a do
+                      table.insert(general_effects, gear_stats.eq_eff[i])
                   end
               end
-	      wesnoth.units.add_modification(units[1], "object", eq_eff)
-	      wesnoth.units.add_modification(units[1], "object", wt_effects)
+              --table.insert(general_effects, wt_effects)
+              local tabi_b = #general_effects
+              for i=1,tabi_b do
+                  table.insert(blade_icons_effects, general_effects[i])
+                  table.insert(spear_icons_effects, general_effects[i])
+                  table.insert(bow_icons_effects, general_effects[i])
+              end
+              
+              if gear_stats.position == "weapon" then
+--                  wesnoth.interface.add_chat_message("Filter_debugging", string.format("gear_usage= %s", gear_usage))
+                  if gear_stats.usage == "axe" or gear_stats.usage == "sword" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is axe/sword", gear_usage))
+	              wesnoth.units.add_modification(units[1], "object", blade_icons_effects)
+	          elseif gear_stats.usage == "spear" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is spear", gear_usage))
+	              --wesnoth.units.add_modification(units[1], "object", spear_icons_effects)
+	              wesnoth.units.add_modification(units[1], "object", spear_icons_effects)
+	          elseif gear_stats.usage == "bow" then
+                      -- wesnoth.interface.add_chat_message("Filter_debugging 2", string.format("confirmed gear_usage= %s is bow", gear_usage))
+	              --wesnoth.units.add_modification(units[1], "object", bow_icons_effects)
+	              wesnoth.units.add_modification(units[1], "object", bow_icons_effects)
+	          else
+	              wesnoth.units.add_modification(units[1], "object", general_effects)
+                  end
+	      else
+                  if gear_stats.accuracy ~= 0 then
+                      table.insert(general_effects, accuracy_effects)
+                  end
+	          wesnoth.units.add_modification(units[1], "object", general_effects)
+              end
+--	      wesnoth.units.add_modification(units[1], "object", eq_eff)
+--	      wesnoth.units.add_modification(units[1], "object", wt_effects)
 --              wesnoth.message("Filter_debugging2", string.format("bmr_equipment.filter returns result= %s", result))
               return result
             end
@@ -345,7 +444,8 @@ bmr_equipment.remove = function(unit_id, gear_id)
           wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
 -- remove movement penalty, then recalcualte and reapply it
           local movep = 0
-	  wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
+          wml.fire("remove_object", { id = unit_id, object_id = gear_id})
+	  -- wesnoth.units.remove_modifications(units[1], {id = "wt_moves_id"})
           if old_weight ~= temp_weight then -- MP loss only goes to -2
              if temp_weight >= 20 then
                  movep = -2
@@ -379,8 +479,8 @@ bmr_equipment.remove = function(unit_id, gear_id)
                       }}
               }
           }
-          wml.fire("remove_object", { id = unit_id, object_id = gear_id})
-          wml.fire("remove_object", { id = unit_id, object_id = "new_attack_icon_id"})
+          --wml.fire("remove_object", { id = unit_id, object_id = gear_id})
+          --wml.fire("remove_object", { id = unit_id, object_id = "new_attack_icon_id"})
 	  wesnoth.units.add_modification(units[1], "object", wt_effects)
 
 -- a hack to fix what may be a core bug with remove_object?
