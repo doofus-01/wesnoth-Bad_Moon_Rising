@@ -48,8 +48,10 @@ end
 function inventory_grid()
 	return T.grid{
 		T.row { T.column { border = "all", border_size = 5, T.label { id = "the_poollist_title", use_markup = true }}},
-		T.row { T.column { horizontal_alignment = "center" , T.listbox { max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
-						T.toggle_panel { T.grid { T.row { T.column {border = "all", border_size = 2, horizontal_alignment = "center", T.label { wrap = true, characters_per_line = 18, id = "the_poollist_entry", use_markup = true}}}}} 
+--		T.row { T.column { horizontal_alignment = "center" , T.listbox { max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
+		T.row { T.column { horizontal_grow = true , T.listbox { text_alignment = "left", max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
+--						T.toggle_panel { T.grid { T.row { T.column {border = "all", border_size = 2, horizontal_alignment = "center", T.label { wrap = true, characters_per_line = 18, id = "the_poollist_entry", use_markup = true}}}}} 
+						T.toggle_panel { T.grid { T.row { T.column {border = "all", border_size = 2, horizontal_grow = true, T.label { text_alignment = "left", wrap = true, characters_per_line = 18, id = "the_poollist_entry", use_markup = true}}}}} 
 						  }}}}}},
 		T.row { T.column { T.grid {
 								  T.row {
@@ -62,7 +64,9 @@ function inventory_grid()
 end
 
 function rg_row(header_id,header_label,value_id,bonus_id)
-	return T.row { T.column { horizontal_alignment = "left" , vertical_grow = true, T.label {definition = "default_small", id = header_id , label = header_label }}, T.column { T.spacer { width = 10 }}, T.column { horizontal_grow = true , T.label { id = value_id , text_alignment = "center", use_markup = true}}, T.column { horizontal_grow = true , T.label { text_alignment = "left", id = bonus_id , use_markup = true}}}
+	return T.row { T.column { horizontal_alignment = "left" , vertical_grow = true, T.label {definition = "default_small", id = header_id , label = header_label }}, T.column { T.spacer { width = 10 }}, 
+	               T.column { horizontal_grow = true , T.label { id = value_id , text_alignment = "center", use_markup = true}}, 
+	               T.column { horizontal_grow = true , T.label { text_alignment = "left", id = bonus_id , use_markup = true}}}
 end
 
 function resistances_grid()
@@ -286,7 +290,7 @@ function set_child_grid_values(unit, self)
 	local function rg_format_row(value,widget,widget2)
             local placeholder = 0
             value = tonumber(value)
-            if value == nil or value > 100 then value = 100 end -- sets bad values to zero
+            if value == nil or value > 100 then value = 0 end -- sets bad values to zero
 	    local val_color = "color ='#ffc000'"
 	    if value >= 40 then
 	    	val_color = "color ='#34db00'"

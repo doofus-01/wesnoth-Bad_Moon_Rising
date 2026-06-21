@@ -78,6 +78,13 @@ bmr_equipment.filter = function(unit_id, gear_id)
       local eq_eff = ""
       ]]
       -- find the gear usage for gear_id in equipment_list.the_list (not eqipment_list.list_usage)
+      local u_vars = wml.get_child(units[1].__cfg, "variables")
+      local total_xp = u_vars.total_xp
+      if total_xp then
+          total_xp = u_vars.total_xp + units[1].experience
+      else 
+          total_xp = units[1].experience
+      end
       for j in ipairs(equipment_list.the_list) do  
         if equipment_list.the_list[j].id == gear_id then
           gear_stats.usage = equipment_list.the_list[j].usage
@@ -153,7 +160,7 @@ bmr_equipment.filter = function(unit_id, gear_id)
       end
       -- make sure the unit is the right unit_type to use this thing
       for j in ipairs(equipment_list.list_usage) do
-        if equipment_list.list_usage[j].usage == gear_stats.usage then
+        if equipment_list.list_usage[j].usage == gear_stats.usage and total_xp >= gear_stats.xp_needed then
           for k in ipairs(equipment_list.list_usage[j].types) do 
             if equipment_list.list_usage[j].types[k] == units[1].type then
               result = "pass"

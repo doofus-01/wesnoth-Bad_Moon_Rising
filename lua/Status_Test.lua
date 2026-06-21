@@ -72,6 +72,9 @@ local function preshow(self)
     dr_y = event_context.y1
     unit_id = unit_cfg.id
     unit_type = unit_cfg.type
+    local u_vars = wml.get_child(unit_cfg, "variables")
+    local total_xp = u_vars.total_xp
+    total_xp = total_xp + unit_cfg.experience
     local the_unit = wesnoth.units.find_on_map({ id = unit_id })
     if the_unit[1] then
       else
@@ -150,15 +153,17 @@ local function preshow(self)
         widget_handle.enabled = can_move
     end
     local p_i = 1
-    for j in ipairs(equipment_list.the_list) do
+    for j in ipairs(equipment_list.the_list) do -- can this be streamlined, or is there a reason we go through everything?
     -- set markp for pool list entry to red italic, then check unit can use it and change markup if yes
         local gpf_style = "italic"    
         local gpf_color = "#bf6655"    
         local gpf_weight = "light"
+        local gpf_xp = " "
 	local gear_pool_id = equipment_list.the_list[j].id
 	local gear_pool_name = equipment_list.the_list[j].name
 	local gear_pool_usage = equipment_list.the_list[j].usage
 	local gear_pool_position = equipment_list.the_list[j].position
+        local gear_pool_xp = equipment_list.the_list[j].xp_needed
 --	local gear_pool_tooltip = equipment_list.the_list[j].tooltip
     -- local gear_pool_number = wesnoth.get_variable("gear_pool[0]."..gear_pool_id)
         local gear_pool_number = wml.variables["gear_pool[0]."..gear_pool_id]
@@ -172,7 +177,7 @@ local function preshow(self)
             for k in ipairs(equipment_list.list_usage) do
                 if equipment_list.list_usage[k].usage == gear_pool_usage then
                   for l in ipairs(equipment_list.list_usage[k].types) do 
-                    if equipment_list.list_usage[k].types[l] == unit_type then
+                    if equipment_list.list_usage[k].types[l] == unit_type  and gear_pool_xp <= total_xp then
                       gpf_style = "normal"    -- normal and light blue if useable
                       gpf_color = "#cfdfff"
                       gpf_weight = "bold"
@@ -192,6 +197,11 @@ local function preshow(self)
                         end
                         gp_index = gp_index + 1
                       end
+                    elseif equipment_list.list_usage[k].types[l] == unit_type  and gear_pool_xp > total_xp then
+                      gpf_style = "normal"
+                      gpf_color = "#cfdfff"
+                      gpf_xp = gear_pool_xp - total_xp
+                      gpf_xp = "</span><span size='xx-small' style='oblique' color='#ffaa33'> "..tostring(gpf_xp).."xp"
                     end
                   end -- for l
                 end
@@ -199,7 +209,7 @@ local function preshow(self)
 --	     wesnoth.add_dialog_tree_node("node1", i, "the_poollist")
 	     -- wesnoth.set_dialog_value(string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
          widget_handle = self:find('the_poollist', p_i, 'the_poollist_entry')
-         widget_handle.marked_up_text = string.format("<span size='x-small' font-style='%s' weight='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_weight, gpf_color, gear_pool_name, gear_pool_number)
+         widget_handle.marked_up_text = string.format("<span size='x-small' font-style='%s' weight='%s' color='%s'>%s  ( %d ) %s</span>", gpf_style, gpf_weight, gpf_color, gear_pool_name, gear_pool_number, gpf_xp)
          -- wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
 	     select_pool_id[p_i] = gear_pool_id
 	     p_i = p_i + 1
@@ -232,8 +242,13 @@ local function preshow(self)
 	end
 	-- wesnoth.set_dialog_value(gear_text[i], "the_gear_description")
         local function bonus_format(widget,value)
+            value = tonumber(value)
             widget_handle = self:find(widget)
-            widget_handle.marked_up_text = string.format("<span color = '#909090' size = 'x-small'> (%d)</span>", value)
+            if value == 0 or value == nil then
+                widget_handle.marked_up_text = " "
+            else
+                widget_handle.marked_up_text = string.format("<span color = '#909090' size = 'x-small'> (%d)</span>", value)
+            end                
             return
         end
         widget_handle = self:find('the_gear_stats')
