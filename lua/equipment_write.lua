@@ -139,15 +139,15 @@ bmr_equipment.filter = function(unit_id, gear_id)
           gear_stats.xp_needed = equipment_list.the_list[j].xp_needed
           gear_stats.hp = equipment_list.the_list[j].hp
           gear_stats.luck = equipment_list.the_list[j].luck
-          gear_stats.dodge = equipment_list.the_list[j].dodge
+          gear_stats.dodge = -equipment_list.the_list[j].dodge
           gear_stats.accuracy = equipment_list.the_list[j].accuracy
           gear_stats.damage = equipment_list.the_list[j].damage
-          gear_stats.resist_blade = equipment_list.the_list[j].resist_blade
-          gear_stats.resist_impact = equipment_list.the_list[j].resist_impact
-          gear_stats.resist_pierce = equipment_list.the_list[j].resist_pierce
-          gear_stats.resist_cold = equipment_list.the_list[j].resist_cold
-          gear_stats.resist_fire = equipment_list.the_list[j].resist_fire
-          gear_stats.resist_arcane = equipment_list.the_list[j].resist_arcane
+          gear_stats.resist_blade = -equipment_list.the_list[j].resist_blade
+          gear_stats.resist_impact = -equipment_list.the_list[j].resist_impact
+          gear_stats.resist_pierce = -equipment_list.the_list[j].resist_pierce
+          gear_stats.resist_cold = -equipment_list.the_list[j].resist_cold
+          gear_stats.resist_fire = -equipment_list.the_list[j].resist_fire
+          gear_stats.resist_arcane = -equipment_list.the_list[j].resist_arcane
           break
         end
       end
@@ -215,12 +215,13 @@ bmr_equipment.filter = function(unit_id, gear_id)
                   }
               }
               -- did something get deleted?
+              --[[
               local wt_def_effect = function (wt)
                   local weight_defense_effect = {"effect", {apply_to = "defense", replace = "no", 
                   }
                   }
                   return weight_defense_effect
-              end
+              end]]
               local accuracy_specials = "accuracy_ws"..gear_stats.accuracy -- break out the weapon accuracy from any general accuracy boost, and these specials are defined in WML elsewhere
               -- for updating the attack dialog icon - only applies to blades (axes + swords), spears and bows.
               -- Everything else gets its own "new attack", so we don't worry about it here

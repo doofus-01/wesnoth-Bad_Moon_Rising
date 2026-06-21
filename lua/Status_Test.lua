@@ -7,36 +7,8 @@ local select_pool_id = {}
 local dr_x = 0
 local dr_y = 0
 local unit_id = 0
---local equipment_grid_list_data = {}
---local event_context = wesnoth.current.event_context
---local unit_cfg = wesnoth.units.get(event_context.x1,event_context.y1).__cfg
---local u_gear = wml.get_child(unit_cfg, "variables")
---local function equip_data_table_f()
---    for gear in wml.child_range(u_gear, "gear") do	
---	local equip_data = equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text)
---	if equipment_grid_list_data[1] == nil then
---	wesnoth.message("first...")
---	equipment_grid_list_data = {"row", {equip_data}}
---	end
---	wesnoth.message("iterating...")
---	table.insert(equipment_grid_list_data, {"row", {equip_data}})
---	wesnoth.message(equip_data[4])
---    end
---    return equipment_grid_list_data
---end
 
-
---[[local equipment_grid_list_data = T.row{ T.column{
-	T.widget{id = "the_gearlist_icon", label = "misc/empty.png~SCALE(60,60)"},
-	T.widget{id = "the_gearlist_icon_name", label = "dummy label", tooltip = "dummy tooltip"}
-}}
-]]
---[[	{"row" , {"column" ,
-		{"widget" , {id = "the_gearlist_icon", label = "misc/empty.png"}}, 
-		{"widget" , {id = "the_gearlist_icon_name", label = "dummy label", tooltip = "dummy tooltip"}}
-		}
-		}
-]]
+--[[ update 6-2026: starting to remove "callback" and "value_compat", as it doesn't look like they are documented]]
 
 local dialog = {
   T.tooltip { id = "tooltip_large" },
@@ -106,59 +78,65 @@ local function preshow(self)
           wesnoth.message("Filter_debugging4", string.format("status dialog preshow failed to find unit"))
     end
 
-    -- wesnoth.set_dialog_active(can_move, "use_button")
     local widget_handle = self:find('use_button')
     widget_handle.enabled = can_move
-    --wesnoth.set_dialog_active(can_move, "delete_button")
     widget_handle = self:find('delete_button')
     widget_handle.enabled = can_move
-    -- wesnoth.set_dialog_active(can_move, "drop_button")
     widget_handle = self:find('drop_button')
     widget_handle.enabled = can_move
-    -- wesnoth.set_dialog_active(can_move, "inventory_button")
     widget_handle = self:find('inventory_button')
     widget_handle.enabled = can_move
-    -- wesnoth.set_dialog_markup(true, "the_panel_title")
-    -- wesnoth.set_dialog_value("< span size='xx-large' color='#eeffb7'> Unit Status < /span>" , "the_panel_title")
     widget_handle = self:find('the_panel_title')
-    widget_handle.value_compat = "<span size='xx-large' color='#eeffb7'> Unit Status </span>"
-    -- widget_handle.text = "<span size='xx-large' color='#eeffb7'> Unit Status </span>"
-    -- wesnoth.set_dialog_markup(true, "the_title")
-    -- wesnoth.set_dialog_value(string.format("<span size='x-large' color='#eeffb7'> %s </span>", unit_cfg.name) , "the_title")
+    widget_handle.marked_up_text = "<span size='xx-large' color='#eeffb7'> Unit Status </span>"
     widget_handle = self:find('the_title')
-    widget_handle.value_compat = string.format("<span size='x-large' color='#eeffb7'> %s </span>", unit_cfg.name)
-    -- wesnoth.set_dialog_markup(true, "the_gearlist_title")
-    -- wesnoth.set_dialog_value("<span size='large' color='#eeffb7' underline='single'> Equipment </span>" , "the_gearlist_title")
+    widget_handle.marked_up_text = string.format("<span size='x-large' color='#eeffb7'> %s </span>", unit_cfg.name)
     widget_handle = self:find('the_gearlist_title')
-    widget_handle.value_compat = "<span size='large' color='#eeffb7' underline='single'> Equipment </span>"
-    -- wesnoth.set_dialog_markup(true, "the_poollist_title")
-    -- wesnoth.set_dialog_value("<span size='large' color='#ddeea6' underline='single'> Inventory </span>" , "the_poollist_title")
+    widget_handle.marked_up_text = "<span size='large' color='#eeffb7' underline='single'> Equipment </span>"
     widget_handle = self:find('the_poollist_title')
-    widget_handle.value_compat = "<span size='large' color='#ddeea6' underline='single'> Inventory </span>"
-    set_simple_grid_values(unit_cfg, self)
-    set_child_grid_values(unit_cfg, self)
-    -- the equipment list
+    widget_handle.marked_up_text = "<span size='large' color='#ddeea6' underline='single'> Inventory </span>"
+--    set_simple_grid_values(unit_cfg, self)
+--    set_child_grid_values(unit_cfg, self)
+---------------------------------
+-- the equipment list
     local gear_text = {}
+    local gear_stat = {}
     local g_i = 1
     local u_gear = wml.get_child(unit_cfg, "variables")
 -- changed gear.image SCALE(60,60) to 50,50
---    wesnoth.message(equipment_grid_list_data[1])
---    wesnoth.message(equipment_grid_list_data[2][1])
     for gear in wml.child_range(u_gear, "gear") do
---	table.insert(equipment_grid_list_data,equipment_grid_data(string.format("%s~SCALE(60,60)", gear.image), string.format("<span size='xx-small'>%s</span>", gear.name), gear.text))
-	-- wesnoth.set_dialog_value(string.format("%s~SCALE(60,60)", gear.image), "the_gearlist", g_i, "the_gearlist_icon")
-    widget_handle = self:find("the_gearlist", g_i, "the_gearlist_icon")
-    widget_handle.value_compat = string.format("%s~SCALE(60,60)", gear.image)
+        -- try getting the gear data from the big lua table, so we don't carry this around in the unit & savefile WML data
+        for j in ipairs(equipment_list.the_list) do  
+            if equipment_list.the_list[j].id == gear.id then
+                widget_handle = self:find("the_gearlist", g_i, "the_gearlist_icon")
+--                widget_handle.value_compat = string.format("%s~SCALE(60,60)", gear.image)
+                widget_handle.marked_up_text = string.format("%s~SCALE(60,60)", equipment_list.the_list[j].image)
+                widget_handle = self:find("the_gearlist", g_i, "the_gearlist_icon_name")
+                widget_handle.marked_up_text = string.format("<span size='xx-small'>%s</span>", equipment_list.the_list[j].name)
+	        gear_stat[g_i] = string.format("<span size='small'>Weight: %d \n +HP: %d \n Luck: %d \n Dodge: %d \n Accuracy: %d \n Damage: %d \n Cost %d g </span>", 	            
+	            equipment_list.the_list[j].weight,
+	            equipment_list.the_list[j].hp,
+	            equipment_list.the_list[j].luck,
+	            equipment_list.the_list[j].dodge,
+	            equipment_list.the_list[j].accuracy,
+	            equipment_list.the_list[j].damage,
+	            equipment_list.the_list[j].cost
+	            )
+	        gear_text[g_i] = string.format("%s \n <span size='small' style='italic'> %s </span>", equipment_list.the_list[j].name, equipment_list.the_list[j].text)
+                break
+            end
+        end
     -- wesnoth.set_dialog_value(string.format("<span size='xx-small'>%s</span>", gear.name), "the_gearlist", g_i, "the_gearlist_icon_name")
-    widget_handle = self:find("the_gearlist", g_i, "the_gearlist_icon_name")
-    widget_handle.value_compat = string.format("<span size='xx-small'>%s</span>", gear.name)
     -- wesnoth.set_dialog_markup(true, "the_gearlist", g_i, "the_gearlist_icon_name")
-	gear_text[g_i] = string.format("%s <span size='small'> (Wt: %s) \n  %s </span>", gear.name, gear.weight, gear.text)
 --	gear_text[g_i] = string.format("<span size='large'> %s </span> (Wt: %s) - %s", gear.name, gear.weight, gear.text)
 	select_gear_id[g_i] = gear.id
 	g_i = g_i + 1
 --  wesnoth.message(equipment_grid_list_data)
     end
+    set_simple_grid_values(unit_cfg, self)
+    set_child_grid_values(unit_cfg, self)
+--    set_simple_grid_values(unit_cfg, self)
+--    set_child_grid_values(unit_cfg, self)
+
 --    wesnoth.message(equipment_grid_list_data[3])
 --remove the initial dummy list_data
 --    table.remove(equipment_grid_list_data,1)
@@ -221,7 +199,7 @@ local function preshow(self)
 --	     wesnoth.add_dialog_tree_node("node1", i, "the_poollist")
 	     -- wesnoth.set_dialog_value(string.format("<span size='x-small' font-style='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_color, gear_pool_name, gear_pool_number), "the_poollist", p_i, "the_poollist_entry")
          widget_handle = self:find('the_poollist', p_i, 'the_poollist_entry')
-         widget_handle.value_compat = string.format("<span size='x-small' font-style='%s' weight='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_weight, gpf_color, gear_pool_name, gear_pool_number)
+         widget_handle.marked_up_text = string.format("<span size='x-small' font-style='%s' weight='%s' color='%s'>%s  ( %d )</span>", gpf_style, gpf_weight, gpf_color, gear_pool_name, gear_pool_number)
          -- wesnoth.set_dialog_markup(true, "the_poollist", p_i, "the_poollist_entry")
 	     select_pool_id[p_i] = gear_pool_id
 	     p_i = p_i + 1
@@ -241,21 +219,54 @@ local function preshow(self)
 	-- so, index [i] is refering to the item selected
         -- local i = wesnoth.get_dialog_value "the_gearlist"
         widget_handle = self:find('the_gearlist')
-        local i = widget_handle.value_compat
+        -- local i = widget_handle.value_compat
+        local i = widget_handle.selected_index
 	-- wesnoth.set_dialog_markup(true, "the_gear_description")
 	if gear_text[i] then
 	  else
-	  gear_text[i] = "No equipment available."
+	  gear_text[i] = "No description available."
+	end
+	if gear_stat[i] then
+	  else
+	  gear_stat[i] = "No equipment \n data available."
 	end
 	-- wesnoth.set_dialog_value(gear_text[i], "the_gear_description")
-    widget_handle = self:find('the_gear_description')
-    widget_handle.value_compat = gear_text[i]
-    return select_gear_id[i]
+        local function bonus_format(widget,value)
+            widget_handle = self:find(widget)
+            widget_handle.marked_up_text = string.format("<span color = '#909090' size = 'x-small'> (%d)</span>", value)
+            return
+        end
+        widget_handle = self:find('the_gear_stats')
+        widget_handle.marked_up_text = gear_stat[i]
+        widget_handle = self:find('the_gear_description')
+        widget_handle.marked_up_text = gear_text[i]
+        --[[widget_handle = self:find('the_rg_arcane')
+        widget_handle.marked_up_text = string.format("<span size='x-small'>%s </span>", select_gear_id[i])]] --successful test
+        for j in ipairs(equipment_list.the_list) do  
+            if equipment_list.the_list[j].id == select_gear_id[i] then
+                local bonus = 0
+                bonus = equipment_list.the_list[j].resist_arcane
+                bonus_format("the_rg_bonus_arcane",bonus)
+                bonus = equipment_list.the_list[j].resist_blade
+                bonus_format("the_rg_bonus_blade",bonus)
+                bonus = equipment_list.the_list[j].resist_cold
+                bonus_format("the_rg_bonus_cold",bonus)
+                bonus = equipment_list.the_list[j].resist_fire
+                bonus_format("the_rg_bonus_fire",bonus)
+                bonus = equipment_list.the_list[j].resist_impact
+                bonus_format("the_rg_bonus_impact",bonus)
+                bonus = equipment_list.the_list[j].resist_pierce
+                bonus_format("the_rg_bonus_pierce",bonus)
+                break
+            end
+        end        
+        return select_gear_id[i]
     end
     -- wesnoth.set_dialog_callback(select, "the_gearlist")
     widget_handle = self:find('the_gearlist')
-    widget_handle.callback = select
-    select()
+    widget_handle.on_modified = select
+--    widget_handle.callback = select
+    select() -- this is to give an initial value
 end
 
 local li = 0
