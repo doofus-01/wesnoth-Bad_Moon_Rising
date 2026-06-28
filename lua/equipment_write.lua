@@ -93,9 +93,12 @@ bmr_equipment.filter = function(unit_id, gear_item)
             result = "low XP"
         end
         -- ... and that there is free space to equip it (we can't find the position pattern in the gear_positions variable string)
-        local position_text_begin,position_text_end = string.find(u_vars.gear_positions,gear_item.position)
-        if position_text_begin then
-            result = "no room"
+        local position_text = u_vars.gear_positions
+        if position_text then
+            local position_text_begin,position_text_end = string.find(position_text, gear_item.position)
+            if position_text_begin then
+                result = "no room"
+            end
         end
     end
     -- I'm not sure there is a distinction, but maybe there should be
@@ -207,22 +210,22 @@ bmr_equipment.apply = function(unit_var, gear_item)
             table.insert(bow_icons_effects, general_effects[i])
         end
         if gear_item.usage == "axe" or gear_item.usage == "sword" then
-	    wesnoth.units.add_modification(units[1], "object", blade_icons_effects)
+	    wesnoth.units.add_modification(unit_var, "object", blade_icons_effects)
 	elseif gear_item.usage == "spear" then
-            wesnoth.units.add_modification(units[1], "object", spear_icons_effects)
+            wesnoth.units.add_modification(unit_var, "object", spear_icons_effects)
 	elseif gear_item.usage == "bow" then
-            wesnoth.units.add_modification(units[1], "object", bow_icons_effects)
+            wesnoth.units.add_modification(unit_var, "object", bow_icons_effects)
         else
-            wesnoth.units.add_modification(units[1], "object", general_effects)
+            wesnoth.units.add_modification(unit_var, "object", general_effects)
         end
     else
         if gear_item.accuracy ~= 0 then
             table.insert(general_effects, accuracy_effects)
         end
-	wesnoth.units.add_modification(units[1], "object", general_effects)
+	wesnoth.units.add_modification(unit_var, "object", general_effects)
     end
     -- we've applied the effects, now we deal with the bookkeeping
-    wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_var[1].id } } })
+    wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_var.id } } })
     local gindex = wml.variables["my_unit.variables.gear.length"] -- we aren't iterating, we just want to add to the end
     wml.variables["my_unit.variables.gear[" .. gindex .. "]"] = {
     -- on the one hand, we don't want to bloat the save files with these things
@@ -248,10 +251,10 @@ bmr_equipment.apply = function(unit_var, gear_item)
 end
 
 bmr_equipment.remove = function(unit_var, gear_item)
-    if unit_var[1] and gear_item.id then
+    if unit_var and gear_item.id then
         local gindex = 0
         local old_gear_id = ""
-        wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_id } } })
+        wml.fire("store_unit", { variable="my_unit", { "filter", { id = unit_var.id } } })
         -- first check that the unit really has the gear 
         while wml.variables["my_unit.variables.gear["..gindex.."]"] do
 	    old_gear_id = wml.variables["my_unit.variables.gear["..gindex.."].id"]
@@ -274,7 +277,7 @@ bmr_equipment.remove = function(unit_var, gear_item)
             wml.variables["my_unit.variables.gear_positions"] = string.gsub(gear_positions, substring, "")
             wml.fire("unstore_unit", { variable="my_unit", find_vacant = "no"})
             -- ... and remove the gear [object]
-            wml.fire("remove_object", { id = unit_var[1].id, object_id = "object_"..gear_item.id})
+            wml.fire("remove_object", { id = unit_var.id, object_id = "object_"..gear_item.id})
 
 -- a hack to fix what may be a core bug with remove_object?
 -- let's make sure this is really needed...  Yes, it is, but I'm not sure it's a bug with core [remove_object] etc.; I can't reproduce this in a simple test-case
@@ -290,10 +293,11 @@ bmr_equipment.remove = function(unit_var, gear_item)
 ]]
 -- this does not work	  
 --          wesnoth.units.modify({ id = unit_id }, { hitpoints = hack_u.hitpoints })
-      else
-          wesnoth.message(string.format("%s does not posses %s", unit_var[1].id, gear_item.id))      
-      end
-   return
+        else
+            wesnoth.message(string.format("%s does not posses %s", unit_var.id, gear_item.id))      
+        end
+    end
+    return
 end
 
 -- adds the gear id to a list that can be used by another unit on the recall list
@@ -366,7 +370,7 @@ end
 bmr_equipment.consume = function(unit_var, gear_item)
       if gear_item.usage == "potion" then
               eq_eff = equipment_list.the_list[j].eq_effect
-	      wesnoth.units.add_modification(unit_var[1], "object", gear_item.eq_eff)
+	      wesnoth.units.add_modification(unit_var, "object", gear_item.eq_eff)
       end
 end
 
