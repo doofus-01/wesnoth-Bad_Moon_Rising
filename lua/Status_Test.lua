@@ -306,19 +306,25 @@ end
 ------------------------------------------------------------------------
 
 local function call_to_pool(u_i,sg_i)
-  bmr_equipment.remove(u_i, sg_i)
+  local sg_item = bmr_equipment.lookup(sg_i)
+  local unit_var = bmr_equipment.unit(u_i)
+  bmr_equipment.remove(unit_var, sg_item)
   bmr_equipment.pool_add(sg_i)
 end
 
 local function call_from_pool(u_i,sp_i)
-  local pter = bmr_equipment.unit(u_i, sp_i)
-  if pter == "pass" or pter == "no room" then
-    bmr_equipment.pool_remove(sp_i)
+  local sp_item = bmr_equipment.lookup(sp_i)
+  local unit_var = bmr_equipment.unit(u_i)
+  local pter = bmr_equipment.filter(u_i, sp_item)
+  -- if pter == "pass" or pter == "no room" then -- why the "no room"
+  if pter == "pass" then
+    bmr_equipment.apply(unit_var, sp_item)
+    bmr_equipment.pool_remove(sp_item) 
   end
   if pter == "potion" then
-    bmr_equipment.pool_remove(sp_i)
-    bmr_equipment.pool_remove(sp_i) -- this is to get rid of the copy made by bmr_equipment.unit, there is probably a better way to do this
-    bmr_equipment.consume(u_i,sp_i)
+    bmr_equipment.pool_remove(sp_item)
+    -- bmr_equipment.pool_remove(sp_i) -- this is to get rid of the copy made by bmr_equipment.unit, there is probably a better way to do this
+    bmr_equipment.consume(unit_var,sp_item)
   end
 end
 
@@ -327,8 +333,10 @@ local function delete_from_pool(sp_i)
 end
 
 local function call_drop(u_i,d_x,d_y,sg_i)
-  bmr_equipment.remove(u_i, sg_i)
-  bmr_equipment.item_drop(d_x, d_y, sg_i)
+  local sg_item = bmr_equipment.lookup(sg_i)
+  local unit_var = bmr_equipment.unit(u_i)
+  bmr_equipment.remove(unit_var, sg_item)
+  bmr_equipment.item_drop(d_x, d_y, sg_item)
 end
 
 local result = wesnoth.sync.evaluate_single(

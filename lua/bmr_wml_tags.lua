@@ -18,33 +18,34 @@
 function wesnoth.custom_synced_commands.apply_gear(cfg)
         local unit_id = cfg.id or wml.error "[apply_gear] expects an id= attribute."
         local gear_id = cfg.gear_id or wml.error "[apply_gear] expects a gear_id= attribute."
-        local result = bmr_equipment.unit(unit_id, gear_id)
+        local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
+        if not eq_unit[1] then wml.error("[apply_gear] but unit not found") end
+        local gear_item = bmr_equipment.lookup(gear_id)        
+        local result = bmr_equipment.filter(unit_id, gear_item)
         -- pass if the unit could equip the item, or was a player side that had a pool
         -- fail if the unit couldn't equip and was ai, or was not found
-        if result == "pass" or result == "potion" then
---           wesnoth.message(string.format("%s on map", unit_id))
---           wesnoth.message(string.format("%s on map", gear_id))
-            local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
-            -- this fails to store anything if id is something like "Primevalist Fighter-21", from underlying ID of generic unit, 
-            -- then generates errors when eq_unit[1] is referenced
---           wesnoth.message(string.format("%s on map (array)", eq_unit[1].id))
---            local take_result = bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
---            if take_result == "pass" then
-            if eq_unit[1] then
-              bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
-              if cfg.show_text == "yes" then 
-                  wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
-              end
+        if result == "pass" then
+            bmr_equipment.apply(eq_unit[1], gear_item)
+            -- not sure if this is really needed here
+            bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
+            if cfg.show_text == "yes" then 
+                wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
             end
-            local eq_side = eq_unit[1].side
-            -- this known_items variable is initialized in one of the INIT macros in utils/inventory.cfg
-            local k_i = wml.variables["known_items["..eq_side.."].s"]
-            if k_i == "dummy" or (not k_i) then
-                wml.variables["known_items["..eq_side.."].s"] = string.format("%s", gear_id)
-            else
-                if not string.find(k_i,gear_id) then
-                    wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
-                end
+        elseif result ~= "is ai" then 
+            bmr_equipment.pool_add(gear_id)
+            bmr_equipment.item_take(eq_unit[1].x, eq_unit[1].y, gear_id)
+            if cfg.show_text == "yes" then 
+                wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
+            end
+        end
+        local eq_side = eq_unit[1].side
+        -- this known_items variable is initialized in one of the INIT macros in utils/inventory.cfg
+        local k_i = wml.variables["known_items["..eq_side.."].s"]
+        if k_i == "dummy" or (not k_i) then
+            wml.variables["known_items["..eq_side.."].s"] = string.format("%s", gear_id)
+        else
+            if not string.find(k_i,gear_id) then
+                wml.variables["known_items["..eq_side.."].s"] = string.format("%s,", k_i)..string.format("%s", gear_id)
             end
         end
 end
@@ -64,18 +65,27 @@ end
 ]]--
 
 function wesnoth.custom_synced_commands.remove_gear(cfg)
+        local location = "none"
         local unit_id = cfg.id or wml.error "[remove_gear] expects an id= attribute."
         local gear_id = cfg.gear_id or wml.error "[remove_gear] expects a gear_id= attribute."
-        local result = bmr_equipment.remove(unit_id, gear_id)
-        if result == "on_map" then
-          local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
-          bmr_equipment.item_drop(eq_unit[1].x, eq_unit[1].y, gear_id)
---          wesnoth.message(string.format("%s on map", unit_id))
-        elseif result == "on_recall" then
-          bmr_equipment.pool_add(gear_id)
---          wesnoth.message(string.format("%s on recall", unit_id))
+        local eq_unit = wesnoth.units.find_on_map({ id = unit_id })
+        if eq_unit[1] then
+            location = "on_map"
         else
-          wesnoth.message(string.format("%s does not have %s", unit_id, gear_id))
+            eq_unit = wesnoth.get_recall_units({ id = unit_id })      
+            if eq_unit[1] then 
+                location = "on_recall"
+            end  
+        end
+        if not eq_unit[1] then wml.error("[remove_gear] but unit not found") end
+        local gear_item = bmr_equipment.lookup(gear_id)        
+        bmr_equipment.remove(eq_unit[1], gear_item)
+        if location == "on_map" then
+            bmr_equipment.item_drop(eq_unit[1].x, eq_unit[1].y, gear_item)
+        elseif location == "on_recall" then
+            bmr_equipment.pool_add(gear_id)
+        else
+            wml.error(string.format("%s does not have %s", unit_id, gear_id))
         end
 end
 
@@ -98,7 +108,8 @@ function wesnoth.custom_synced_commands.gear_item(cfg)
         local x_1 = cfg.x or wml.error "[gear_item] expects an x= attribute."
         local y_1 = cfg.y or wml.error "[gear_item] expects an y= attribute."
         local gear_id = cfg.gear_id or wml.error "[gear_item] expects a gear_id= attribute."
-        bmr_equipment.item_drop(x_1, y_1, gear_id)
+        local gear_item = bmr_equipment.lookup(gear_id)
+        bmr_equipment.item_drop(x_1, y_1, gear_item)
 end
 
 function wesnoth.wml_actions.gear_item(cfg)
