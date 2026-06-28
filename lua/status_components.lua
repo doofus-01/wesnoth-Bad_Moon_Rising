@@ -116,9 +116,9 @@ function misc_status_grid()
 	         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_type", use_markup = true}}},
 		 	T.row { T.column { T.grid {
 			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment", use_markup = true}}},
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait", use_markup = true}}},
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait", use_markup = true}}},  
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: lowers defense values (except for village and castle) and every ten points costs one movement point."}}, T.column { horizontal_grow = true, T.spacer { id = "WT_spacer"}}}
+                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait", use_markup = true}}},
+                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait", use_markup = true}}},
+                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: A unit has a weight limit of 4 plus an additional 4 per level."}}, T.column { horizontal_grow = true, T.label { id = "the_unit_LK", use_markup = true, tooltip = "Luck: higher luck helps avoid traps and curses."}}}
 				}}}				
 			  }},
                  T.column { resistances_grid()} -- right grid
@@ -189,23 +189,30 @@ function set_child_grid_values(unit, self)
        widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1])
        widget_handle = self:find('the_second_trait')
        widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2])
-    -- weight
+    -- weight and luck
 	local unit_var = wml.get_child(unit, "variables")
 	local unit_wt = unit_var.weight
+	local unit_lk = unit_var.luck
+        local weight_limit = 4 * unit.level
+        weight_limit = weight_limit + 4
         if unit_wt then
         else
            unit_wt = 0
         end
-	local wt_color = "color ='#2ac600'"
-	if unit_wt > -10 and unit_wt < 10 then
+        local relative_wt = unit_wt / weight_limit
+	local wt_color = "color ='#20c620'"
+	local lk_color = "color ='#60e690'"
+	if relative_wt >= 0.3 and relative_wt < 0.6 then
 	    wt_color = "color ='#e5e5e5'"
-	elseif unit_wt >= 10 and unit_wt < 20 then
-	    wt_color = "color ='#ffc600'"
-	elseif unit_wt >= 20 and unit_wt < 30 then
+	elseif relative_wt >= 0.6 and relative_wt < 0.9 then
+	    wt_color = "color ='#f0f90f'"
+	elseif relative_wt >= 0.9 then
 	    wt_color = "color ='#ff0000'"
 	end
         widget_handle = self:find('the_unit_WT')
-        widget_handle.marked_up_text = string.format("<span size='small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt)
+        widget_handle.marked_up_text = string.format("<span size='x-small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt)
+        widget_handle = self:find('the_unit_LK')
+        widget_handle.marked_up_text = string.format("<span size='x-small' "..lk_color.."> ♣: %s </span>", unit_lk)
 -- movement costs
         widget_handle = self:find('the_mcg_title')
         widget_handle.marked_up_text = "<span color='#eeffb7'>  Movement Costs  </span>"

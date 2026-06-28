@@ -41,15 +41,6 @@ end
 
 bmr_equipment.filter = function(unit_id, gear_item)
     local result = "wrong type"
-    -- If it is a potion, we don't need to check the unit info, we are done
-    if gear_item.usage == "potion" then
-        if wesnoth.sides[units[1].side].controller == "ai" then
-            result = "is ai"
-        else
-            result = "potion"
-        end
-        return result
-    end
     local units = {}  
     units = wesnoth.units.find_on_map({ id = unit_id })
     if units[1] then
@@ -60,6 +51,15 @@ bmr_equipment.filter = function(unit_id, gear_item)
             result = "not found"
             return result
         end
+    end
+    -- If it is a potion, we don't need to check the unit info, aside from side controller, we are done
+    if gear_item.usage == "potion" then
+        if wesnoth.sides[units[1].side].controller == "ai" then
+            result = "is ai"
+        else
+            result = "potion"
+        end
+        return result
     end
     -- check that the unit can use this item
     if gear_item.usage == "all" then
@@ -91,6 +91,17 @@ bmr_equipment.filter = function(unit_id, gear_item)
         end
         if total_xp < gear_item.xp_needed then
             result = "low XP"
+        end
+        -- ... that it's not too much weight ...
+        local u_weight = u_vars.weight
+        local total_weight = gear_item.weight
+        if u_weight then
+            total_weight = total_weight + u_weight
+        end
+        local weight_limit = units[1].level * 4
+        weight_limit = weight_limit + 4
+        if total_weight > weight_limit then
+            result = "no room"
         end
         -- ... and that there is free space to equip it (we can't find the position pattern in the gear_positions variable string)
         local position_text = u_vars.gear_positions
@@ -184,20 +195,20 @@ bmr_equipment.apply = function(unit_var, gear_item)
             apply_to = "resistance",
             replace = "no",
             {"resistance", {
-                arcane = gear_item.resist_arcane,
-                blade = gear_item.resist_blade,
-                cold = gear_item.resist_cold,
-                fire = gear_item.resist_fire,
-                impact = gear_item.resist_impact,
-                pierce = gear_item.resist_pierce
+                arcane = -gear_item.resist_arcane,
+                blade = -gear_item.resist_blade,
+                cold = -gear_item.resist_cold,
+                fire = -gear_item.resist_fire,
+                impact = -gear_item.resist_impact,
+                pierce = -gear_item.resist_pierce
                 }}
             }
         }
     -- collect all the equipment effects, if there are any, into general effects
-    if gear_item.eq_eff then
-        local tabi_a = #general_effects
+    if gear_item.eq_effect then
+        local tabi_a = #gear_item.eq_effect
         for i=1,tabi_a do
-            table.insert(general_effects, gear_item.eq_eff[i])
+            table.insert(general_effects, gear_item.eq_effect[i])
         end
     end
             -- next insert the general effects into the weapon effects, if appropriate
@@ -234,12 +245,18 @@ bmr_equipment.apply = function(unit_var, gear_item)
            name = gear_item.name,
            image = gear_item.image,
            id = gear_item.id,
-           position = gear_item.position
+           position = gear_item.position,
+           luck = gear_item.luck
        }
     if wml.variables["my_unit.variables.weight"] then
         wml.variables["my_unit.variables.weight"] = wml.variables["my_unit.variables.weight"] + gear_item.weight
     else
         wml.variables["my_unit.variables.weight"] = gear_item.weight
+    end
+    if wml.variables["my_unit.variables.luck"] then
+        wml.variables["my_unit.variables.luck"] = wml.variables["my_unit.variables.luck"] + gear_item.luck
+    else
+        wml.variables["my_unit.variables.luck"] = gear_item.luck
     end
     if wml.variables["my_unit.variables.gear_positions"] then
         wml.variables["my_unit.variables.gear_positions"] = wml.variables["my_unit.variables.gear_positions"].."_"..gear_item.position
@@ -369,8 +386,8 @@ end
 
 bmr_equipment.consume = function(unit_var, gear_item)
       if gear_item.usage == "potion" then
-              eq_eff = equipment_list.the_list[j].eq_effect
-	      wesnoth.units.add_modification(unit_var, "object", gear_item.eq_eff)
+	      wesnoth.units.add_modification(unit_var, "object", gear_item.eq_effect)
+              --wesnoth.message(string.format("%s tried to use %s", unit_var.id, gear_item.id))
       end
 end
 
