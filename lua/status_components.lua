@@ -46,7 +46,11 @@ function equipment_grid_data(equ_icon, equ_label, equ_tooltip)
 end
 
 function inventory_grid()
-	return T.grid{
+        return T.grid { T.row { T.column { T.stacked_widget { 
+                 T.layer { T.row { T.column { T.image { label = "misc/inventory_wood.webp"} }}},
+                 T.layer { T.row { T.column {
+                   T.grid {
+--        return T.grid {
 		T.row { T.column { border = "all", border_size = 5, T.label { id = "the_poollist_title", use_markup = true }}},
 --		T.row { T.column { horizontal_alignment = "center" , T.listbox { max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
 		T.row { T.column { horizontal_grow = true , T.listbox { text_alignment = "left", max_height = 80, vertical_scrollbar_mode = "always", id = "the_poollist" , T.list_definition { T.row { T.column {horizontal_grow = true,
@@ -60,7 +64,9 @@ function inventory_grid()
                                                                          }
                                                }}}
 
-		}
+		        }
+                 }}}
+               }}}}
 end
 
 function rg_row(header_id,header_label,value_id,bonus_id)
@@ -83,13 +89,30 @@ function resistances_grid()
 			} 
 end
 
+function modifiers_grid()
+ 	return T.grid {
+--        return T.grid { T.row { T.column { T.stacked_widget { 
+--                 T.layer { T.row { T.column { T.drawing { id = "test_box", width = 74, height = 224 , T.draw { T.rectangle { x = 1 , y = 1 , w = "(width)" , h = "(height)", border_thickness = 3 , border_color = "105,105,45,200" , fill_color = "200,100,200,255" }}} }}},
+--                 T.layer { T.row { T.column {
+--                   T.grid {
+                     T.row { T.column { T.label { id = "the_modgrid_title", --[[use_markup = true]]}}},
+                     T.row { T.column { T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: A unit has a weight limit of 4 plus an additional 4 per level."}}},
+                     T.row { T.column { T.label { id = "the_unit_LK", use_markup = true, tooltip = "Luck: higher luck helps avoid traps and curses."}}},
+                     T.row { T.column { T.label { id = "the_unit_spacer", use_markup = true, label = "<span size = 'large'> ✧ </span>" }}},
+                     T.row { T.column { T.label { id = "the_unit_CB", use_markup = true, tooltip = "Any curses or blessings."}}}
+                                        -- T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: A unit has a weight limit of 4 plus an additional 4 per level."}}, T.column { horizontal_grow = true, T.label { id = "the_unit_LK", use_markup = true, tooltip = "Luck: higher luck helps avoid traps and curses."}}}
+                     }
+--                 }}}
+--               }}}}
+end
+
 function terrain_row(string, header_label)
 	return T.row { T.column { horizontal_alignment = "left", T.label { definition = "default_small", id = "header_"..string , label = header_label }} , T.column { horizontal_grow = true, T.label { text_alignment = 'center', id = "the_mcg_"..string, use_markup = true}} , T.column { horizontal_grow = true, T.label { text_alignment = 'center', id = "the_dg_"..string, use_markup = true}}}
 end
 
 
 function movementcost_grid()
-	return T.grid {
+	return T.grid { 
 		T.row { T.column { T.spacer { id = "mc_spacer" }} , T.column { T.label { id = "the_mcg_title", use_markup = true }} , T.column { T.label { id = "the_dg_title", use_markup = true }}},
                 terrain_row("shallow_water","Shallow Water"),
                 terrain_row("reef","Reef"),
@@ -108,23 +131,34 @@ function movementcost_grid()
 			} 
 end
 
-function misc_status_grid() 
- 	return T.grid { 
-	 T.row { T.column { border= "all", border_size= 5, T.grid {  -- left grid
--- this causes errors	         	T.row { T.column { horizontal_alignment = "center" , horizontal_grow = true, T.image { id = "the_icon"}}},
-	         	T.row { T.column { horizontal_alignment = "center" , horizontal_grow = false, T.image { id = "the_icon"}}},
-	         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_type", use_markup = true}}},
-		 	T.row { T.column { T.grid {
-			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment", use_markup = true}}},
-                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait", use_markup = true}}},
-                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP", use_markup = true}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait", use_markup = true}}},
-                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: A unit has a weight limit of 4 plus an additional 4 per level."}}, T.column { horizontal_grow = true, T.label { id = "the_unit_LK", use_markup = true, tooltip = "Luck: higher luck helps avoid traps and curses."}}}
+-- the rectangle layer forces a certain minimum size
+function sprite_status_grid() 
+        return T.grid { T.row { T.column { T.stacked_widget { 
+                 T.layer { T.row { T.column { horizontal_alignment = "left" , T.drawing { id = "the_sprite_box", width = 180 , height = 180 , T.draw { T.rectangle { x = 1 , y = 1 , w = "(width)" , h = "(height)", border_thickness = 3 , border_color = "145,125,45,150" , fill_color = "25,15,5,140" }}} }}},
+                 T.layer { T.row { T.column {
+                     T.grid {
+	         	    T.row { T.column { horizontal_alignment = "center" , horizontal_grow = false, T.image { id = "the_icon"}}},
+	         	    T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_type", use_markup = true}}},
+		 	    T.row { T.column { horizontal_alignment = "left" , T.grid {
+			         	T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_level", use_markup = true, text_alignment = "left"}}, T.column { horizontal_grow = true, T.label { id = "the_unit_alignment", use_markup = true}}},
+                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_HP", use_markup = true, text_alignment = "left"}}, T.column { horizontal_grow = true, T.label { id = "the_first_trait", use_markup = true}}},
+                                        T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_XP", use_markup = true, text_alignment = "left"}}, T.column { horizontal_grow = true, T.label { id = "the_second_trait", use_markup = true}}}
+                                        -- T.row { T.column { horizontal_grow = true, T.label { id = "the_unit_WT", use_markup = true, tooltip = "Equipment Weight: A unit has a weight limit of 4 plus an additional 4 per level."}}, T.column { horizontal_grow = true, T.label { id = "the_unit_LK", use_markup = true, tooltip = "Luck: higher luck helps avoid traps and curses."}}}
 				}}}				
-			  }},
-                 T.column { resistances_grid()} -- right grid
-               },
-	  
-	  }
+			  }
+                 }}}
+               }}}}
+end
+
+
+function misc_status_grid() 
+        return T.grid {
+                         T.row { 
+                           T.column { vertical_alignment = "top" , border = "all" , border_size = 2 , modifiers_grid()},
+	                   T.column { horizontal_alignment = "left" , border= "all", border_size= 5, sprite_status_grid()},
+                           T.column { vertical_alignment = "top" , resistances_grid()}
+                          }	  
+	              }
 end
 
 function set_simple_grid_values(unit,self)
@@ -185,11 +219,30 @@ function set_child_grid_values(unit, self)
 	   else
 	   traits_strings[2] = "."
 	end
-       widget_handle = self:find('the_first_trait')
-       widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1])
-       widget_handle = self:find('the_second_trait')
-       widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2])
+        widget_handle = self:find('the_first_trait')
+        widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[1])
+        widget_handle = self:find('the_second_trait')
+        widget_handle.marked_up_text = string.format("<span size='small' color='#889999'> %s </span>", traits_strings[2])
     -- weight and luck
+        widget_handle = self:find('the_modgrid_title')
+        widget_handle.marked_up_text = "<span color='#eeffb7' underline='single' >  Status  </span>"
+	local unit_sta = wml.get_child(unit, "status")
+        local sta_keyset = {}
+        local sta_string = ""
+        for k,v in pairs(unit_sta) do
+            table.insert(sta_keyset,k)
+        end
+        -- this would be a place to deal with translations (someday...)
+        for i=1,#sta_keyset do
+            if sta_keyset[i] == "unhealable" then sta_string = sta_string.."unhealable \n " 
+            elseif sta_keyset[i] == "unpoisonable" then sta_string = sta_string.."unpoisonable \n " 
+            elseif sta_keyset[i] == "unplagueable" then sta_string = sta_string.."unplagueable \n " 
+            elseif sta_keyset[i] == "undrainable" then sta_string = sta_string.."undrainable \n " 
+            elseif sta_keyset[i] == "cursed" then sta_string = sta_string.."cursed \n " 
+            elseif sta_keyset[i] == "blinded" then sta_string = sta_string.."blinded \n " 
+            end
+        end
+        if string.len(sta_string) < 2 then sta_string = "normal" end
 	local unit_var = wml.get_child(unit, "variables")
 	local unit_wt = unit_var.weight
 	local unit_lk = unit_var.luck
@@ -200,8 +253,9 @@ function set_child_grid_values(unit, self)
            unit_wt = 0
         end
         local relative_wt = unit_wt / weight_limit
-	local wt_color = "color ='#20c620'"
+	local cb_color = "color ='#909090'"
 	local lk_color = "color ='#60e690'"
+	local wt_color = "color ='#20c620'"
 	if relative_wt >= 0.3 and relative_wt < 0.6 then
 	    wt_color = "color ='#e5e5e5'"
 	elseif relative_wt >= 0.6 and relative_wt < 0.9 then
@@ -210,9 +264,11 @@ function set_child_grid_values(unit, self)
 	    wt_color = "color ='#ff0000'"
 	end
         widget_handle = self:find('the_unit_WT')
-        widget_handle.marked_up_text = string.format("<span size='x-small' "..wt_color.."> Equ.Wt.: %s </span>", unit_wt)
+        widget_handle.marked_up_text = string.format("<span size='small' "..wt_color.."> Burden: %s </span>", unit_wt)
         widget_handle = self:find('the_unit_LK')
-        widget_handle.marked_up_text = string.format("<span size='x-small' "..lk_color.."> ♣: %s </span>", unit_lk)
+        widget_handle.marked_up_text = string.format("<span size='small' "..lk_color.."> Luck: %s </span>", unit_lk)
+        widget_handle = self:find('the_unit_CB')
+        widget_handle.marked_up_text = string.format("<span size='small' "..cb_color.."> %s </span>", sta_string)
 -- movement costs
         widget_handle = self:find('the_mcg_title')
         widget_handle.marked_up_text = "<span color='#eeffb7'>  Movement Costs  </span>"
@@ -228,7 +284,7 @@ function set_child_grid_values(unit, self)
 	    elseif value >= 6 then
 	        val_color = "color ='#c80000' style ='italic'"
 	    end
-            widget_handle = self:find(widget)
+            local widget_handle = self:find(widget)
             widget_handle.marked_up_text = string.format("<span "..val_color.." size = 'small'>%d </span>", value)
             return
 	end
@@ -267,7 +323,7 @@ function set_child_grid_values(unit, self)
 	    end
             local widget = "the_dg_"..string
             widget_handle = self:find(widget)
-            widget_handle.marked_up_text = string.format("<span "..val_color.." size = 'small'>%d </span>", value)
+            widget_handle.marked_up_text = string.format("<span "..val_color.." size = 'small'> %d </span>", value)
             return
         end
 	dg_format_row("reef")
