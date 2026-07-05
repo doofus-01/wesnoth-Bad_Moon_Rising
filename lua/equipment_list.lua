@@ -11,6 +11,7 @@ equipment_list.list_by_name = {}
 equipment_list.list_usage = list_usage
 
 table.insert(list_usage, {
+-- I can probably remove this?
     types = {
     "Walking Corpse", "Soulless", "Skeleton",
     "Archaic_Goblin", "Frost Goblin", "Goblin Impaler",
@@ -159,7 +160,7 @@ table.insert(list_usage, {
     "Primevalist Fighter", "Primevalist Fanatic", "Primevalist Shield", "Primevalist Shield_High", "Primevalist Leader",
     "Orcish Slurbow", "Orcish Rider", "Orcish Cavalry", "Orcish Destrier", "Great Orc",
     "Northern Soldier", "Northern Fighter", "Northern Ranger", "Northern Elite",
-    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal",
+    "Elvish Fighter", "Elvish Hero", "Elvish Champion", "Elvish Captain", "Elvish Marshal","Elvish Ranger","Elvish Avenger",
     "Carusoe", "Carusoe2", "Bad Raenna", "Huric"},
     usage = "sword"
 })
@@ -197,70 +198,6 @@ table.insert(list_usage, {
     "Phantom Queen", "Phantom King"},
     usage = "despair"
 })
-
--- equipment weight [effect]s
--- some weight effects are handled in equiment_write.lua:  movement, unit.variables.weight
--- Actually, this should not be here, moving it to be with movement effect
---[[local wt_def_effect = function (wt)
-    local weight_effect = {"effect", {apply_to = "defense", replace = "no", {"defense", {
-                          shallow_water= wt,
-                          deep_water= wt,
-                          reef= wt,
-                          swamp_water= wt,
-                          flat= wt,
-                          sand= wt,
-                          forest= wt,
-                          hills= wt,
-                          mountains= wt,
-                          cave= wt,
-                          frozen= wt,
-                          fungus= wt
-    }}}
-    }
-    return weight_effect
-end
-
-local wt_effect_1 = wt_def_effect(1)
-local wt_effect_2 = wt_def_effect(2)
-local wt_effect_3 = wt_def_effect(3)
-local wt_effect_4 = wt_def_effect(4)
-local wt_effect_5 = wt_def_effect(5)
-
-local wt_effect_n1 = wt_def_effect(-1)
-local wt_effect_n2 = wt_def_effect(-2)
-local wt_effect_n3 = wt_def_effect(-3)
-local wt_effect_n4 = wt_def_effect(-4)
-local wt_effect_n5 = wt_def_effect(-5)
-]]
-
--- WIP
---[[
-local hp = 0
-local new_abil = "no"
-
-local att = {}
-att.damage = 0
-att.number = 0
-
-local res = {}
-res.arcane = 0
-res.cold = 0
-res.fire = 0
-res.blade = 0
-res.impact = 0
-res.pierce = 0
-
--- building the paramter modification and that part of the description
-local equipment_construction = function(eid, hp, re, at, new_a)
-    local effect_text = string.format("Effects: %d HP", hp)
-    local effect_sublist = { id = tostring(eid) }
-    if at.damage > 0 then
-      table.insert(effect_sublist, {
-          "effect", { apply_to = 'attack", 
-        if at.damage > 0 then
-          effect_text = effect_text .. string.format(", +%d damage", at.damage)
-]]         
-
 
 -- ability effects that may be used in different items
 
@@ -306,894 +243,1710 @@ there are 8 positions (used to be nine): 1. head, 2. shield, 3. ring, 4. cloak. 
 
 Note: the ID and the eq_effect.ID have to match
 
+20260614 - revamp the data structure: most of old eq_effect isn't directly applied anymore, it is just data that is later blended with total XP to figure out the effects in a singular function
+  adding variables xp_needed, hp, luck, dodge, accuracy, resist_x, damage
+  eq_effect is a lua table of WML [effect] tables, the id was redundant, can be added later
 ]]--
 
 ------------ arms --------------
 table.insert(the_list, {
-	eq_effect = { id = "leather_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -2, impact = -2}}}}, 
+	eq_effect = {}, --[[ { id = "leather_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -2, impact = -2}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
-	            },
+	            },]]
         name = _ "Leather Vambrace",
 	id = "leather_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "These boiled leather coverings for the forearm offer only minimal protection, but they are light-weight and available to all..  Bonus: + 2 each impact and blade resistance, + 1 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "These boiled leather coverings for the forearm offer only minimal protection, but they are light-weight and available to all.",
         image = "icons/leather_vambrace.png",
         icon = "items/leather_vambrace.png",
 	cost = 10,
 	usage = "all",
 	position = "arms",
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
+        
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -3, impact = -2}}}}, 
+	eq_effect = {}, --[[{ id = "wooden_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -3, impact = -2}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
-	            },
+	            },]]
         name = _ "Wooden Vambrace",
 	id = "wooden_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "Light and hard, these wooden arm-guards provide effective protection without encumbering the wearer.  Bonus: + 2 impact and +3 blade resistance, + 2 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "Light and hard, these wooden arm-guards provide effective protection without encumbering the wearer.",
         image = "icons/wooden_vambrace.png",
         icon = "items/wooden_vambrace.png",
 	cost = 12,
 	usage = "light_armor",
 	position = "arms",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 3,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
+	eq_effect = {}, --[[{ id = "iron_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -4, impact = -4}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "3"}} 
-	            },
+	            },]]
         name = _ "Iron Vambrace",
 	id = "iron_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "This is sturdy iron cladding for the forearms, a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and blade resistance, + 3 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "This is sturdy iron cladding for the forearms, a bit heavy for some, but useful for most fighters.",
         image = "icons/iron_vambrace.png",
         icon = "items/iron_vambrace.png",
 	cost = 15,
 	usage = "light_armor",
 	position = "arms",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 3,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 4,
+        resist_impact = 4,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
+
 	
 })
 table.insert(the_list, {
-	eq_effect = { id =  "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}},
+	eq_effect = {}, --[[{ id =  "silver_vambrace", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -4, blade = -5, impact = -4}}}},
 	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} 
-	            },
+	            },]]
         name = _ "Silver Vambrace",
 	id = "silver_vambrace",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "The bright metal of this vambrace is only a bit stronger than common iron, but it also provides a barrier to magical assaults. It is a bit heavy for some, but useful for most fighters.  Bonus: + 4 each impact and arcane, +5 blade resistance, + 4 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "The bright metal of this vambrace is only a bit stronger than common iron, but it also provides a barrier to magical assaults. It is a bit heavy for some, but useful for most fighters.",
         image = "icons/iron_vambrace.png~GS()",
         icon = "items/iron_vambrace.png~GS()",
 	cost = 45,
 	usage = "light_armor",
 	position = "arms",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 4,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 4,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 4
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "obsidian_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -2, impact = -2}}}}, 
+	eq_effect = {}, --[[{ id = "obsidian_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -2, impact = -2}}}}, 
 	              {"effect", { apply_to = "attack", range = "ranged", increase_accuracy = "5"}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
-	            },
+	            }]]
         name = _ "Obsidian Bracelet",
 	id = "obsidian_bracelet",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "A broad. stitched hide bracelet with black, glassy shards sewn into the outer surface.  Bonus: + 2 each impact and arcane resistance, increases ranged accuracy by 5, + 1 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "A broad. stitched hide bracelet with black, glassy shards sewn into the outer surface.",
         image = "icons/obsidian_bracelet.png",
         icon = "items/obsidian_bracelet.png",
 	cost = 20,
 	usage = "all",
 	position = "arms",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 1,
+        luck = 1,
+        dodge = 2,
+        accuracy = 3,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 2
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -4, arcane = -4, impact = -4}}}}, 
+	eq_effect = {}, --[[{ id = "jade_bracelet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -4, arcane = -4, impact = -4}}}}, 
 	              {"effect", { apply_to = "attack", range = "ranged", increase_parry = "5"}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
-	            },
+	            }]]
         name = _ "Jade Bracelet",
 	id = "jade_bracelet",
-        tooltip = _ "protection for the forearms, can be work with gloves",
-        text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.  Bonus: + 4 each impact, cold, and arcane resistance, increases ranged parry by 5, + 2 HP",
+        tooltip = _ "protection for the forearms, can be worn with gloves",
+        text = _ "A broad bronze bracelet with foggy green gems embeded around the edges, best worn with cloth padding underneath.",
         image = "icons/jade_bracelet.png",
         icon = "items/jade_bracelet.png",
 	cost = 35,
 	usage = "all",
 	position = "arms",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 2,
+        luck = 1,
+        dodge = 1,
+        accuracy = 3,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 4,
+        resist_pierce = 0,
+        resist_cold = 4,
+        resist_fire = 0,
+        resist_arcane = 4
 	
 })
 ------------ helmets--------------
 -- 20161105 removing the anti-effects, changing eq_effect.name to eq_effect.id for using [remove_object]
 table.insert(the_list, {
-	eq_effect = { id = "black_cowl", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -2, impact = -2}}}}, 
-	              {"effect", { apply_to = "alignment", set = "chaotic"}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	eq_effect = { 
+	              --id = "black_cowl", 
+	              --[[{"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -2, impact = -2}}}},]] 
+	              {"effect", { apply_to = "alignment", set = "chaotic"}} 
+	              -- {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "Black Cowl",
 	id = "black_cowl",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a black hood that has some dark, otherworldly essence.  Anyone can wear it, but why would one want to? Bonus: + 2 each impact and cold resistance, sets alignment to chaotic, + 1 HP",
+        text = _ "This is a black hood that has some dark, otherworldly essence.  Anyone can wear it, but why would one want to? Bonus: sets alignment to chaotic.",
         image = "icons/black_cowl.png",
         icon = "items/black_cowl.png",
 	cost = 35,
 	usage = "all",
 	position = "head",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 2,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "white_ribbon", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -5, impact = -1}}}}, 
+	eq_effect = { 
+	              -- id = "white_ribbon", 
+	              --{"effect", { apply_to = "resistance", replace = "no", {"resistance", {arcane = -5, impact = -1}}}}, 
 	              {"effect", { apply_to = "alignment", set = "lawful"}},
-	              selfheal_effect, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	              selfheal_effect 
+	              -- {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
 	            },
         name = _ "White Ribbon",
 	id = "white_ribbon",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This ribbon has been blessed by some benign spirits. While it offers only minimal physical protection, it is not cumbersome, and it brings the wearer into a certain frame of mind. Bonus: + 5 arcane and +1 impact resistance, sets alignment to lawful, provides a weak regeneration ability, + 1 HP",
+        text = _ "This ribbon has been blessed by some benign spirits. While it offers only minimal physical protection, it is not cumbersome, and it brings the wearer into a certain frame of mind. Bonus: Provides a weak regeneration ability.",
         image = "icons/white_ribbon.png",
         icon = "items/white_ribbon.png",
 	cost = 30,
 	usage = "all",
 	position = "head",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 1,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 1,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "sorrow_veil", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {fire = -5, impact = -1}}}}, 
-                      {"effect", { apply_to = "defense", replace = "no", {"defense", {
+	eq_effect = { 
+	              -- id = "sorrow_veil", -- {"effect", { apply_to = "resistance", replace = "no", {"resistance", {fire = -5, impact = -1}}}}, 
+                      --[[ {"effect", { apply_to = "defense", replace = "no", {"defense", {
                                   forest = -10,
                                   hills = -10,
                                   mountains = -10,
                                   village = -10,
                                   castle = -10,
                                   cave = -10
-                      }}}}, 
-	              {"effect", { apply_to = "alignment", set = "neutral"}},
-	              {"effect", { apply_to = "hitpoints", increase_total = "1"}}
+                      }}}},]] 
+	              {"effect", { apply_to = "alignment", set = "neutral"}}
+	              -- {"effect", { apply_to = "hitpoints", increase_total = "1"}}
 	            },
         name = _ "Sorrow Veil",
 	id = "sorrow_veil",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This dark shimmering veil gives the wearer a cool detachment, allowing for better defense in some terrains, and a neutral alignment. Bonus: + 5 fire and +1 impact resistance, sets alignment to neutral, +10 for some terrain , + 1 HP",
+        text = _ "This dark shimmering veil gives the wearer a cool detachment, allowing for better defense in some terrains, and a neutral alignment. Bonus: Sets alignment to neutral",
         image = "icons/sorrow_veil.png",
         icon = "items/sorrow_veil.png",
 	cost = 50,
 	usage = "all",
 	position = "head",
-	weight = -1
+	weight = -1,
+        xp_needed = 10,
+        hp = 1,
+        luck = 0,
+        dodge = 10,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 1,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "cap_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2}}}}, 
+	eq_effect = {}, --[[{ id = "cap_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
-	            },
+	            }]]
         name = _ "Padded Cap",
 	id = "cap_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a very basic covering for the head. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it. Bonus: + 2 impact resistance, + 1 HP",
+        text = _ "This is a very basic covering for the head. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it.",
         image = "icons/helmet_leather-cap.png",
         icon = "items/leather_cap.png",
 	cost = 25,
 	usage = "all",
 	position = "head",
-	weight = 0
+	weight = 0,
+        xp_needed = 1,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "cap_gem", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, fire = -5, arcane = -5}}}}, {"effect", { apply_to = "vision", increase = "-8"}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, --[[ { id = "cap_helmet_silver", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -4, arcane = -5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	            }]]
+        name = _ "Silver-Badge Cap",
+	id = "cap_silver_helmet",
+        tooltip = _ "all helmets offer impact resistance",
+        text = _ "This is a simple leather cap, with some silver badges that offer some slight addition protection, but are mostly a status symbol. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it.",
+        image = "icons/helmet_silver_cap.png",
+        icon = "items/silver_cap.png",
+	cost = 35,
+	usage = "all",
+	position = "head",
+	weight = 0,
+        xp_needed = 10,
+        hp = 1,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 4,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
+	
+})
+table.insert(the_list, {
+	eq_effect = { 
+	               -- id = "cap_gem", 
+	               --[[ {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, fire = -5, arcane = -5}}}},]] 
+	               {"effect", { apply_to = "vision", increase = "-8"}}
+	               }, 
+	               --[[ {"effect", { apply_to = "hitpoints", increase_total = "5"}}},]]
         name = _ "Jewel Cap",
 	id = "cap_gem",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is an expensive and bedazzling covering for the head that is not cumbersome and almost anyone can use it. Bonus: + 5 each impact, fire, and arcane resistance, + 5 HP",
+        text = _ "This is an expensive and bedazzling covering for the head that is not cumbersome and almost anyone can use it.",
         image = "icons/helmet_gem-cap.png",
         icon = "items/gem_cap.png",
 	cost = 65,
 	usage = "all",
 	position = "head",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 5,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 5,
+        resist_arcane = 5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "fur_hat", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -6}}}} 
-	            },
+	eq_effect = "" --[[ { id = "fur_hat", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {cold = -6}}}} 
+	            } ]],
         name = _ "Fur Hat",
 	id = "fur_hat",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a warm fur hat. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it. Bonus: + 6 cold resistance",
+        text = _ "This is a warm fur hat. While it offers only minimal protection, it is not cumbersome, and almost anyone can use it.",
         image = "icons/fur_hat.png",
         icon = "items/fur_hat.png",
 	cost = 30,
 	usage = "all",
 	position = "head",
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 6,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "light_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5}}}}, 
+	eq_effect = {}, --[[ { id = "light_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
-	            },
+	            }]]
         name = _ "Light Helmet",
 	id = "light_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a very basic, inexpensive helmet, but it still provides some layer of steel to cover the scalp.  Bonus: + 5 impact resistance, + 2 HP",
+        text = _ "This is a very basic, inexpensive helmet, but it still provides some layer of steel to cover the scalp.",
         image = "icons/helmet_conical.png",
         icon = "items/helmet3.png~CS(-20,-10,0)",
 	cost = 45,
 	usage = "light_armor",
 	position = "head",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "rusty_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -1, arcane = -5}}}}, 
+	eq_effect = {}, --[[ { id = "rusty_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -1, arcane = -5}}}}, 
 	              {"effect", { apply_to = "hitpoints", increase_total = "2"}} 
-	            },
+	            }]]
         name = _ "Rusty Helmet",
 	id = "rusty_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This helmet has been left out in the elements for too long.  The metal is rusted, the leather and padding are rotted.  But for the undead, it provides some mundane protection against the arcane attacks.  Bonus: + 1 impact and +5 arcane resistance, + 2 HP",
+        text = _ "This helmet has been left out in the elements for too long.  The metal is rusted, the leather and padding are rotted.  But for the undead, it provides some mundane protection against the arcane attacks.",
         image = "icons/helmet_rusty.png",
         icon = "items/helmet_rusty.png",
 	cost = 25,
 	usage = "light_armor",
 	position = "head",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 1,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
+	eq_effect = {}, --[[ { id = "steel_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "4"}} }]]
         name = _ "Steel Helmet",
 	id = "steel_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a well-made, open-faced helmet.  It provides no protection for the face or neck, but the scalp is well protected. Bonus: + 10 impact resistance, + 4 HP",
+        text = _ "This is a well-made, open-faced helmet.  It provides no protection for the face or neck, but the scalp is well protected.",
         image = "icons/helmet_shiny.png",
         icon = "items/helmet3.png",
 	cost = 80,
 	usage = "light_armor",
 	position = "head",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 4,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 10,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -3}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, --[[ { id = "chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -3}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}}]]
         name = _ "Chain Coif",
 	id = "chain_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.  Bonus: + 8 impact resistance, +3 blade resistance, + 5 HP",
+        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.",
         image = "icons/helmet_chain-coif.png",
         icon = "items/coif.png",
 	cost = 95,
 	usage = "light_armor",
 	position = "head",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 5,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 3,
+        resist_impact = 8,
+        resist_pierce = 1,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "bone_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, pierce = -12, arcane = 5, fire = 5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
+	eq_effect = {}, --[[ { id = "bone_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, pierce = -12, arcane = 5, fire = 5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}} }]]
         name = _ "Bone Helmet",
 	id = "bone_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This grisly helmet is made of bone, and has some otherworldly essence that imparts some undead characteristics to the wearer.  Penalty: -5 each fire and arcane resistance; Bonus: + 2 impact resistance, +12 pierce resistance, + 4 HP",
+        text = _ "This grisly helmet is made of bone, and has some otherworldly essence that imparts some undead characteristics to the wearer.",
         image = "icons/helmet_bone.png",
         icon = "items/bone_helmet.png",
 	cost = 75,
 	usage = "light_armor",
 	position = "head",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 5,
+        luck = -1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 1,
+        resist_impact = 3,
+        resist_pierce = 12,
+        resist_cold = 0,
+        resist_fire = -5,
+        resist_arcane = -5
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -4, arcane = -5}}}}, 
-	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, --[[ { id = "silver_chain_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -4, arcane = -5}}}}, 
+	              {"effect", { apply_to = "hitpoints", increase_total = "5"}}}]]
         name = _ "Silver Mail Coif",
 	id = "silver_chain_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.  Bonus: + 10 impact, +4 blade, +5 arcane resistances, + 5 HP",
+        text = _ "This is a chain-mail hood, it provides protection for the scalp and neck.",
         image = "icons/helmet_chain-coif.png~GS()~CS(-20,8,12)",
         icon = "items/coif.png~GS()~CS(-20,8,12)",
 	cost = 105,
 	usage = "light_armor",
 	position = "head",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 5,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 4,
+        resist_impact = 10,
+        resist_pierce = 2,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 })
 table.insert(the_list, {
-	eq_effect = { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
+	eq_effect = {}, --[[ { id = "crested_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -12, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} }]]
         name = _ "Crested Helmet",
 	id = "crested_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a standard issue helmet for the professional warrior class of Weldyn.  It provides protection for the neck, and some minimal protection for the eyes.  Bonus: + 12 impact resistance, + 5 blade resistance, + 6 HP",
+        text = _ "This is a standard issue helmet for the professional warrior class of Weldyn.  It provides protection for the neck, and some minimal protection for the eyes.",
         image = "icons/helmet_crested.png",
         icon = "items/helmet1.png~CS(10,10,10)",
 	cost = 120,
 	usage = "heavy_armor",
 	position = "head",
-	weight = 2
+	weight = 2,
+        xp_needed = 14,
+        hp = 6,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 12,
+        resist_pierce = 2,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 
 })
 table.insert(the_list, {
-	eq_effect = { id = "bascinet_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -15, blade = -10, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "8"}} },
+	eq_effect = {}, --[[ { id = "bascinet_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -15, blade = -10, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "8"}} }]]
         name = _ "Bascinet",
 	id = "bascinet_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is the helmet worn by nobles and kings, as well as their trusted guards.  It provides complete protection for the head and face.  Bonus: + 15 impact resistance, + 10 blade resistance, + 5 pierce resistance, + 8 HP",
+        text = _ "This is the helmet worn by nobles and kings, as well as their trusted guards.  It provides complete protection for the head and face.",
         image = "icons/helmet_bascinet.png",
         icon = "items/helmet1.png",
 	cost = 155,
 	usage = "heavy_armor",
 	position = "head",
-	weight = 3
+	weight = 3,
+        xp_needed = 16,
+        hp = 8,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 15,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "great_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -20, blade = -15, pierce = -15}}}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
+	eq_effect = {}, --[[ { id = "great_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -20, blade = -15, pierce = -15}}}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} }]]
         name = _ "Great Helm",
 	id = "great_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is an older design of helmet still used by some kings and knights.  It is sturdier, but more restricting than the bascinet, so while stronger against blunt-force trauma, it offers less protection against attacks to the neck.  Bonus: + 20 impact resistance, + 5 blade resistance, + 5 pierce resistance, + 10 HP",
+        text = _ "This is an older design of helmet still used by some kings and knights.  It is sturdier, but more restricting than the bascinet, so while stronger against blunt-force trauma, it offers less protection against attacks to the neck.",
         image = "icons/helmet_great2.png",
         icon = "items/helmet2.png~CS(-20,-20,0)",
 	cost = 160,
 	usage = "heavy_armor",
 	position = "head",
-	weight = 3
+	weight = 3,
+        xp_needed = 16,
+        hp = 10,
+        luck = 0,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 20,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "frog_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -30, blade = -20, pierce = -15, fire = 20}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
+	eq_effect = {}, --[[ { id = "frog_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -30, blade = -20, pierce = -15, fire = 20}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} }]]
         name = _ "Trooper Helmet",
 	id = "frog_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This is a heavy helmet that is sometimes used by elite fighters.  It offers superior protection for the head and neck, but it is heavy, restricting, and stuffy, making the wearer more vulnerable to heat-stroke.  Effect: + 30 impact resistance, + 20 blade resistance, + 15 pierce resistance, + 10 HP; -20 fire resistance",
+        text = _ "This is a heavy helmet that is sometimes used by elite fighters.  It offers superior protection for the head and neck, but it is heavy, restricting, and stuffy, making the wearer more vulnerable to heat-stroke.",
         image = "icons/helmet_frogmouth.png",
         icon = "items/helmet4.png",
 	cost = 200,
 	usage = "heavy_armor",
 	position = "head",
-	weight = 4
+	weight = 4,
+        xp_needed = 18,
+        hp = 12,
+        luck = 0,
+        dodge = -4,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 22,
+        resist_impact = 31,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = -20,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -10, arcane = -5, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} },
+	eq_effect = {}, --[[ { id = "ancient_helmet", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -10, arcane = -5, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "12"}} }]]
         name = _ "Ancient Helmet",
 	id = "ancient_helmet",
         tooltip = _ "all helmets offer impact resistance",
-        text = _ "This heavy, ancient helmet is not for everyone.  It provides excellent protection for the head, but the neck is often exposed to slim blades or arrows.  Aside from its obvious benefits and shortcomings, there is something about this object, that is difficult to describe to one not holding it.  Bonus: + 25 impact resistance, + 10 blade resistance, + 12 HP",
+        text = _ "This heavy, ancient helmet is not for everyone.  It provides excellent protection for the head, but the neck is often exposed to slim blades or arrows.  Aside from its obvious benefits and shortcomings, there is something about this object, that is difficult to describe to one not holding it.",
         image = "icons/helmet_corinthian.png",
         icon = "items/helmet2.png~CS(10,-10,-20)",
 	cost = 235,
 	usage = "heavy_armor",
 	position = "head",
-	weight = 2
+	weight = 2,
+        xp_needed = 24,
+        hp = 12,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 12,
+        resist_impact = 25,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 5,
+        resist_arcane = 5
 })
 ------------------shields-----------------------------
 table.insert(the_list, {
-	eq_effect = { id = "hide_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, blade = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
+	eq_effect = {}, --[[ { id = "hide_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -2, blade = -2}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} }]]
         name = _ "Hide Buckler",
 	id = "hide_buckler",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This very small shield is made from animal hides and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 2 each impact and blade resistance, + 2 HP",
+        text = _ "This very small shield is made from animal hides and provides some protection against physical attacks, but is too small to be of much use against arrows or spears.",
         image = "icons/buckler_hide.png",
         icon = "items/hide_buckler.png",
 	cost = 15,
 	usage = "all",
 	position = "shield",
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 2,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}} },
+	eq_effect = {}, --[[ { id = "bronze_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "4"}} }]]
         name = _ "Bronze Buckler",
 	id = "bronze_buckler",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This very small shield is made from bronze and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 5 each impact and blade resistance, + 4 HP",
+        text = _ "This very small shield is made from bronze and provides some protection against physical attacks, but is too small to be of much use against arrows or spears.",
         image = "icons/buckler_bronze.png",
         icon = "items/bronze_buckler.png",
 	cost = 65,
 	usage = "all",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 4,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} },
+	eq_effect = {}, --[[ { id = "iron_buckler", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -8, blade = -8}}}}, {"effect", { apply_to = "hitpoints", increase_total = "6"}} }]]
         name = _ "Iron Buckler",
 	id = "iron_buckler",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This very small shield is made from iron and provides some protection against physical attacks, but is too small to be of much use against arrows or spears  Bonus: + 8 each impact and blade resistance, + 6 HP",
+        text = _ "This very small shield is made from iron and provides some protection against physical attacks, but is too small to be of much use against arrows or spears.",
         image = "icons/buckler_iron.png",
         icon = "items/iron_buckler.png",
 	cost = 95,
 	usage = "all",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 6,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 8,
+        resist_impact = 8,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
+	eq_effect = {}, --[[ { id = "rusty_targ", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = 10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} }]]
         name = _ "Ancient Targe",
 	id = "rusty_targ",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This small, ancient shield is of a type that can frequently be found in the northlands.  It's not clear who made them, but all scavengers find them useful.  Bonus: + 5 impact resistance, + 5 blade resistance, -10 arcane resistance, + 5 fire resistance, + 2 HP",
+        text = _ "This small, ancient shield is of a type that can frequently be found in the northlands.  It's not clear who made them, but all scavengers find them useful.",
         image = "icons/rusty_targ.png",
         icon = "items/buckler.png~CS(-30,-10,-10)",
 	cost = 15,
 	usage = "all",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 12,
+        hp = 2,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 5,
+        resist_arcane = -10
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -3}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} },
+	eq_effect = {}, --[[ { id = "wooden_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, pierce = -3}}}}, {"effect", { apply_to = "hitpoints", increase_total = "2"}} }]]
         name = _ "Wooden Shield",
 	id = "wooden_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is a basic wooden shield.  Nothing fancy but still provides some protection.  Bonus: + 5 impact resistance, + 5 blade resistance, +3 pierce resistance, + 2 HP",
+        text = _ "This is a basic wooden shield.  Nothing fancy but still provides some protection.",
         image = "icons/shield_wooden.png",
         icon = "items/shield-targ.png~CS(30,10,-10)",
 	cost = 20,
 	usage = "shields",
 	position = "shield",
-	weight = 2
+	weight = 2,
+        xp_needed = 8,
+        hp = 2,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 3,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -4}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} },
+	eq_effect = {}, --[[ { id = "kite_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -7, blade = -5, pierce = -4}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} }]]
         name = _ "Kite Shield",
 	id = "kite_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is a wooden shield with a smoothed and painted front face.  The main difference between the kite shield and the more common wooden shield is that the kite shield was made with more care and skill.  Bonus: + 7 impact resistance, + 5 blade resistance, + 2 pierce resistance, + 2 HP",
+        text = _ "This is a wooden shield with a smoothed and painted front face.  The main difference between the kite shield and the more common wooden shield is that the kite shield was made with more care and skill.",
         image = "icons/shield_kite.png",
         icon = "items/shield_kite.png",
 	cost = 25,
 	usage = "shields",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 3,
+        luck = 0,
+        dodge = 3,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 7,
+        resist_pierce = 4,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -6, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} },
+	eq_effect = {}, --[[ { id = "orc_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -6, pierce = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "3"}} }]]
         name = _ "Orcish Shield",
 	id = "orc_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This shield is made from bronze and wood, crudely made but still effective.  Bonus: + 5 impact resistance, + 5 blade resistance, + 5 pierce resistance, + 3 HP",
+        text = _ "This shield is made from bronze and wood, crudely made but still effective.",
         image = "icons/orc_roundshield.png",
         icon = "items/buckler.png~CS(20,-10,-10)",
 	cost = 25,
 	usage = "shields",
 	position = "shield",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 3,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = -10, fire = -10}}}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}} },
+	eq_effect = {}, --[[ { id = "silver_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, blade = -5, arcane = -10, fire = -10}}}}, {"effect", { apply_to = "hitpoints", increase_total = "5"}} }]]
         name = _ "Silver Shield",
 	id = "silver_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is shiny shield is small but sturdy and has a brilliant aura.  Bonus: + 5 impact resistance, + 5 blade resistance, +10 arcane resistance, + 10 fire resistance, + 5 HP",
+        text = _ "This is shiny shield is small but sturdy and has a brilliant aura.",
         image = "icons/silver_buckler.png",
         icon = "items/buckler.png~CS(20,40,60)",
 	cost = 90,
 	usage = "shields",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 5,
+        luck = 1,
+        dodge = 3,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 10,
+        resist_arcane = 10
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -10, pierce = -10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
+	eq_effect = {}, --[[ { id = "iron_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -10, blade = -10, pierce = -10, fire = -5}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} }]]
         name = _ "Iron Shield",
 	id = "iron_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is a heavy iron shield, not for everyone..  Bonus: + 10 impact resistance, + 10 blade resistance, + 10 pierce, + 5 fire resistance, + 7 HP",
+        text = _ "This is a heavy iron shield, not for everyone.",
         image = "icons/shield_steel.png~CS(-10,-30,-10)",
         icon = "items/shield-iron.png",
 	cost = 70,
 	usage = "shields",
 	position = "shield",
-	weight = 3
+	weight = 3,
+        xp_needed = 10,
+        hp = 7,
+        luck = 0,
+        dodge = 4,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 10,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "door_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -20, pierce = -30, fire = -10}}}}, {"effect", { apply_to = "movement", increase = "-1"}}, {"effect", { apply_to = "hitpoints", increase_total = "10"}} },
+	eq_effect = { 
+	            -- id = "door_shield", 
+	            -- {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -25, blade = -20, pierce = -30, fire = -10}}}}, 
+	            {"effect", { apply_to = "movement", increase = "-1"}} 
+	            -- {"effect", { apply_to = "hitpoints", increase_total = "10"}} 
+	            },
         name = _ "Door Shield",
 	id = "door_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This is a very heavy, tall, rectangular shield that offers superior protection, but is quite awkward to carry.  Bonus: + 25 impact resistance, + 20 blade resistance, + 30 pierce, + 10 fire resistance; + 10 HP.  Penalty: -1 Movepoints",
+        text = _ "This is a very heavy, tall, rectangular shield that offers superior protection, but is quite awkward to carry.  Penalty: -1 movement point.",
         image = "icons/shield_tower.png",
         icon = "items/shield-door.png",
 	cost = 150,
 	usage = "shields",
 	position = "shield",
-	weight = 4
+	weight = 4,
+        xp_needed = 10,
+        hp = 10,
+        luck = 0,
+        dodge = 5,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 20,
+        resist_impact = 25,
+        resist_pierce = 30,
+        resist_cold = 0,
+        resist_fire = 10,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "mirror_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, pierce = -10, fire = -50}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} },
+	eq_effect = {}, --[[ { id = "mirror_shield", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {impact = -5, pierce = -10, fire = -50}}}}, {"effect", { apply_to = "hitpoints", increase_total = "7"}} }]]
         name = _ "Mirror Shield",
 	id = "mirror_shield",
         tooltip = _ "all shields offer impact resistance",
-        text = _ "This shield deflects the damaging energy of fire attacks. It also tends to make pierce attacks slide off harmlessly.  Bonus: + 5 impact resistance, + 10 pierce, + 50 fire resistance, + 7 HP",
+        text = _ "This shield deflects the damaging energy of fire attacks. It also tends to make pierce attacks slide off harmlessly.",
         image = "icons/shield_polished.png~GS()",
         icon = "misc/reflector-shield.png",
 	cost = 270,
 	usage = "shields",
 	position = "shield",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 7,
+        luck = 1,
+        dodge = 4,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 5,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 50,
+        resist_arcane = 0
 })
 ----------------- cloaks -------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "fur_cloak", id = "fur_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} },
+	eq_effect = {}, --[[ { id = "fur_cloak", id = "fur_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} }]]
         name = _ "Fur Cloak",
         id = "fur_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This animal fur cloak keeps out the snow and rain, and provides some insulation against the cold winds.  Bonus: + 5 cold resistance",
+        text = _ "This animal fur cloak keeps out the snow and rain, and provides some insulation against the cold winds.",
         image = "icons/cloak_leather_brown.png",
         icon = "items/fur-cloak.png",
 	cost = 30,
 	usage = "all",
 	position = "cloak",
-	weight = 1
+	weight = 1,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 0
+
 })
 table.insert(the_list, {
-	eq_effect = { id = "elf_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -5}}}} },
+	eq_effect = {}, --[[ { id = "elf_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -5}}}} }]]
         name = _ "Elven Cloak",
         id = "elf_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This cloak is a thin, dark leather.  The woodland elves wear this because it is a cost-effective protection against the cold, as well as the slight piercings of the thorns and bramble.  Bonus: +5 cold resistance, +5 pierce resistance",
+        text = _ "This cloak is a thin, dark leather.  The woodland elves wear this because it is a cost-effective protection against the cold, as well as the slight piercings of the thorns and bramble.",
         image = "icons/cloak_leather_brown.png~CS(-20,15,-30)",
         icon = "items/cloak-green.png",
 	cost = 38,
 	usage = "all",
 	position = "cloak",
-	weight = 0
-	
+	weight = 0,
+        xp_needed = 8,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 5,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 0
+
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, --[[ { id = "orc_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}} ]]
         name = _ "Orcish Cloak",
         id = "orc_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This is a great-cloak worn by the wiser or powerful orcs.  The orcs have refused to divulge the source of the hide, but although it is crude, the hide is thick, and the fur is nearly impenetrable to claws or thorns.  It is quite a treasure for anyone who must live in the frozen north.  Bonus: +10 cold resistance, +5 pierce and impact resistance, +2 HP",
+        text = _ "This is a great-cloak worn by the wiser or powerful orcs.  The orcs have refused to divulge the source of the hide, but although it is crude, the hide is thick, and the fur is nearly impenetrable to claws or thorns.  It is quite a treasure for anyone who must live in the frozen north.",
         image = "icons/cloak_orc.png",
         icon = "items/orc-cloak.png",
 	cost = 45,
 	usage = "all",
 	position = "cloak",
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 10,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, fire = -15, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, --[[ { id = "silver_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, fire = -15, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}} ]]
         name = _ "Silver Cloak",
         id = "silver_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This cloak is of a material that is far beyond anything Weldyn, Knalga, or Wesmere can produce.  It is metallic, yet very light, and seems to whisk away the hot or cold.  Bonus: +10 cold resistance, +15 fire resistance, +5 pierce resistance, +5 blade resistance, +2 HP",
+        text = _ "This cloak is of a material that is far beyond anything Weldyn, Knalga, or Wesmere can produce.  It is metallic, yet very light, and seems to whisk away the hot or cold.",
         image = "icons/cloak_silver.png",
         icon = "items/cloak-green.png~GS()",
 	cost = 145,
 	usage = "all",
 	position = "cloak",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 2,
+        luck = 1,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 0,
+        resist_pierce = 5,
+        resist_cold = 10,
+        resist_fire = 15,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} , {"effect", { apply_to = "movement", increase = "1"}}},
+	eq_effect = { 
+	            -- id = "ancient_cloak", 
+	            --{"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5}}}} , 
+	            {"effect", { apply_to = "movement", increase = "1"}}},
         name = _ "Ancient Cloak",
         id = "ancient_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This cloak is of a material that is far beyond anything Weldyn, Knalga, or Wesmere can produce.  It is some very light material, air seems to glide right over it.  Bonus: +5 cold resistance, + 1 Movement",
+        text = _ "This cloak is of a material that is far beyond anything Weldyn, Knalga, or Wesmere can produce.  It is some very light material, air seems to glide right over it.  Bonus: + 1 Movement",
         image = "icons/cloak_leather_brown.png~CS(10,-45,35)",
         icon = "items/ancient-cloak.png",
 	cost = 135,
 	usage = "all",
 	position = "cloak",
-	weight = -1
+	weight = -1,
+        xp_needed = 14,
+        hp = 0,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "rotten_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -2, fire = -10, arcane = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, --[[ { id = "rotten_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -2, fire = -10, arcane = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}}]]
         name = _ "Rotten Cloak",
         id = "rotten_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This fetid mess of a cloak is some sort of fungal shield for anyone who can stand to wear it.  Moist and disgusting.  Bonus: +2 cold, +10 fire, and +20 arcane resistances; +2 HP",
+        text = _ "This fetid mess of a cloak is some sort of fungal shield for anyone who can stand to wear it.  Moist and disgusting.",
         image = "icons/cloak_rotten.png",
         icon = "items/cloak-rotten.png",
 	cost = 15,
 	usage = "all",
 	position = "cloak",
-	weight = 1
+	weight = 1,
+        xp_needed = 6,
+        hp = 2,
+        luck = -1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 2,
+        resist_fire = 10,
+        resist_arcane = 20
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "death_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, arcane = 20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "-10"}}, shadow_effect},
+	eq_effect = { 
+	            -- id = "death_cloak", 
+	            -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -10, arcane = 20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "-10"}}, 
+	            shadow_effect},
         name = _ "Death Cloak",
         id = "death_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This vile black cloak looks like something pulled out of the ground.  There is something unworldly about it, a sinister power.  Bonus: +10 cold resistance; nightstalk ability.  Penalty: -10 HP; -20 arcane resistance",
+        text = _ "This vile black cloak looks like something pulled out of the ground.  There is something unworldly about it, a sinister power.  Bonus: nightstalk ability.",
         image = "icons/cloak_black.png~CS(10,15,-5)",
         icon = "items/cloak-black.png",
 	cost = 45,
 	usage = "all",
 	position = "cloak",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = -10,
+        luck = -1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = -10,
+        resist_fire = 0,
+        resist_arcane = -20
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "black_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -50, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, shadow_effect},
+	eq_effect = { 
+	            -- id = "black_cloak", 
+	            -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -50, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}, 
+	            shadow_effect},
         name = _ "Black Cloak",
         id = "black_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "There is something unworldly about this inky black cloak, a sinister power.  Attempts to wear it usually meet with frustration, because it is not meant for the living.  Bonus: +50 cold , +20 pierce resistances; nightstalk ability; +5 HP",
+        text = _ "There is something unworldly about this inky black cloak, a sinister power.  Attempts to wear it usually meet with frustration, because it is not meant for the living.  Bonus: nightstalk ability",
         image = "icons/cloak_black.png",
         icon = "items/cloak-black.png~CS(-30,0,10)",
 	cost = 65,
 	usage = "despair",
 	position = "cloak",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 5,
+        luck = -1,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 20,
+        resist_cold = 50,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "mage_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, fire = -5, arcane = -5, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "attack", range = "ranged", increase_damage = "1"}}},
+	eq_effect = {}, -- { id = "mage_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, fire = -5, arcane = -5, pierce = -5, blade = -5}}}} , {"effect", { apply_to = "attack", range = "ranged", increase_damage = "1"}}}
         name = _ "Mage Cloak",
         id = "mage_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "This cloak was brought up from the South, it is made from fine threads with fine gold wires interwoven into strange symbols that have some meaning to the Magi, but almost no one in the frozen North can understand them. Bonus: +5 cold, fire, arcane, blade, and pierce resistance, + 1 ranged damage",
+        text = _ "This cloak was brought up from the South, it is made from fine threads with fine gold wires interwoven into strange symbols that have some meaning to the Magi, but almost no one in the frozen North can understand them.",
         image = "icons/cloak_red.png",
         icon = "items/cloak-green.png~CS(80,-60,-30)",
 	cost = 265,
 	usage = "amulets",
 	position = "cloak",
-	weight = 0
+	weight = 0,
+        xp_needed = 15,
+        hp = 1,
+        luck = 1,
+        dodge = 1,
+        accuracy = 5,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 0,
+        resist_pierce = 5,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -20, fire = -20, arcane = -20, pierce = -7, blade = -7}}}}},
+	eq_effect = {}, -- { id = "gaea_cloak", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -20, fire = -20, arcane = -20, pierce = -7, blade = -7}}}}},
         name = _ "Cloak of Gaea",
         id = "gaea_cloak",
         tooltip = _ "all cloaks provide some cold resistance",
-        text = _ "The natural world has a power that dwarfs anything shaped by mortals.  The living fibers of this cloak shlter the wearer from most magic energy attacks, for they are just weak echos of natural phenomena.  Bonus: 20% resistance to cold, fire, arcane attacks, and 7% resistance to pierce and blade attack.",
+        text = _ "The natural world has a power that dwarfs anything shaped by mortals.  The living fibers of this cloak shelter the wearer from most magic energy attacks, for they are just weak echos of natural phenomena.",
         image = "icons/cloak_gaea.png",
         icon = "items/cloak-green.png~CS(-20,60,-20)",
 	cost = 365,
 	usage = "amulets",
 	position = "cloak",
-	weight = 0
+	weight = 0,
+        xp_needed = 20,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 7,
+        resist_impact = 0,
+        resist_pierce = 7,
+        resist_cold = 20,
+        resist_fire = 20,
+        resist_arcane = 20
 	
 })
 ------- rings ----------------------
 table.insert(the_list, {
-	eq_effect = { id = "stone_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -3, fire = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
+	eq_effect = {}, -- { id = "stone_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -3, fire = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
         name = _ "Stone Ring",
         id = "stone_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This crude ring has familiar runes carved into the inner surface.  It's quite likely that this offers very little protection, but every little bit helps.  Bonus: +3 arcane resistance, +3 fire resistance, +1 HP",
+        text = _ "This crude ring has familiar runes carved into the inner surface.  It's quite likely that this offers very little protection, but every little bit helps.",
         image = "icons/stone_ring.png",
         icon = "items/ring-white.png",
 	cost = 38,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 3,
+        resist_arcane = 3
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, fire = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "steel_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, fire = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Steel Ring",
         id = "steel_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This steel ring has been blessed by the local mystic or holyman or priest, or whatever you wish to call them.  Many would be skeptical that there is any merit in that, but over time, it has been shown that the blessing does make a difference.  Bonus: +10 arcane resistance, +5 fire resistance, +2 HP",
+        text = _ "This steel ring has been blessed by the local mystic or holyman or priest, or whatever you wish to call them.  Many would be skeptical that there is any merit in that, but over time, it has been shown that the blessing does make a difference.",
         image = "icons/ring_gold.png~GS()",
         icon = "items/ring-silver.png",
 	cost = 45,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 2,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 5,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gold_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15, fire = -10, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "gold_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15, fire = -10, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Gold Ring",
         id = "gold_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This gold ring is quite common amongst those who can afford it.  No one would claim that the runes are nonsense.  Bonus: +15 arcane resistance, +10 fire resistance, +5 cold resistance, +3 HP",
+        text = _ "This gold ring is quite common amongst those who can afford it.  No one would claim that the runes are nonsense.",
         image = "icons/ring_gold.png",
         icon = "items/ring-gold.png",
 	cost = 95,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 3,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 10,
+        resist_arcane = 15
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "green_ring", 
-	{"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, fire = -5, cold = -5}}}} , 
-	{"effect", { apply_to = "defense", replace = "no",{"defense", {forest = -25}}}} , 
-	{"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = { 
+	    -- id = "green_ring", 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, fire = -5, cold = -5}}}} , 
+	    {"effect", { apply_to = "defense", replace = "no",{"defense", {forest = -25}}}} -- , 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "3"}}]] 
+	    },
         name = _ "Green Ring",
         id = "green_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "It is as if this ring puts the wearer in harmony with the trees, for they become so nimble in the forest.  Bonus: +25 percent defense in forest, +10 arcane resistance, +5 each fire and cold resistance, +3 HP",
+        text = _ "It is as if this ring puts the wearer in harmony with the trees, for they become so nimble in the forest.  Bonus: +25 percent defense in forest",
         image = "icons/ring_green.png",
         icon = "items/ring-green.png",
 	cost = 135,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 3,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dark_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, --[[ { id = "dark_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}} ]]
         name = _ "Dark Ring",
         id = "dark_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This dark ring is made from some dark metal that cannot be polished to a bright luster, and it is always cold to the touch.  Bonus: +15 fire resistance, +5 cold resistance, +2 HP",
+        text = _ "This dark ring is made from some dark metal that cannot be polished to a bright luster, and it is always cold to the touch.",
         image = "icons/ring_dark.png",
         icon = "items/ring-black.png~CS(5,-5,0)",
 	cost = 55,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 2,
+        luck = 1,
+        dodge = 3,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 15,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "crystal_ring", {"effect", { apply_to = "hitpoints", increase_total = "2"}}, unpoison_effect
+	eq_effect = { 
+	    -- id = "crystal_ring", 
+	     -- {"effect", { apply_to = "hitpoints", increase_total = "2"}}, 
+	    unpoison_effect
 	},
         name = _"Crystal Ring",
         id = "crystal_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This ring has a clear gemstone that shines with an inner light.  Bonus: Cures poison on self and all adjacent, +2 HP",
+        text = _ "This ring has a clear gemstone that shines with an inner light.  Bonus: Cures poison on self and all adjacent",
         image = "icons/jewelry_ring_prismatic.png",
         icon = "items/ring-silver.png",
 	cost = 145,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 2,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "skull_ring", {"effect", { apply_to = "hitpoints", increase_total = "-5"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = 10, fire = -15, cold = -50}}}},
+	eq_effect = { 
+	        -- id = "skull_ring", 
+	        -- {"effect", { apply_to = "hitpoints", increase_total = "-5"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = 10, fire = -15, cold = -50}}}},
 		{"effect", { apply_to = "status", add = "unpoisonable"}}, {"effect", {apply_to = "status", add = "undrainable"}}, 
 		{"effect", {apply_to = "status", add = "unplagueable"}}, {"effect", {apply_to = "status", add = "unhealable"}}, 
-		{"effect", {apply_to = "status", add = "not_living"}},
-		{"effect", {apply_to = "image_mod", replace = "~CS(-15,-10,-5)"}}
+		-- {"effect", {apply_to = "status", add = "not_living"}}, -- deprecated
+		{"effect", {apply_to = "image_mod", replace = "O(0.9)~CS(-15,-10,-5)"}}
 	},
         name = _ "Skull Ring",
         id = "skull_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This ring has a sinister-looking skull affixed to a dark metal base.  It's not clear that this is something you really want to wear.  Effects: Grants upoinsonable, unplagueable, undrainable, yet unhealable status; 10 percent arcane weakness; 15 percent fire and 50 percent cold resistance, -5 HP",
+        text = _ "This ring has a sinister-looking skull affixed to a dark metal base.  It's not clear that this is something you really want to wear.  Grants upoinsonable, unplagueable, undrainable, yet unhealable status.",
         image = "icons/skull_ring.png",
         icon = "items/ring-black.png",
 	cost = 15,
 	usage = "all",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = -5,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 50,
+        resist_fire = 15,
+        resist_arcane = -10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_ring", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, regenerate_effect
---	{"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=8, id= "regenerates", name= _ "regenerates", female_name= _ "female^regenerates", description= _ "The unit will heal itself 8 HP per turn. If it is poisoned, it will remove the poison instead of healing.", affect_self="yes", poison= "cured" }}}}}}
-	},
+	eq_effect = { 
+	    -- id = "ancient_ring", 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, 
+	    regenerate_effect },
         name = _ "Ancient Ring",
         id = "ancient_ring",
         tooltip = _ "rings usually provide protection against the non-physical attacks",
-        text = _ "This ancient ring has some sort of power that has kept it from rusting away over the ages.  Bonus: +5 arcane resistance, +5 fire resistance, +5 cold resistance, Regeneration Ability",
+        text = _ "This ancient ring has some sort of power that has kept it from rusting away over the ages.  Bonus: Regeneration ability",
         image = "icons/ring_gold.png~CS(10,-20,-60)",
         icon = "items/ring-brown.png",
 	cost = 195,
 	usage = "amulets",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 24,
+        hp = 3,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 5
 	
 })
 -- not really rings, but ...
 table.insert(the_list, {
-	eq_effect = { id = "leather_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -3, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
+	eq_effect = {}, --[[ { id = "leather_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -3, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}} ]]
         name = _ "Leather Gloves",
         id = "leather_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These fine leather gloves provide some protection from the elements and minor cuts, without being too cumbersome.  Bonus: +3 blade, +3 cold, +3 fire resistances;  +1 hitpoints.",
+        text = _ "These fine leather gloves provide some protection from the elements and minor cuts, without being too cumbersome.",
         image = "icons/gloves.png",
         icon = "items/gloves.png",
 	cost = 35,
 	usage = "all",
 	position = "ring",
-	weight = 1
+	weight = 1,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 3,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 3,
+        resist_fire = 3,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "white_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "white_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "White Gloves",
         id = "white_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These white, silken gloves seem to be woven with supernatural threads.  Bonus: +10 arcane, +3 cold resistances;  +3 hitpoints.",
+        text = _ "These white, silken gloves seem to be woven with supernatural threads.",
         image = "icons/white_gloves.png",
         icon = "items/white_gloves.png",
 	cost = 55,
 	usage = "all",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 3,
+        luck = 1,
+        dodge = 0,
+        accuracy = 2,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 0,
+        resist_pierce = 1,
+        resist_cold = 3,
+        resist_fire = 3,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "black_gloves", 
-	{"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -5}}}}, 
-	{"effect", { apply_to = "hitpoints", increase_total = "5"}}, 
-	{"effect", { apply_to = "attack", range = "melee", drains_special}} },
+	eq_effect = { 
+	    -- id = "black_gloves", 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -5}}}}, 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "5"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", drains_special}} },
         name = _ "Black Gloves",
         id = "black_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These black, silken gloves seem to be woven with supernatural threads.  Bonus: +10 arcane, +5 cold resistances;  +5 hitpoints; Drain capability for melee attack",
+        text = _ "These black, silken gloves seem to be woven with supernatural threads.  Bonus: Drain capability for melee attack",
         image = "icons/black_gloves.png",
         icon = "items/black_gloves.png",
 	cost = 55,
 	usage = "all",
 	position = "ring",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 5,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "bronze_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, fire = -3, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Bronze Gauntlets",
         id = "bronze_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These crude gauntlets are leather gloves with overlapping bronze plates on the knuckles and back.  They are simple but effective, considering how important your hands are.  Bonus: +5 blade, +5 impact, +3 cold, +3 fire resistances;  +2 hitpoints.",
+        text = _ "These crude gauntlets are leather gloves with overlapping bronze plates on the knuckles and back.  They are simple but effective, considering how important hands are.",
         image = "icons/gauntlets-bronze.png",
         icon = "items/gauntlets1.png",
 	cost = 65,
 	usage = "light_armor",
 	position = "ring",
-	weight = 2
+	weight = 2,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 3,
+        resist_fire = 3,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "thunder_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, arcane = -5, fire = -8, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "chain_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -7, fire = -3, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+        name = _ "Chainmail Gloves",
+        id = "chain_gloves",
+        tooltip = _ "protection for the hands",
+        text = _ "A thin coat of chain rings and woven metal wire stiched over leather gloves make for cut-resistant hand protection, without being too restrictive.",
+        image = "icons/gloves-chain.png",
+        icon = "items/gloves-chain.png",
+	cost = 75,
+	usage = "light_armor",
+	position = "ring",
+	weight = 2,
+        xp_needed = 14,
+        hp = 3,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 7,
+        resist_impact = 4,
+        resist_pierce = 3,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = {}, -- { id = "thunder_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, arcane = -5, fire = -8, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Thunder Gauntlets",
         id = "thunder_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These light gauntlets are encrusted with brilliant, clear jewels that flash in the ambient light.  There is something supernatural about them.  Bonus: +5 blade, +5 impact, +3 cold, +8 fire, +5 arcane resistances;  +5 hitpoints.",
+        text = _ "These light gauntlets are encrusted with brilliant, clear jewels that flash in the ambient light.  There is something supernatural about them.",
         image = "icons/gauntlets-thunder.png",
         icon = "items/gauntlets-thunder.png",
 	cost = 125,
 	usage = "light_armor",
 	position = "ring",
-	weight = 1
+	weight = 1,
+        xp_needed = 24,
+        hp = 5,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 3,
+        resist_fire = 8,
+        resist_arcane = 5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -6, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
+	eq_effect = {}, -- { id = "steel_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -6, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Steel Gauntlets",
         id = "steel_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These gauntlets provide full metal protection for the hands and wrist, but they do interfere with normal movement, so they are not for everyone.  Bonus: +7 blade, +6 impact, +3 cold, +5 fire resistances;  +4 hitpoints.",
+        text = _ "These gauntlets provide full metal protection for the hands and wrist, but they do interfere with normal movement, so they are not for everyone.",
         image = "icons/gauntlets.png",
         icon = "items/gauntlets2.png",
 	cost = 110,
 	usage = "heavy_armor",
 	position = "ring",
-	weight = 3
+	weight = 3,
+        xp_needed = 32,
+        hp = 4,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 7,
+        resist_impact = 6,
+        resist_pierce = 2,
+        resist_cold = 3,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, impact = -5, pierce = -3, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "silver_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, impact = -5, pierce = -3, fire = -5, cold = -3}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Silver Gauntlets",
         id = "silver_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These gauntlets provide full protection for the hands and wrist, and are much lighter than would be expected, given their sturdy construction.  Bonus: +6 blade, + 5 impact, +3 pierce, +3 cold, +5 fire resistances;  +3 hitpoints.",
+        text = _ "These gauntlets provide full protection for the hands and wrist, and are much lighter than would be expected, given their sturdy construction.",
         image = "icons/gauntlets-silver.png",
         icon = "items/gauntlets-silver.png",
 	cost = 150,
 	usage = "heavy_armor",
 	position = "ring",
-	weight = 1
+	weight = 1,
+        xp_needed = 32,
+        hp = 3,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 5,
+        resist_pierce = 3,
+        resist_cold = 3,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "gold_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -8, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "gold_gloves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, impact = -8, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Goldmail Gauntlets",
         id = "gold_gloves",
         tooltip = _ "protection for the hands",
-        text = _ "These gauntlets are made of the odd golden alloy of the primeval civilization.  They provide full metal protection for the hands and wrist, but they do interfere with normal movement, so they are not for everyone.  Bonus: +7 blade, +6 impact, +3 cold, +5 fire resistances;  +4 hitpoints.",
+        text = _ "These gauntlets are made of the odd golden alloy of the primeval civilization.  They provide full metal protection for the hands and wrist, but they do interfere with normal movement, so they are not for everyone.",
         image = "icons/gauntlets-gold.png",
         icon = "items/gauntlets2.png~GS()~CS35,0,-60)",
 	cost = 230,
 	usage = "heavy_armor",
 	position = "ring",
-	weight = 3
+	weight = 3,
+        xp_needed = 32,
+        hp = 5,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 7,
+        resist_impact = 8,
+        resist_pierce = 1,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 ------------------------amulets-------------------------
 table.insert(the_list, {
-	eq_effect = { id = "primeval_charm", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = 30}}}}, {"effect", { apply_to = "status", add = "unplagueable"}}},
+	eq_effect = { 
+	    -- id = "primeval_charm", 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = 30}}}}, 
+	    {"effect", { apply_to = "status", add = "unplagueable"}}},
         name = _ "Odd Amulet",
         id = "primeval_charm",
         tooltip = _ "amulets can have special effects",
@@ -1203,69 +1956,162 @@ table.insert(the_list, {
 	cost = 75,
 	usage = "all",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 1,
+        hp = 1,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = -30
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "kidney_belt", {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "kidney_belt", {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Kidney Belt",
         id = "kidney_belt",
         tooltip = _ "belt helps with equipment weight",
-        text = _ "This large belt provides support for the lower back.  Anyone can use it.  Bonus: Reduces carried weight by 2; +3 hitpoints",
+        text = _ "This large belt provides support for the lower back.  Anyone can use it.  Bonus: Reduces carried weight by 2.",
         image = "icons/kidney_belt.png",
         icon = "items/kidney_belt.png",
 	cost = 25,
 	usage = "all",
 	position = "amulet",
-	weight = -2
+	weight = -2,
+        xp_needed = 10,
+        hp = 3,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "atlas_belt", {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
+	eq_effect = {}, -- { id = "atlas_belt", {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
         name = _ "Atlas Belt",
         id = "atlas_belt",
         tooltip = _ "belt helps with equipment weight",
-        text = _ "This large belt provides support for the lower back, and has many straps and ways to help distribute equipment weight.  Anyone can use it.  Bonus: Reduces carried weight by 4; +7 hitpoints",
+        text = _ "This large belt provides support for the lower back, and has many straps and ways to help distribute equipment weight.  Anyone can use it.  Bonus: Reduces carried weight by 4.",
         image = "icons/atlas_belt.png",
         icon = "items/atlas_belt.png",
 	cost = 37,
 	usage = "all",
 	position = "amulet",
-	weight = -4
+	weight = -4,
+        xp_needed = 18,
+        hp = 7,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "fang_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "fang_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Fang Charm",
         id = "fang_charm",
         tooltip = _ "amulets can have special effects",
-        text = _ "This fang of some large beast is believed by many to grant the wearer extra strength and vitality.  The effect is most likely psychological, but maybe it is real.  Anyone can use it.  Bonus: +5 hitpoints",
+        text = _ "This fang of some large beast is believed by many to grant the wearer extra strength and vitality.  The effect is most likely psychological, but maybe it is real.  Anyone can use it.",
         image = "icons/fang_charm.png",
         icon = "items/fang_charm.png",
 	cost = 75,
 	usage = "all",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 5,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "shard_charm", {"effect", { apply_to = "hitpoints", increase_total = "5"}}, {"effect", { apply_to = "healthy"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10, pierce = -10, arcane = -10}}}}}, 
+	eq_effect = {}, -- { id = "bigfang_charm", {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
+        name = _ "Big Fang Charm",
+        id = "bigfang_charm",
+        tooltip = _ "amulets can have special effects",
+        text = _ "This fang of some large beast is believed by many to grant the wearer extra strength and vitality.  The effect is most likely psychological, but maybe it is real.  Anyone can use it.",
+        image = "icons/bigfang_charm.png",
+        icon = "items/bigfang_charm.png",
+	cost = 95,
+	usage = "all",
+	position = "amulet",
+	weight = 0,
+        xp_needed = 10,
+        hp = 8,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
+	
+})
+table.insert(the_list, {
+	eq_effect = { 
+	    -- id = "shard_charm", 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "5"}}, 
+	    {"effect", { apply_to = "healthy"}}
+	    -- , {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10, pierce = -10, arcane = -10}}}}
+	    }, 
         name = _ "Shard Charm",
         id = "shard_charm",
         tooltip = _ "amulets can have special effects",
-        text = _ "This is some shimmering crystal shard on a lanyard.  Anyone can wear it, and it seems to bestow some good health on the wearer.  Bonus: +10 each blade, pierce, and arcane resistance, always resting,  and +5 hitpoints",
+        text = _ "This is some shimmering crystal shard on a lanyard.  Anyone can wear it, and it seems to bestow some good health on the wearer.  Bonus: wearer is always resting.",
         image = "icons/shard_charm.png",
         icon = "items/shard_charm.png",
 	cost = 125,
 	usage = "all",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 5,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 0,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "vitality_charm", {"effect", { apply_to = "hitpoints", increase_total = "3"}}, regenerate_effect
---	{"effect", { apply_to = "new_ability",  {"abilities", { { "regenerate", { value=8, id= "regenerates", name= _ "regenerates", female_name= _ "female^regenerates", description= _ "The unit will heal itself 8 HP per turn. If it is poisoned, it will remove the poison instead of healing.", affect_self="yes", poison= "cured" }}}}}}
-	},
+	eq_effect = { 
+	    -- id = "vitality_charm", 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "3"}}, 
+	    regenerate_effect
+	    },
         name = _ "Vitality Charm",
         id = "vitality_charm",
         tooltip = _ "amulets can have special effects",
@@ -1275,13 +2121,27 @@ table.insert(the_list, {
 	cost = 165,
 	usage = "amulets",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 3,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "thief_charm", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15, fire = -10, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, skirmisher_effect
---	{"effect", { apply_to = "new_ability",  {"abilities", { { "skirmisher", { id= "skirmisher", name= _ "skirmisher", female_name= _ "female^skirmisher", description= _ "This unit is skilled in moving past enemies quickly, and ignores all enemy Zones of Control.", affect_self="yes"}}}}}}
-	},
+	eq_effect = { 
+	    -- id = "thief_charm", 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15, fire = -10, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}, 
+	    skirmisher_effect
+	    },
         name = _ "Thief Charm",
         id = "thief_charm",
         tooltip = _ "amulets can have special effects",
@@ -1291,500 +2151,971 @@ table.insert(the_list, {
 	cost = 145,
 	usage = "amulets",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 3,
+        luck = 1,
+        dodge = 5,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 10,
+        resist_arcane = 15
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "herb_bag", {"effect", { apply_to = "hitpoints", increase_total = "1"}}, unpoison_effect2
-	},
+	eq_effect = { 
+	    -- id = "herb_bag", 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "1"}}, 
+	    unpoison_effect2
+	    },
         name = _ "Herb Bag",
         id = "herb_bag",
         tooltip = _ "amulets can have special effects",
-        text = _ "This bag of herbs has an antidote to most venoms and poisons encountered in the area.  Bonus: Cures poison on self, +1 HP",
+        text = _ "This bag of herbs has an antidote to most venoms and poisons encountered in the area.  Bonus: Cures poison on self",
         image = "icons/herb-bag.png",
         icon = "items/flower4.png",
 	cost = 75,
 	usage = "amulets",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ice_charm", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -50}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
+	eq_effect = {}, -- { id = "ice_charm", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -50}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
         name = _ "Ice Charm",
         id = "ice_charm",
         tooltip = _ "amulets can have special effects",
-        text = _ "This odd amulet is cold to the touch, absorbing heat.  Should come in handy against fire blasts. Bonus: +50 fire resistance",
+        text = _ "This odd amulet is cold to the touch, absorbing heat.  Should come in handy against fire blasts.",
         image = "icons/jewelry_necklace_amber.png~CS(-30,-20,40)",
         icon = "misc/charm.png",
 	cost = 125,
 	usage = "amulets",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 1,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 50,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "thunder_amulet", {"effect", { apply_to = "attack", range = "ranged", increase_attacks = 1}}},
+	eq_effect = { 
+	    -- id = "thunder_amulet", 
+	    {"effect", { apply_to = "attack", range = "ranged", increase_attacks = 1}}},
         name = _ "Thunder Amulet",
         id = "thunder_amulet",
         tooltip = _ "amulets can have special effects",
-        text = _ "This amulet gives an extra ranged strike",
+        text = _ "This amulet has a large, clear gem with a brightness that outshines any normal diamond.  Bonus: Gives an extra ranged strike",
         image = "icons/necklace1.png~CS(-20,-30,40)",
         icon = "items/ankh-necklace.png~CS(20,-20,60)",
 	cost = 155,
 	usage = "amulets",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 1,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "holy_charm", {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}},
+	eq_effect = { 
+	    -- id = "holy_charm", 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}},
         name = _ "Holy Charm",
         id = "holy_charm",
         tooltip = _ "amulets can have special effects",
-        text = _ "This amulet makes blades have arcane damage type",
+        text = _ "This amulet makes blades have arcane damage type.",
         image = "icons/ankh_necklace.png~GS()",
         icon = "items/ankh-necklace.png",
 	cost = 105,
 	usage = "all",
 	position = "amulet",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 1,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 	
 })
 --------- armor ---------------
 table.insert(the_list, {
-	eq_effect = { id = "black_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -7, arcane = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
+	eq_effect = {},
+        name = _ "Brown Tunic",
+        id = "brown_tunic",
+        tooltip = _ "armor offers broad protection to physical attacks",
+        text = _ "This is a simple tunic with slightly more padding and scrap leather than normal, so it provides some minimal protection with little weight or restriction.",
+        image = "icons/tunic_elven.png~CS(-30,-70,-65)",
+        icon = "items/tunic.png~CS(-30,-70,-65)",
+	cost = 6,
+	usage = "all",
+	position = "torso",	
+	weight = 0,
+        xp_needed = 6,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 1,
+        resist_impact = 1,
+        resist_pierce = 2,
+        resist_cold = 1,
+        resist_fire = 0,
+        resist_arcane = 0
+})
+table.insert(the_list, {
+	eq_effect = {}, -- { id = "black_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {cold = -5, pierce = -7, arcane = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Black Tunic",
         id = "black_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "There is something chilling about this dark tunic, like it has been worn to many funerals, and has absorbed some of the sorrow and death.  Bonus: +5 cold resistance, +7 pierce resistance, +4 HP.  Penalty: -5 arcane resistance",
+        text = _ "There is something chilling about this dark tunic, like it has been worn to many funerals, and has absorbed some of the sorrow and death.",
         image = "icons/tunic_black.png",
         icon = "items/tunic_black.png",
 	cost = 10,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 4,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 7,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 5
 })
 table.insert(the_list, {
-	eq_effect = { id = "elven_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "elven_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -2, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Elven Tunic",
         id = "elven_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The elves are better weavers than the humans, dwarves, or orcs.  Their tunics are not the simple cotton of the men, nor the woven hair of the orcs, it is something superior, and try as they might, the other races have failed to reverse-engineer the elven fabric.  Bonus: +2 impact resistance, +2 blade resistance, +2 pierce resistance, +5 arcane resistance, +2 HP",
+        text = _ "The elves are better weavers than the humans, dwarves, or orcs.  Their tunics are not the simple cotton of the men, nor the woven hair of the orcs, it is something superior, and try as they might, the other races have failed to reverse-engineer the elven fabric.",
         image = "icons/tunic_elven.png",
         icon = "items/tunic.png",
 	cost = 30,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 4,
+        hp = 2,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 2,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 })
 table.insert(the_list, {
-	eq_effect = { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "blue_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -7, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Blue Tunic",
         id = "blue_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The primevalists have access to some unusual cloth of a forgotten fabric, a small gift from their lords.  It is very tough against the cut of either a blade or a cold wind, but is otherwise unremarkable but for its color, which is an usually pure blue.  Bonus: +5 cold resistance, +7 blade resistance, +2 HP",
+        text = _ "The primevalists have access to some unusual cloth of a forgotten fabric, a small gift from their lords.  It is very tough against the cut of either a blade or a cold wind, but is otherwise unremarkable but for its color, which is an usually pure blue.",
         image = "icons/tunic_blue.png",
         icon = "items/tunic_blue.png",
 	cost = 28,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 2,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 7,
+        resist_impact = 1,
+        resist_pierce = 1,
+        resist_cold = 5,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "mage_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5, arcane = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Mage Tunic",
         id = "mage_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This tunic is made by mages, for mages.  They know their own weaknesses and have tried to address them with this charmed fabric.  Bonus: +5 each impact, blade, and pierce resistances, +5 arcane resistance, +3 HP",
+        text = _ "This tunic is made by mages, for mages.  They know their own weaknesses and have tried to address them with this charmed fabric.",
         image = "icons/tunic_mage.png",
         icon = "items/mage_tunic.png",
 	cost = 120,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 16,
+        hp = 3,
+        luck = 1,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 5
 })
 table.insert(the_list, {
-	eq_effect = { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "shaman_tunic", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -2, blade = -2, pierce = -6, arcane = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Shaman Tunic",
         id = "shaman_tunic",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "Orcish shamans have sewn charmed little stones and bones into a coarse animal hair tunic.  Though not stylish, it does offer some protection for those who cannot take advantage of heavier armor.  Bonus: +2 each impact and blade resistance, +6 pierce resistances, +8 arcane resistance, +2 HP",
+        text = _ "Orcish shamans have sewn charmed little stones and bones into a coarse animal hair tunic.  Though not stylish, it does offer some protection for those who cannot take advantage of heavier armor.",
         image = "icons/tunic_shaman.png",
         icon = "items/shaman_tunic.png",
 	cost = 80,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 12,
+        hp = 3,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 6,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 8
 })
 table.insert(the_list, {
-	eq_effect = { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "padded_coat", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -4, cold = -5, fire = 5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Padded Coat",
         id = "padded_coat",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This heavy coat has padding and thick cloth that softens impacts, keeps out the cold, and even offers some slight protection against cuts from fangs and blades.  It offers no protection against punctures, and can get quite uncomfortable in hot environments.  Bonus: +8 impact resistance, +4 blade resistance, +5 cold resistance, -5 fire resistance, +3 HP",
+        text = _ "This heavy coat has padding and thick cloth that softens impacts, keeps out the cold, and even offers some slight protection against cuts from fangs and blades.  It offers no protection against punctures, and can get quite uncomfortable in hot environments.",
         image = "icons/padded_coat.png",
         icon = "items/padded_coat.png",
 	cost = 50,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 3,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 4,
+        resist_impact = 8,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = -4,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "leather_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Leather Armor",
         id = "leather_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is the most basic of combat gear, but it is well worth its minimal expense.  Bonus: +5 impact resistance, +5 blade resistance, +5 pierce resistance, +2 HP",
+        text = _ "This is the most basic of combat gear, but it is well worth its minimal expense.",
         image = "icons/armor_leather.png",
         icon = "items/armor-leather.png",
 	cost = 35,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 12,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "rusty_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -7, blade = -4, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "rusty_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -7, blade = -4, arcane = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Rusty Armor",
         id = "rusty_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This armor is rusted, rotten, and ruined.  It doesn't offer the same protection it once did, and it is especially easy to pierce the corrupted material, but the armor does still give some mundane barrier to arcane attacks.  Bonus: +7 impact, +4 blade, and +10 arcane resistances, +2 HP",
+        text = _ "This armor is rusted, rotten, and ruined.  It doesn't offer the same protection it once did, and it is especially easy to pierce the corrupted material, but the armor does still give some mundane barrier to arcane attacks.",
         image = "icons/armor_rusty.png",
         icon = "items/armor-rusty.png",
 	cost = 15,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 6,
+        hp = 2,
+        luck = -1,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 4,
+        resist_impact = 7,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "elven_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5, impact = -7, blade = -12, pierce = -7}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
+	eq_effect = {}, -- { id = "elven_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5, impact = -7, blade = -12, pierce = -7}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Ranger Armor",
         id = "elven_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is very similar to standard leather armor, but the stitching is finer, and the leather has been tanned in some process, known only to the Wood Elves, that makes it tougher and less prone to cracking.  Bonus: +5 fire, +5 cold, +7 impact resistance, +12 blade resistance, +7 pierce resistance, +6 HP",
+        text = _ "This is very similar to standard leather armor, but the stitching is finer, and the leather has been tanned in some process, known only to the Wood Elves, that makes it tougher and less prone to cracking.",
         image = "icons/armor_leather.png~CS(-25,0,-10)",
         icon = "items/armor-leather.png~CS(-25,0,-10)",
 	cost = 75,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 16,
+        hp = 6,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 12,
+        resist_impact = 7,
+        resist_pierce = 7,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dragon_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5, impact = -5, blade = -10, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "dragon_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -15, cold = -5, impact = -5, blade = -10, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Dragonscale Armor",
         id = "dragon_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is very similar to leather armor in construction, but the major outer surfaces are covered in the iridescent, scaled skin of the rare dragon.  Bonus: +15 fire, +5 cold, +5 impact resistance, +10 blade resistance, +5 pierce resistance, +5 HP",
+        text = _ "This is very similar to leather armor in construction, but the major outer surfaces are covered in the iridescent, scaled skin of the rare dragon.",
         image = "icons/armor_dragon.png",
         icon = "items/armor-dragon.png",
 	cost = 135,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 24,
+        hp = 5,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 5,
+        resist_fire = 15,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "scale_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "scale_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Scale Armor",
         id = "scale_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The leather cuirass has been fitted with thin, overlapping metal shingles. It is not chain-mail, but it is a cost-effective improvement over simple leather.   Bonus: +8 impact resistance, +10 blade resistance, +8 pierce resistance, +3 HP",
+        text = _ "The leather cuirass has been fitted with thin, overlapping metal shingles. It is not chain-mail, but it is a cost-effective improvement over simple leather.",
         image = "icons/cuirass_leather_studded.png",
         icon = "items/armor.png",
 	cost = 55,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 16,
+        hp = 3,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 8,
+        resist_pierce = 8,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "assassin_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -9, pierce = -7, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "assassin_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -9, pierce = -7, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Assassin Vest",
         id = "assassin_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "A tight-fitting vest with steel plate sewn between the two cloth layers.  Straps and belts make a perfect fit possible for almost anyone.  Bonus: +9 blade, +7 pierce, and +5 impact resistance; reduces equipment weight by 1; +3 HP",
+        text = _ "A tight-fitting vest with steel plate sewn between the two cloth layers.  Straps and belts make a perfect fit possible for almost anyone.  Bonus: Reduces equipment weight by 1.",
         image = "icons/cuirass_assassin.png",
         icon = "items/armor-assassin.png",
 	cost = 95,
 	usage = "all",
 	position = "torso",	
-	weight = -1
+	weight = -1,
+        xp_needed = 24,
+        hp = 3,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 9,
+        resist_impact = 5,
+        resist_pierce = 7,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "fiber_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -13, fire = -13}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
+	eq_effect = {}, -- { id = "fiber_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -13, fire = -13}}}} , {"effect", { apply_to = "hitpoints", increase_total = "3"}}},
         name = _ "Fiberglass Armor",
         id = "fiber_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This sturdy tunic is made of some rough, strange cloth of a very coarse thread.  It doesn't keep out the cold or provide much padding, but it is very difficult to cut and it does not burn.   Bonus: +13 blade resistance, +13 fire resistance, +3 HP",
+        text = _ "This sturdy tunic is made of some rough, strange cloth of a very coarse thread.  It doesn't keep out the cold or provide much padding, but it is very difficult to cut and it does not burn.",
         image = "icons/cuirass_fiber.png",
         icon = "items/armor-fiber.png",
 	cost = 85,
 	usage = "all",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 24,
+        hp = 3,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 13,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 13,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "chain_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -14, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
+	eq_effect = {}, -- { id = "chain_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -14, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Chainmail Tunic",
         id = "chain_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "A tunic of interlocking chainlinks.  It is effective against blade slashes, but less effective against piercing attacks.   Bonus: +10 impact resistance, +14 blade resistance, +8 pierce resistance, +4 HP",
+        text = _ "A tunic of interlocking chainlinks.  It is effective against blade slashes, but less effective against piercing attacks.",
         image = "icons/armor-chain.png",
         icon = "items/armor-chain.png",
 	cost = 76,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 3
+	weight = 3,
+        xp_needed = 24,
+        hp = 4,
+        luck = 0,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 14,
+        resist_impact = 10,
+        resist_pierce = 8,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bronze_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -15, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "bronze_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -15, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Bronze Armor",
         id = "bronze_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "Bronze is more easily produced and shaped than iron or steel.  Despite being made from the cheaper metal, this cuirass is better than leather or hide, and is frequently used by orcs.   Bonus: +10 impact resistance, +15 blade resistance, +10 pierce resistance, +5 HP",
+        text = _ "Bronze is more easily produced and shaped than iron or steel.  Despite being made from the cheaper metal, this cuirass is better than leather or hide, and is frequently used by orcs.",
         image = "icons/cuirass_muscled.png~CS(-5,0,-25)",
         icon = "items/armor-iron.png~CS(10,-30,-50)",
 	cost = 85,
 	usage = "heavy_armor",
 	position = "torso",	
-	weight = 3
+	weight = 3,
+        xp_needed = 24,
+        hp = 5,
+        luck = 0,
+        dodge = -2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 10,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "bone_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = 4, blade = -15, pierce = -20, arcane = 5, cold = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "bone_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = 4, blade = -15, pierce = -20, arcane = 5, cold = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Bone Armor",
         id = "bone_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This armor is a grotesque assembly of bones.  No one can wear this with a clear conscience, but it certainly is intimidating.   Bonus: -4 impact resistance, +15 blade resistance, +20 pierce resistance, +5 HP",
+        text = _ "This armor is a grotesque assembly of bones.  No one can wear this with a clear conscience, but it certainly is intimidating.",
         image = "icons/cuirass_bone.png",
         icon = "items/armor-iron.png~GS()~CS(20,10,-20)",
 	cost = 145,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 18,
+        hp = 5,
+        luck = -2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 0,
+        resist_pierce = 20,
+        resist_cold = 5,
+        resist_fire = -5,
+        resist_arcane = -5
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "iron_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
+	eq_effect = {}, -- { id = "iron_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
         name = _ "Iron Armor",
         id = "iron_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "Sturdy iron has been formed into a protective cuirass.  This is not the best armor available, but it has a good balance between cost and effectiveness, and for that reason it is a favourite of brigands and orcish warriors.   Bonus: +15 impact resistance, +15 blade resistance, +15 pierce resistance, +8 HP",
+        text = _ "Sturdy iron has been formed into a protective cuirass.  This is not the best armor available, but it has a good balance between cost and effectiveness, and for that reason it is a favourite of brigands and orcish warriors.",
         image = "icons/cuirass_muscled.png~CS(-5,-35,-10)",
         icon = "items/armor-iron.png",
 	cost = 155,
 	usage = "heavy_armor",
 	position = "torso",	
-	weight = 4
+	weight = 4,
+        xp_needed = 32,
+        hp = 8,
+        luck = 0,
+        dodge = -2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 15,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
+	eq_effect = {}, -- { id = "breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
         name = _ "Breastplate",
         id = "breastplate",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is the best armor for those who need mobility.  It is expensive steel, and leaves plenty of weak-points, but offers good protection against a spear or axe to the chest.   Bonus: +20 impact resistance, +15 blade resistance, +15 pierce resistance, +12 HP",
+        text = _ "This is the best armor for those who need mobility.  It is expensive steel, and leaves plenty of weak-points, but offers good protection against a spear or axe to the chest.",
         image = "icons/breastplate.png",
         icon = "items/breastplate.png",
 	cost = 195,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 42,
+        hp = 12,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 20,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "wind_plate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
+	eq_effect = {}, -- { id = "wind_plate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -15, pierce = -15}}}} , {"effect", { apply_to = "hitpoints", increase_total = "12"}}},
         name = _ "Airstrike Armor",
         id = "wind_plate",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This armor is a dream for those who need mobility.  It is made of some lightweight, strong, and forgotten material.  Oddly enough, the airflow and coolant system makes this armor more envigorating than fatiguing.  It leaves plenty of weak-points, but offers good protection against a spear or axe to the chest.   Bonus: +20 impact resistance, +15 blade resistance, +15 pierce resistance, +12 HP",
+        text = _ "This armor is a dream for those who need mobility.  It is made of some lightweight, strong, and forgotten material.  Oddly enough, the airflow and coolant system makes this armor more envigorating than fatiguing.  It leaves plenty of weak-points, but offers good protection against a spear or axe to the chest.",
         image = "icons/air-plate.png",
         icon = "items/air-plate.png",
 	cost = 295,
 	usage = "light_armor",
 	position = "torso",	
-	weight = -2
+	weight = -2,
+        xp_needed = 42,
+        hp = 12,
+        luck = 1,
+        dodge = 5,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 20,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "goldmail_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -14, blade = -18, pierce = -12}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
+	eq_effect = {}, -- { id = "goldmail_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -14, blade = -18, pierce = -12}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Goldnmail Tunic",
         id = "goldmail_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is much like a standard chainmail tunic, but is lighter and made from the golden alloy of the Primeval civilization.   Bonus: +14 impact resistance, +18 blade resistance, +12 pierce resistance, +6 HP",
+        text = _ "This is much like a standard chainmail tunic, but is lighter and made from the golden alloy of the Primeval civilization.",
         image = "icons/armor-chain.png~GS()~CS(35,30,-20)",
         icon = "items/armor-chain.png~CS(30,25,-30)",
 	cost = 306,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 48,
+        hp = 6,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 18,
+        resist_impact = 14,
+        resist_pierce = 12,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -22, pierce = -15, fire = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
+	eq_effect = {}, -- { id = "primeval_breastplate", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -20, blade = -22, pierce = -15, fire = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
         name = _ "Primeval Breastplate",
         id = "primeval_breastplate",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This breastplate is made from the unusual golden alloy of which the Primeval civilization made such heavy and effective use.  Bonus: +20 impact resistance, +22 blade resistance, +15 pierce resistance, +10 fire resistance, +15 HP",
+        text = _ "This breastplate is made from the unusual golden alloy of which the Primeval civilization made such heavy and effective use.",
         image = "icons/breastplate-golden.png",
         icon = "items/primeval_breastplate.png",
 	cost = 395,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 50,
+        hp = 15,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 22,
+        resist_impact = 20,
+        resist_pierce = 15,
+        resist_cold = 0,
+        resist_fire = 10,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "frost_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -22, pierce = -20, fire = -25}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
+	eq_effect = {}, -- { id = "frost_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -15, blade = -22, pierce = -20, fire = -25}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
         name = _ "Frost Armor",
         id = "frost_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This rime-encrusted armor is enchanted to remain freezing cold, at least on the outer surface.  Bonus: +15 impact, +22 blade, +20 pierce, and +25 fire resistance; +10 HP",
+        text = _ "This rime-encrusted armor is enchanted to remain freezing cold, at least on the outer surface.",
         image = "icons/frost_armor.png",
         icon = "items/armor-frost.png",
 	cost = 335,
 	usage = "heavy_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 50,
+        hp = 10,
+        luck = 2,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 22,
+        resist_impact = 15,
+        resist_pierce = 20,
+        resist_cold = 0,
+        resist_fire = 25,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -24, blade = -25, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
+	eq_effect = {}, -- { id = "steel_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -24, blade = -25, pierce = -20}}}} , {"effect", { apply_to = "hitpoints", increase_total = "15"}}},
         name = _ "Steel Armor",
         id = "steel_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This is the armor of professional fighters.  It is expensive, but offers good protection against all physical strikes.   Bonus: +24 impact resistance, +25 blade resistance, +20 pierce resistance, +15 HP",
+        text = _ "This is the armor of professional fighters.  It is expensive, but offers good protection against all physical strikes.",
         image = "icons/steel_armor.png",
         icon = "items/armor-iron.png~CS(10,15,20)",
 	cost = 245,
 	usage = "heavy_armor",
 	position = "torso",	
-	weight = 4
+	weight = 4,
+        xp_needed = 50,
+        hp = 15,
+        luck = 0,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 25,
+        resist_impact = 24,
+        resist_pierce = 20,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "aegis_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -40, blade = -65, pierce = -40}}}} , {"effect", { apply_to = "hitpoints", increase_total = "17"}}},
+	eq_effect = {}, -- { id = "aegis_armor", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -40, blade = -65, pierce = -40}}}} , {"effect", { apply_to = "hitpoints", increase_total = "17"}}},
         name = _ "Aegis Armor",
         id = "aegis_armor",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "This armor bears a complicated crest of unfamiliar design.  The material of construction appears quite tough, yet it is very light.  Bonus: +40 impact resistance, +65 blade resistance, +40 pierce resistance, +17 HP",
+        text = _ "This armor bears a complicated crest of unfamiliar design.  The material of construction appears quite tough, yet it is very light.",
         image = "icons/steel_armor.png~CS(25,25,30)",
         icon = "misc/aegis-armor.png",
 	cost = 495,
 	usage = "light_armor",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 60,
+        hp = 17,
+        luck = 1,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 65,
+        resist_impact = 40,
+        resist_pierce = 40,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 --------------------------greaves------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "leather_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -4, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
+	eq_effect = {}, -- { id = "leather_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -4, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "1"}}},
         name = _ "Leather Leggings",
         id = "leather_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "These simple leather coverings offer some small protection to a large and frequently targetted area of the body, without much hinderance, so almost anyone can use them.  Bonus: +4 blade resistance, +2 pierce resistance, +1 HP",
+        text = _ "These simple leather coverings offer some small protection to a large and frequently targetted area of the body, without much hinderance, so almost anyone can use them.",
         image = "icons/greaves_leather.png",
         icon = "items/greaves-leather.png",
 	cost = 21,
 	usage = "all",
 	position = "foot",	
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 4,
+        resist_impact = 0,
+        resist_pierce = 2,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "wooden_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "wooden_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -5, blade = -5, pierce = -2}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Wooden Shinguards",
         id = "wooden_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "These wooden shin-guards offer some rigid protection for the legs, and while it isn't the best armor, it is something.  Bonus: +5 blade, impact resistance, +2 pierce resistance, +2 HP",
+        text = _ "These wooden shin-guards offer some rigid protection for the legs, and while it isn't the best armor, it is something.",
         image = "icons/greaves_wooden.png",
         icon = "items/greaves-wooden.png",
 	cost = 29,
 	usage = "light_armor",
 	position = "foot",	
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 2,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "serpent_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -2}}}} , {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {shallow_water = -1, swamp_water = -1}}}}, {"effect", { apply_to = "hitpoints", increase_total = "1"}} },
+	eq_effect = { 
+	    -- id = "serpent_greaves", 
+	    --{"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -2}}}} , 
+	    {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {shallow_water = -1, swamp_water = -1}}}}
+	    -- , 	    {"effect", { apply_to = "hitpoints", increase_total = "1"}} 
+	    },
         name = _ "Sea-Serpent Skins",
         id = "serpent_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "Slick, scaled skin of sea-snakes have been fashioned into a sort of greaves that allow the wearer to pass walk through water without the usual drag.  Bonus: +2 blade resistance, -1 swamp and shallow water movement cost, +1 HP",
+        text = _ "Slick, scaled skin of sea-snakes have been fashioned into a sort of greaves that allow the wearer to pass walk through water without the usual drag.  Bonus: -1 swamp and shallow water movement cost",
         image = "icons/greaves_serpent.png",
         icon = "items/greaves-serpent.png",
 	cost = 125,
 	usage = "all",
 	position = "foot",	
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 1,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 2,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "brass_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "brass_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Bronze Greaves",
         id = "brass_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "Easily crafted and not particularly heavy, these leg-guards can be worn by anyone with some physical strength without being a hinderance.  Bonus: +3 impact, +6 blade, +5 pierce resistances; +2 HP",
+        text = _ "Easily crafted and not particularly heavy, these leg-guards can be worn by anyone with some physical strength without being a hinderance.",
         image = "icons/greaves_brass.png",
         icon = "items/greaves-brass.png",
 	cost = 39,
 	usage = "light_armor",
 	position = "foot",	
-	weight = 1
+	weight = 1,
+        xp_needed = 12,
+        hp = 2,
+        luck = 0,
+        dodge = -1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 3,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ranger_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "ranger_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -3, blade = -6, pierce = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Ranger Greaves",
         id = "ranger_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "These well-made leg-guards were designed for those who need mobility, so they are very light and unrestricting.  They can be worn by anyone with some physical strength without being a hinderance.  Bonus: +3 impact, +6 blade, +5 pierce resistances; +2 HP",
+        text = _ "These well-made leg-guards were designed for those who need mobility, so they are very light and unrestricting.  They can be worn by anyone with some physical strength without being a hinderance.",
         image = "icons/greaves_brass.png~GS()~CS(0,25,-75)",
         icon = "items/greaves-brass.png~GS()~CS(0,25,-75)",
 	cost = 65,
 	usage = "light_armor",
 	position = "foot",	
-	weight = -1
+	weight = -1,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 3,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {pierce = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, -- { id = "steel_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {pierce = -8, blade = -10, pierce = -8}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
         name = _ "Steel Greaves",
         id = "steel_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The steel leg protection offered is substantial, but is does come at a price, so that only those capable of using heavy armor can use them.  Bonus: +8 impact, +10 blade, +8 pierce resistances; +5 HP",
+        text = _ "The steel leg protection offered is substantial, but is does come at a price, so that only those capable of using heavy armor can use them.",
         image = "icons/greaves.png",
         icon = "items/greaves-steel.png",
 	cost = 80,
 	usage = "heavy_armor",
 	position = "foot",	
-	weight = 2
+	weight = 2,
+        xp_needed = 16,
+        hp = 5,
+        luck = 0,
+        dodge = -2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 8,
+        resist_pierce = 8,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -10, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
+	eq_effect = {}, -- { id = "primeval_greaves", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {impact = -10, blade = -10, pierce = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "6"}}},
         name = _ "Primeval Greaves",
         id = "primeval_greaves",
         tooltip = _ "armor offers broad protection to physical attacks",
-        text = _ "The golden alloy protects the legs as well as the steel greaves, but is not nearly as heavy.  Bonus: +10 impact, +10 blade, +10 pierce resistances; +6 HP",
+        text = _ "The golden alloy protects the legs as well as the steel greaves, but is not nearly as heavy.",
         image = "icons/greaves-golden.png",
         icon = "items/greaves-primeval.png",
 	cost = 100,
 	usage = "light_armor",
 	position = "foot",	
-	weight = 1
+	weight = 1,
+        xp_needed = 24,
+        hp = 6,
+        luck = 1,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 10,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 --------------------------boots------------------------------------------
 -- what happens if you subtract movement cost down to zero?
 table.insert(the_list, {
-	eq_effect = { id = "boot_cleats", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {mountains = -1}}}}},
+	eq_effect = { 
+	    -- id = "boot_cleats", 
+	    {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {mountains = -1}}}}},
         name = _ "Boot Cleat",
         id = "boot_cleat",
         tooltip = _ "Footwear usually affects movement",
@@ -1794,11 +3125,23 @@ table.insert(the_list, {
 	cost = 95,
 	usage = "all",
 	position = "foot",	
-	weight = 1
+	weight = 1,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "officer_boots", {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
+	eq_effect = {}, -- { id = "officer_boots", {"effect", { apply_to = "hitpoints", increase_total = "2"}}},
         name = _ "Officer Boots",
         id = "officer_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1808,11 +3151,25 @@ table.insert(the_list, {
 	cost = 125,
 	usage = "all",
 	position = "foot",	
-	weight = -2
+	weight = -2,
+        xp_needed = 8,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "snow_boots", {"effect", { apply_to = "defense", replace = "no",{"defense", {frozen = -10}}}} },
+	eq_effect = { 
+	    -- id = "snow_boots", 
+	    {"effect", { apply_to = "defense", replace = "no",{"defense", {frozen = -10}}}} },
         name = _ "Snow Boots",
         id = "snow_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1822,11 +3179,25 @@ table.insert(the_list, {
 	cost = 25,
 	usage = "all",
 	position = "foot",	
-	weight = 1
+	weight = 1,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {forest = -1}}}} },
+	eq_effect = { 
+	    -- id = "leather_boots", 
+	    {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {forest = -1}}}} },
         name = _ "Fine Leather Boots",
         id = "leather_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1836,11 +3207,25 @@ table.insert(the_list, {
 	cost = 125,
 	usage = "all",
 	position = "foot",	
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 1,
+        luck = 0,
+        dodge = 1,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "miner_boots", {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {cave = -1}}}} },
+	eq_effect = { 
+	    -- id = "miner_boots", 
+	    {"effect", { apply_to = "movement_costs", replace = "no",{"movement_costs", {cave = -1}}}} },
         name = _ "Miner Boots",
         id = "miner_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1850,11 +3235,26 @@ table.insert(the_list, {
 	cost = 135,
 	usage = "all",
 	position = "foot",	
-	weight = 1
+	weight = 0,
+        xp_needed = 4,
+        hp = 1,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_boots", {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -5, pierce = -5}}}} , {"effect", { apply_to = "movement_costs", replace = "no", {"movement_costs", {hills = -1, frozen = -1, cave = -1}}}} },
+	eq_effect = { 
+	    -- id = "primeval_boots", 
+	    -- {"effect", { apply_to = "resistance", replace = "no", {"resistance", {blade = -5, pierce = -5}}}} , 
+	    {"effect", { apply_to = "movement_costs", replace = "no", {"movement_costs", {hills = -1, frozen = -1, cave = -1}}}} },
         name = _ "Primeval Sandals",
         id = "primeval_boots",
         tooltip = _ "Footwear usually affects movement",
@@ -1864,12 +3264,26 @@ table.insert(the_list, {
 	cost = 235,
 	usage = "all",
 	position = "foot",	
-	weight = -1
+	weight = -1,
+        xp_needed = 16,
+        hp = 1,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 0,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 ----------------------------axes-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "rusty_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", {"set_specials", {mode = "replace", 							
+	eq_effect = { 
+	    -- id = "rusty_axe", 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", {"set_specials", {mode = "replace", 							
 							{"poison", {id="poison", name= _ "poison", 
 							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
 							}} 
@@ -1883,211 +3297,415 @@ table.insert(the_list, {
 	cost = 10,
 	usage = "axe",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "obsidian_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1", increase_parry = "5"}} },
+	eq_effect = {}, -- { id = "obsidian_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1", increase_parry = "5"}} },
         name = _ "Obsidian Axe",
         id = "obsidian_axe",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This axe is a crude orcish instrument, but it is sharper and lighter than what they usually use.  Increases axe damage by 1, increase parry by 5 percent",
+        text = _ "This axe is a crude orcish instrument, but it is sharper and lighter than what they usually use.",
         image = "icons/axe-obsidian.png",
         icon = "items/obsidian_axe.png",
 	cost = 60,
 	usage = "axe",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 0,
+        luck = 0,
+        dodge = 3,
+        accuracy = 0,
+        damage = 1,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
+	eq_effect = {}, -- { id = "steel_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
         name = _ "Steel Edge",
         id = "steel_axe",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This axe blade is made with imported steel, it holds its edge much better than the cheap iron things most of you use.  Increases axe damage by 2",
+        text = _ "This axe blade is made with imported steel, it holds its edge much better than the cheap iron things most of you use.",
         image = "attacks/axe.png~CS(-10,0,10)",
         icon = "items/axe.png",
 	cost = 130,
 	usage = "axe",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 14,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}} },
+	eq_effect = {}, -- { id = "silver_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}} },
         name = _ "Silver Axe",
         id = "silver_axe",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This blade surely isn't really made of silver, but it is very shiny.  It is also very sharp.  Increases damage by 2.  Increases accuracy and parry by 5 percent",
+        text = _ "This blade surely isn't really made of silver, but it is very shiny.  It is also very sharp.",
         image = "attacks/axe.png~GS()",
         icon = "items/axe-silver.png",
 	cost = 200,
 	usage = "axe",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 26,
+        hp = 0,
+        luck = 2,
+        dodge = 3,
+        accuracy = 4,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ice_gem", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "3"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}} },
+	eq_effect = { 
+	    -- id = "ice_gem", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "3"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}} },
         name = _ "Ice Axe Inlay",
         id = "ice_gem",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This blue gem can be fit to the hilt of an axe, increasing damage by 3 and changes attack type to cold.",
+        text = _ "This blue gem can be fit to the hilt of an axe, increasing damage and changing attack type to cold.",
         image = "icons/gem_ice_axe.png",
         icon = "items/ice_gem.png",
 	cost = 215,
 	usage = "axe",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 28,
+        hp = 0,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 3,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ancient_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15}}}}  },
+	eq_effect = {}, -- { id = "ancient_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -15}}}}  },
         name = _ "Ancient Edge",
         id = "ancient_axe",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This axe blade is made with some alloy of a forgotten technology.  Increases axe damage by 4, increase arcane defense 15 percent",
+        text = _ "This axe blade is made with some alloy of a forgotten technology.",
         image = "attacks/axe.png~CS(10,-30,20)",
         icon = "items/axe.png~CS(10,-30,20)",
 	cost = 330,
 	usage = "axe",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 30,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 2,
+        damage = 4,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 15
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "primeval_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "10"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "10"}} },
+	eq_effect = {}, -- { id = "primeval_axe", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "10"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "10"}} },
         name = _ "Great Primeval Axe",
         id = "primeval_axe",
         tooltip = _ "Supplements for the axe attacks",
-        text = _ "This blade is an elite version of the standard Primeval warrior axe.  It is very heavy.  Increases damage by 4.  Increases accuracy and parry by 10 percent",
+        text = _ "This blade is an elite version of the standard Primeval warrior axe.  It is very heavy, but well balanced.",
         image = "icons/axe-golden.png",
         icon = "items/axe-primeval.png",
 	cost = 400,
 	usage = "axe",
 	position = "weapon",	
-	weight = 1
-	
+	weight = 2,
+        xp_needed = 36,
+        hp = 0,
+        luck = 0,
+        dodge = 3,
+        accuracy = 1,
+        damage = 4,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
+
 })
 
 
 ----------------------------sword-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "elf_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-elven.png"}} },
+	eq_effect = { 
+	    -- id = "elf_blade", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "1"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-elven.png"}} },
         name = _ "Elven Blade",
         id = "elf_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "A small but refined blade, made by elves.  Increases sword damage by 1",
+        text = _ "A small but refined blade, made by elves.  It doesn't have the heft of a human or orcish blade, but it is well balanced and sharp.",
         image = "attacks/sword-elven.png",
         icon = "items/sword.png",
 	cost = 100,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 10,
+        hp = 0,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 1,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
+	eq_effect = {}, -- { id = "steel_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}} },
         name = _ "Steel Blade",
         id = "steel_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This fine blade is made with imported steel, it holds its edge much better than the cheap iron things most of you use.  Increases sword damage by 2",
+        text = _ "This fine blade is made with imported steel, it holds its edge much better than the cheap iron things most of you use.",
         image = "attacks/sword-steel.png",
         icon = "items/sword.png",
 	cost = 130,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 14,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_sword", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}} },
+	eq_effect = {}, -- { id = "silver_sword", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "2"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_accuracy = "5"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_parry = "5"}} },
         name = _ "Silver Sword",
         id = "silver_sword",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This blade surely isn't really made of silver, but it is very shiny.  It is also very sharp.  Increases damage by 2.  Increases accuracy and parry by 5 percent",
+        text = _ "This blade surely isn't really made of silver, but it is very shiny.  It is also very sharp.",
         image = "attacks/scimitar.png~GS()",
         icon = "items/sword-silver.png",
 	cost = 200,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 24,
+        hp = 0,
+        luck = 0,
+        dodge = 4,
+        accuracy = 4,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ice_hilt", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "3"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}} },
+	eq_effect = { 
+	    -- id = "ice_hilt", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "3"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}} },
         name = _ "Ice Hilt",
         id = "ice_hilt",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This blue gem can be fit to the hilt of a sword, increasing damage by 3 and changes attack type to cold.",
+        text = _ "This blue gem can be fit to the hilt of a sword, increasing damage and changing attack type to cold.",
         image = "icons/jewelry_necklace_amber.png~CS(-45,-5,80)",
         icon = "items/ball-gem1.png",
 	cost = 210,
 	usage = "sword",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 24,
+        hp = 0,
+        luck = 1,
+        dodge = 0,
+        accuracy = 0,
+        damage = 3,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "warlord_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/greatsword-orcish.png"}} },
+	eq_effect = { 
+	    -- id = "warlord_blade", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "4"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/greatsword-orcish.png"}} },
         name = _ "Warlord Blade",
         id = "warlord_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This brutal weapon is the pride of orcish warlords, a symbol of strength and power.  Increases sword damage by 4",
+        text = _ "This brutal weapon is the pride of orcish warlords, a symbol of strength and power.  It can inflict a lot of damage, but the heft and rough edges make this an effective defensive tool as well.",
         image = "attacks/greatsword-orcish.png",
         icon = "items/warlord-sword.png",
 	cost = 320,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 28,
+        hp = 0,
+        luck = 0,
+        dodge = 3,
+        accuracy = 0,
+        damage = 4,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "ice_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="misc/ice_blade.png"}} },
+	eq_effect = { 
+	    -- id = "ice_blade", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "cold"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="misc/ice_blade.png"}} },
         name = _ "Ice Blade",
         id = "ice_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This frosty blade is strangely cold, just seems to suck the heat out of whatever it touches.  Increases sword damage by 7, changes attack type to cold.",
+        text = _ "This frosty blade is strangely cold, just seems to suck the heat out of whatever it touches.  Increases sword damage and changes attack type to cold.",
         image = "misc/ice_blade.png",
         icon = "items/sword6.png",
 	cost = 400,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 36,
+        hp = 0,
+        luck = 1,
+        dodge = 2,
+        accuracy = 2,
+        damage = 7,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "revanche_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "fire"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-flaming.png"}} },
+	eq_effect = { 
+	    -- id = "revanche_blade", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "fire"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/sword-flaming.png"}} },
         name = _ "Revanche Blade",
         id = "revanche_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = "_ This blade is a manifestation of the desire for revenge.  Increases sword damage by 7, changes attack type to fire.",
+        text = "_ This blade is a manifestation of the desire for revenge.  Increases sword damage and changes attack type to fire.",
         image = "attacks/sword-flaming.png",
         icon = "items/flame-sword.png",
 	cost = 400,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 36,
+        hp = 0,
+        luck = 0,
+        dodge = 1,
+        accuracy = 3,
+        damage = 7,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dark_blade", {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}, {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/baneblade.png"}} },
+	eq_effect = { 
+	    -- id = "dark_blade", 
+	    -- {"effect", { apply_to = "attack", range = "melee", type = "blade", increase_damage = "7"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_type = "arcane"}}, 
+	    {"effect", { apply_to = "attack", range = "melee", type = "blade", set_icon="attacks/baneblade.png"}} },
         name = _ "Dark Blade",
         id = "dark_blade",
         tooltip = _ "Supplements for the sword attacks",
-        text = _ "This sinister-looking blade is made from some dark material and does not really seem to be of this world.  Increases sword damage by 7, changes attack type to arcane.",
+        text = _ "This sinister-looking blade is made from some dark material and does not really seem to be of this world.  Increases sword damage and changes attack type to arcane.",
         image = "attacks/baneblade.png",
         icon = "items/sword-dark.png",
 	cost = 400,
 	usage = "sword",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 36,
+        hp = 0,
+        luck = 0,
+        dodge = 5,
+        accuracy = 0,
+        damage = 7,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 ----------------------------spears-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "obsidian_spear", {"effect", { apply_to = "attack", range = "melee", type = "pierce", increase_damage = "1", increase_parry = "5"}}},
+	eq_effect = {}, -- { id = "obsidian_spear", {"effect", { apply_to = "attack", range = "melee", type = "pierce", increase_damage = "1", increase_parry = "5"}}},
         name = _ "Obsidian Spear",
         id = "obsidian_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2097,11 +3715,23 @@ table.insert(the_list, {
 	cost = 60,
 	usage = "spear",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 6,
+        hp = 0,
+        luck = 0,
+        dodge = 4,
+        accuracy = 0,
+        damage = 1,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "2"}} },
+	eq_effect = {}, -- { id = "steel_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "2"}} },
         name = _ "Steelpoint Spear",
         id = "steel_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2111,11 +3741,23 @@ table.insert(the_list, {
 	cost = 105,
 	usage = "spear",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 12,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "royal_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "3"}} },
+	eq_effect = {}, -- { id = "royal_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "3"}} },
         name = _ "Royal Spear",
         id = "royal_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2125,11 +3767,23 @@ table.insert(the_list, {
 	cost = 215,
 	usage = "spear",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 18,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 3,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "dragon_spear", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5}}}} , {"effect", { apply_to = "attack", name = "spear", increase_damage = "4"}} },
+	eq_effect = {}, -- { id = "dragon_spear", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {fire = -5, cold = -5}}}} , {"effect", { apply_to = "attack", name = "spear", increase_damage = "4"}} },
         name = _ "Dragon Spear",
         id = "dragon_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2139,12 +3793,28 @@ table.insert(the_list, {
 	cost = 365,
 	usage = "spear",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 22,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 4,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "sun_spear", illuminates_halo, illuminates_effect, {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -10}}}} , 
-	{"effect", { apply_to = "attack", name = "spear", increase_damage = "5"}}, {"effect", { apply_to = "new_attack", name = "sun_ray", description = "sun ray", range = "ranged", type = "fire", damage = 18, number = 1, icon = "attacks/fire-blast.png"}}  },
+	eq_effect = { 
+	    -- id = "sun_spear", 
+	    illuminates_halo, illuminates_effect, 
+	    -- {"effect", { apply_to = "resistance", replace = "no",{"resistance", {arcane = -10, cold = -10}}}} , 
+	    -- {"effect", { apply_to = "attack", name = "spear", increase_damage = "5"}}, 
+	    {"effect", { apply_to = "new_attack", name = "sun_ray", description = "sun ray", range = "ranged", type = "fire", damage = 18, number = 1, icon = "attacks/fire-blast.png"}}  },
         name = _ "Sun-Beam Spear",
         id = "sun_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2154,11 +3824,23 @@ table.insert(the_list, {
 	cost = 405,
 	usage = "spear",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 32,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 5,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 10,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "black_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "6"}} },
+	eq_effect = {}, -- { id = "black_spear", {"effect", { apply_to = "attack", name = "spear", increase_damage = "6"}} },
         name = _ "Black Spear",
         id = "black_spear",
         tooltip = _ "Supplements for the spear attacks",
@@ -2168,26 +3850,53 @@ table.insert(the_list, {
 	cost = 515,
 	usage = "spear",
 	position = "weapon",	
-	weight = 1
+	weight = 1,
+        xp_needed = 36,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 2,
+        damage = 6,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 ----------------------------bows-------------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "poison_arrows", {"effect", { apply_to = "attack", bow_filter, poison_special}} },
+	eq_effect = { 
+	    -- id = "poison_arrows", 
+	    {"effect", { apply_to = "attack", bow_filter, poison_special}} 
+	    },
         name = _ "Poison Arrows",
         id = "poison_arrows",
         tooltip = _ "Supplements for the bow attacks",
-        text = _ "These arrows have small feather barbs nea the head, and have been soaked in the toxin commonly used by orcs.  Bonus: Grants poison ability",
+        text = _ "These arrows have small feather barbs near the head, and have been soaked in the toxin commonly used by orcs.  Bonus: Grants poison ability",
         image = "icons/bow-poison.png",
         icon = "items/bow.png",
 	cost = 100,
 	usage = "bow",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "steel_arrows", {"effect", { apply_to = "attack", bow_filter, increase_damage = "2"}} },
+	eq_effect = {}, -- { id = "steel_arrows", {"effect", { apply_to = "attack", bow_filter, increase_damage = "2"}} },
         name = _ "Steel Arrows",
         id = "steel_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2197,11 +3906,23 @@ table.insert(the_list, {
 	cost = 125,
 	usage = "bow",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 2,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_arrows", {"effect", { apply_to = "attack", bow_filter, increase_accuracy = "10"}} },
+	eq_effect = {}, -- { id = "silver_arrows", {"effect", { apply_to = "attack", bow_filter, increase_accuracy = "10"}} },
         name = _ "Silver Arrows",
         id = "silver_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2211,11 +3932,26 @@ table.insert(the_list, {
 	cost = 160,
 	usage = "bow",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 10,
+        damage = 1,
+        resist_blade = 2,
+        resist_impact = 2,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "sky_arrows", {"effect", { apply_to = "attack", bow_filter, increase_damage = "3", firststrike_special}} },
+	eq_effect = { 
+	    -- id = "sky_arrows", 
+	    {"effect", { apply_to = "attack", bow_filter, --[[ increase_damage = "3",]] firststrike_special}} 
+	    },
         name = _ "Sky Arrows",
         id = "sky_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2225,11 +3961,26 @@ table.insert(the_list, {
 	cost = 120,
 	usage = "bow",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 22,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 3,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "starburst_arrows", {"effect", { apply_to = "new_attack", name = "starburst", description = "starburst", range = "ranged", type = "arcane", damage = 13, number = 3, icon = "attacks/bow-short-reinforced.png~BLIT(halo/elven/ice-halo1.png~CROP(0,0,47,49),11,9)"}} },
+	eq_effect = { 
+	    -- id = "starburst_arrows", 
+	    {"effect", { apply_to = "new_attack", name = "starburst", description = "starburst", range = "ranged", type = "arcane", damage = 13, number = 3, icon = "attacks/bow-short-reinforced.png~BLIT(halo/elven/ice-halo1.png~CROP(0,0,47,49),11,9)"}} 
+	    },
         name = _ "Starburst Arrows",
         id = "starburst_arrows",
         tooltip = _ "Supplements for the bow attacks",
@@ -2239,13 +3990,28 @@ table.insert(the_list, {
 	cost = 255,
 	usage = "bow",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 26,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 -----------------------------random weapons--------------------------------------------------------------
 -- still need to add missile animation
 table.insert(the_list, {
-	eq_effect = { id = "sling_found", {"effect", { apply_to = "new_attack", name = "sling_found", description = "sling", range = "ranged", type = "impact", damage = 6, number = 2, icon = "attacks/sling.png"}} },
+	eq_effect = { 
+	    -- id = "sling_found", 
+	    {"effect", { apply_to = "new_attack", name = "sling_found", description = "sling", range = "ranged", type = "impact", damage = 6, number = 2, icon = "attacks/sling.png"}} 
+	    },
         name = _ "Sling",
         id = "sling_found",
         tooltip = _ "Weapon for anyone to use",
@@ -2255,11 +4021,26 @@ table.insert(the_list, {
 	cost = 15,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "club_found", {"effect", { apply_to = "new_attack", name = "club_found", description = "club", range = "melee", type = "impact", damage = 8, number = 2, icon = "attacks/club-found.png"}} },
+	eq_effect = { 
+	    -- id = "club_found", 
+	    {"effect", { apply_to = "new_attack", name = "club_found", description = "club", range = "melee", type = "impact", damage = 8, number = 2, icon = "attacks/club-found.png"}} 
+	    },
         name = _ "Club",
         id = "club_found",
         tooltip = _ "Weapon for anyone to use",
@@ -2269,11 +4050,27 @@ table.insert(the_list, {
 	cost = 15,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "club_torch", illuminates_effect, illuminates_halo, {"effect", { apply_to = "new_attack", name = "club_torch", description = "torch", range = "melee", type = "fire", damage = 10, number = 2, icon = "attacks/torch.png"}} },
+	eq_effect = { 
+	    -- id = "club_torch", 
+	    illuminates_effect, illuminates_halo, 
+	    {"effect", { apply_to = "new_attack", name = "club_torch", description = "torch", range = "melee", type = "fire", damage = 10, number = 2, icon = "attacks/torch.png"}} 
+	    },
         name = _ "Torch",
         id = "club_torch",
         tooltip = _ "Weapon for anyone to use",
@@ -2283,12 +4080,27 @@ table.insert(the_list, {
 	cost = 18,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 -----------------------------daggers--------------------------------------------------------------
 table.insert(the_list, {
-	eq_effect = { id = "small_dagger", {"effect", { apply_to = "new_attack", name = "small_dagger", description = "small dagger", range = "melee", type = "blade", damage = 4, number = 3, icon = "attacks/dagger-curved.png"}} },
+	eq_effect = { 
+	    -- id = "small_dagger", 
+	    {"effect", { apply_to = "new_attack", name = "small_dagger", description = "small dagger", range = "melee", type = "blade", damage = 4, number = 3, icon = "attacks/dagger-curved.png"}} 
+	    },
         name = _ "Small Dagger",
         id = "small_dagger",
         tooltip = _ "Weapon for anyone to use",
@@ -2298,11 +4110,26 @@ table.insert(the_list, {
 	cost = 25,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 6,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "orc_dagger", {"effect", { apply_to = "new_attack", name = "orc_dagger", description = "orcish dagger", range = "melee", type = "blade", damage = 7, number = 2, icon = "attacks/dagger-orcish.png"}} },
+	eq_effect = { 
+	-- id = "orc_dagger", 
+	{"effect", { apply_to = "new_attack", name = "orc_dagger", description = "orcish dagger", range = "melee", type = "blade", damage = 7, number = 2, icon = "attacks/dagger-orcish.png"}} 
+	},
         name = _ "Orcish Dagger",
         id = "orc_dagger",
         tooltip = _ "Weapon for anyone to use",
@@ -2312,11 +4139,26 @@ table.insert(the_list, {
 	cost = 30,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 8,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "silver_dagger", {"effect", { apply_to = "new_attack", name = "silver_dagger", description = "small dagger", range = "melee", type = "blade", damage = 4, number = 4, icon = "attacks/dagger-human.png"}} },
+	eq_effect = { 
+	    -- id = "silver_dagger", 
+	    {"effect", { apply_to = "new_attack", name = "silver_dagger", description = "small dagger", range = "melee", type = "blade", damage = 4, number = 4, icon = "attacks/dagger-human.png"}} 
+	    },
         name = _ "Silver Dagger",
         id = "silver_dagger",
         tooltip = _ "Weapon for anyone to use",
@@ -2326,11 +4168,25 @@ table.insert(the_list, {
 	cost = 125,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 12,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "poison_dagger", {"effect", { apply_to = "new_attack", name = "poison_dagger", description = "posion dagger", range = "melee", type = "blade", damage = 3, number = 2, icon = "attacks/dagger-undead.png",
+	eq_effect = { 
+	    -- id = "poison_dagger", 
+	    {"effect", { apply_to = "new_attack", name = "poison_dagger", description = "posion dagger", range = "melee", type = "blade", damage = 3, number = 2, icon = "attacks/dagger-undead.png",
 							{"specials", {{"poison", {id="poison", name= _ "poison", 
 							description= _ "This attack poisons living targets. Poisoned units lose 8 HP every turn until they are cured or are reduced to 1 HP. Poison can not, of itself, kill a unit."
 							}}}}
@@ -2344,12 +4200,24 @@ table.insert(the_list, {
 	cost = 125,
 	usage = "all",
 	position = "weapon",	
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 -------------------------------for-dogs-----------------------------
 table.insert(the_list, {
-	eq_effect = { id = "leather_collar", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
+	eq_effect = {}, -- { id = "leather_collar", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "4"}}},
         name = _ "Leather Collar",
         id = "leather_collar",
         tooltip = _ "collars can protect a canine's neck",
@@ -2359,11 +4227,23 @@ table.insert(the_list, {
 	cost = 24,
 	usage = "dog",
 	position = "neck",	
-	weight = 0
+	weight = 0,
+        xp_needed = 6,
+        hp = 4,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "studded_collar", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -15, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
+	eq_effect = {}, --{ id = "studded_collar", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -15, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "7"}}},
         name = _ "Studded Collar",
         id = "studded_collar",
         tooltip = _ "collars can protect a canine's neck",
@@ -2373,12 +4253,27 @@ table.insert(the_list, {
 	cost = 46,
 	usage = "dog",
 	position = "neck",	
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 7,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 15,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "herb_collar", {"effect", { apply_to = "hitpoints", increase_total = "2"}}, unpoison_effect2
-	},
+	eq_effect = { 
+	    --  id = "herb_collar", 
+	    -- {"effect", { apply_to = "hitpoints", increase_total = "2"}}, 
+	    unpoison_effect2
+	    },
         name = _ "Herb Collar",
         id = "herb_collar",
         tooltip = _ "amulets can have special effects",
@@ -2388,11 +4283,26 @@ table.insert(the_list, {
 	cost = 75,
 	usage = "dog",
 	position = "neck",
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 2,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "diamond_collar", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10, impact = -5, arcane = -10, fire = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
+	eq_effect = {}, --[[ { id = "diamond_collar", 
+	    {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -10, impact = -5, arcane = -10, fire = -10}}}} , 
+	    {"effect", { apply_to = "hitpoints", increase_total = "10"}}
+	    }, ]]
         name = _ "Diamond Collar",
         id = "diamond_collar",
         tooltip = _ "collars can protect a canine's neck",
@@ -2402,11 +4312,25 @@ table.insert(the_list, {
 	cost = 120,
 	usage = "dog",
 	position = "neck",	
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 10,
+        luck = 0,
+        dodge = 2,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 10,
+        resist_impact = 5,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 10
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "leather_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -5, impact = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "5"}}},
+	eq_effect = {}, --[[ { id = "leather_vest", 
+	    {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -5, impact = -5}}}} , 
+	    {"effect", { apply_to = "hitpoints", increase_total = "5"}}}, ]]
         name = _ "Leather Vest",
         id = "leather_vest",
         tooltip = _ "these vests are body armor for dogs",
@@ -2416,11 +4340,23 @@ table.insert(the_list, {
 	cost = 38,
 	usage = "dog",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 8,
+        hp = 5,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "serpent_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, pierce = -5, impact = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
+	eq_effect = {}, -- { id = "serpent_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -6, pierce = -5, impact = -5, fire = -5, cold = -5}}}} , {"effect", { apply_to = "hitpoints", increase_total = "8"}}},
         name = _ "Serpent Vest",
         id = "serpent_vest",
         tooltip = _ "these vests are body armor for dogs",
@@ -2430,11 +4366,23 @@ table.insert(the_list, {
 	cost = 49,
 	usage = "dog",
 	position = "torso",	
-	weight = 1
+	weight = 1,
+        xp_needed = 16,
+        hp = 8,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 6,
+        resist_impact = 5,
+        resist_pierce = 5,
+        resist_cold = 5,
+        resist_fire = 5,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "brigandine_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -10, impact = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
+	eq_effect = {}, -- { id = "brigandine_vest", {"effect", { apply_to = "resistance", replace = "no",{"resistance", {blade = -5, pierce = -10, impact = -10}}}} , {"effect", { apply_to = "hitpoints", increase_total = "10"}}},
         name = _ "Brigandine Vest",
         id = "brigandine_vest",
         tooltip = _ "these vests are body armor for dogs",
@@ -2444,7 +4392,19 @@ table.insert(the_list, {
 	cost = 75,
 	usage = "dog",
 	position = "torso",	
-	weight = 2
+	weight = 2,
+        xp_needed = 20,
+        hp = 10,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 5,
+        resist_impact = 10,
+        resist_pierce = 10,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 -------------------------------single-use-items-----------------------------
@@ -2457,7 +4417,9 @@ table.insert(the_list, {
 
 -- local su_bomb_arrow_event = single_use_event("su_bomb_arrow")
 table.insert(the_list, {
-	eq_effect = { id = "suw_bomb_arrow", {"effect", { apply_to = "new_attack", name = "suw_bomb_arrow", description = "bomb arrow", range = "ranged", type = "fire", damage = 25, number = 1, icon = "icons/bomb-arrow.png", defense_weight = 0,
+	eq_effect = { 
+	    -- id = "suw_bomb_arrow", 
+	             {"effect", { apply_to = "new_attack", name = "suw_bomb_arrow", description = "bomb arrow", range = "ranged", type = "fire", damage = 25, number = 1, icon = "icons/bomb-arrow.png", defense_weight = 0,
 							{"specials", {{"chance_to_hit", {id="splash", name= _ "fire splash", value=70, cumulative="yes",
 							description= _ "This attack does not require a direct hit to cause damage, therefore it has a very high effective chance to hit."
 							}}}}
@@ -2472,8 +4434,6 @@ table.insert(the_list, {
 					                 }
 					                 }}
                      }
-					    --				}}, 
-                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
                      },
         name = _ "Bomb Arrow",
         id = "suw_bomb_arrow",
@@ -2484,11 +4444,25 @@ table.insert(the_list, {
 	cost = 75,
 	usage = "bow",
 	position = "weapon_alt",	
-	weight = 0
+	weight = 0,
+        xp_needed = 6,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "suw_ice_flower", {"effect", { apply_to = "new_attack", name = "suw_ice_flower", description = "ice flower", range = "ranged", type = "cold", damage = 5, number = 3, icon = "attacks/thorns.png~CS(-25,-15,50)", defense_weight = 0,
+	eq_effect = { 
+	    -- id = "suw_ice_flower", 
+	             {"effect", { apply_to = "new_attack", name = "suw_ice_flower", description = "ice flower", range = "ranged", type = "cold", damage = 5, number = 3, icon = "attacks/thorns.png~CS(-25,-15,50)", defense_weight = 0,
 							{"specials", {{"slow", {id="freeze", name= _ "freeze",
 							description= _ "This attack freezes the target, making flesh and fiber stiff and slow."
 							}}}}
@@ -2503,8 +4477,6 @@ table.insert(the_list, {
 					                 }
 					                 }}
                      }
-					    --				}}, 
-                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
                      },
         name = _ "Ice Flower",
         id = "suw_ice_flower",
@@ -2515,15 +4487,29 @@ table.insert(the_list, {
 	cost = 105,
 	usage = "all",
 	position = "weapon_alt",	
-	weight = 0
+	weight = 0,
+        xp_needed = 10,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 table.insert(the_list, {
-	eq_effect = { id = "suw_poison_jug", {"effect", { apply_to = "new_attack", name = "suw_poison_jug", description = "toxic brew", range = "ranged", type = "impact", damage = 12, number = 3, icon = "icons/booze.png", defense_weight = 0,
+	eq_effect = { 
+	    -- id = "suw_poison_jug", 
+	                                     {"effect", { apply_to = "new_attack", name = "suw_poison_jug", description = "toxic brew", range = "ranged", type = "impact", damage = 12, number = 3, icon = "icons/booze.png", defense_weight = 0,
 							{"specials", {{"poison", {id="poison", name= _ "poison",
 							description= _ "This attack poisons..."
 							}}}}
-							}},
+					     }},
 					     {"effect", {apply_to = "new_animation", id = "suw_poison_jug_anim", 
 					                {"attack_anim", {{"filter_attack", {name = "suw_poison_jug"}}, 
 					                                 missile_start_time = -300, 
@@ -2534,11 +4520,8 @@ table.insert(the_list, {
 					                                         splash_y = -6,
 					                                         {"splash_frame", {offset = "1.0~1.2", auto_vflip = "no", image = "projectiles/fireball-fail-[1~7].png~CS(-25,20,5):[80*7]", image_diagonal = "projectiles/fireball-fail-[1~7].png~CS(-25,20,5):[80*7]"}},
 					                                 }},
-					                 }
 					                 }}
-                     }
-					    --				}}, 
-                                            -- { "then", {{"event", { name = "attack end", {"filter_attack", { name = "su_bomb_arrow" }}, {"remove_object", { id = "$unit.id", object_id = "su_bomb_arrow" }} }} }}
+					     }}
                      },
         name = _ "Toxic Brew",
         id = "suw_poison_jug",
@@ -2549,13 +4532,31 @@ table.insert(the_list, {
 	cost = 35,
 	usage = "all",
 	position = "weapon_alt",	
-	weight = 0
+	weight = 0,
+        xp_needed = 16,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 	
 })
 ----potions---------
 -- must have usage = "potion"
+-- eq_effect needs an ID, unlike the things above
+-- might want to include a 'duration' key 
 table.insert(the_list, {
-	eq_effect = { id = "potion_heal", {"effect", { apply_to = "hitpoints", increase = 24}}},
+	eq_effect = { 
+	    id = "potion_heal",
+	    duration = "turn",
+	    {"effect", { apply_to = "hitpoints", increase = 24}}
+	    },
         name = _ "Healing Potion",
         id = "potion_heal",
         tooltip = _ "potions can be used once, not worn",
@@ -2565,10 +4566,26 @@ table.insert(the_list, {
 	cost = 35,
 	usage = "potion",
 	position = "for_use",
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "super_potion_heal", {"effect", { apply_to = "hitpoints", increase = 50}}},
+	eq_effect =   { 
+	    id = "super_potion_heal", 
+	    duration = "turn",
+	    {"effect", { apply_to = "hitpoints", increase = 50}}
+	    },
         name = _ "Super Healing Potion",
         id = "super_potion_heal",
         tooltip = _ "potions can be used once, not worn",
@@ -2578,10 +4595,26 @@ table.insert(the_list, {
 	cost = 70,
 	usage = "potion",
 	position = "for_use",
-	weight = 0
+	weight = 0,
+        xp_needed = 6,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "potion_cure", {"effect", { apply_to = "status", remove = "poisoned" }}},
+	eq_effect = { 
+	    id = "potion_cure", 
+	    duration = "turn",
+	    {"effect", { apply_to = "status", remove = "poisoned" }}
+	    },
         name = _ "Curative Potion",
         id = "potion_cure",
         tooltip = _ "potions can be used once, not worn",
@@ -2591,10 +4624,27 @@ table.insert(the_list, {
 	cost = 40,
 	usage = "potion",
 	position = "for_use",
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 table.insert(the_list, {
-	eq_effect = { id = "panacea", {"effect", { apply_to = "hitpoints", increase = 24}}, {"effect", { apply_to = "status", remove = "poisoned, slowed, unhealable" }}},
+	eq_effect = { 
+	    id = "panacea", 
+	    duration = "turn",
+	    {"effect", { apply_to = "hitpoints", increase = 24}}, 
+	    {"effect", { apply_to = "status", remove = "poisoned, slowed, unhealable" }}
+	    },
         name = _ "Panacea",
         id = "panacea",
         tooltip = _ "potions can be used once, not worn",
@@ -2604,7 +4654,19 @@ table.insert(the_list, {
 	cost = 100,
 	usage = "potion",
 	position = "for_use",
-	weight = 0
+	weight = 0,
+        xp_needed = 4,
+        hp = 0,
+        luck = 0,
+        dodge = 0,
+        accuracy = 0,
+        damage = 0,
+        resist_blade = 0,
+        resist_impact = 0,
+        resist_pierce = 0,
+        resist_cold = 0,
+        resist_fire = 0,
+        resist_arcane = 0
 })
 
 -----------------------------------------------------------------------------------------------
