@@ -21,7 +21,7 @@ local dialog = {
            T.row { T.column { T.grid {
 			           T.row { 
 			           		T.column {  horizontal_alignment = "left" , T.grid { --left grid
-			           								T.row { T.column { misc_status_grid()},
+			           								T.row { T.column { horizontal_alignment = "left" , misc_status_grid()},
 			           			 					       },
 			           			 					T.row { T.column { movementcost_grid()},
 			           			 					       },
