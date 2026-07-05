@@ -37,6 +37,8 @@ function wesnoth.custom_synced_commands.apply_gear(cfg)
             if cfg.show_text == "yes" then 
                 wesnoth.interface.float_label(eq_unit[1].x, eq_unit[1].y, "<span color='#99aaaa'> Takes item...</span>")
             end
+        elseif result == "is ai" then 
+            bmr_equipment.item_drop(eq_unit[1].x, eq_unit[1].y, gear_item)
         end
         local eq_side = eq_unit[1].side
         -- this known_items variable is initialized in one of the INIT macros in utils/inventory.cfg
