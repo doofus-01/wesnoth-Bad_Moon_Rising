@@ -187,7 +187,8 @@ function set_simple_grid_values(unit,self)
 	    xp_color = "color ='#5533bb'"
 	end
     local widget_handle = self:find('the_unit_type')
-    widget_handle.marked_up_text = string.format("<span size='large' color='#88dddd'> %s </span>", unit.type)
+--    widget_handle.marked_up_text = string.format("<span size='large' color='#88dddd'> %s </span>", unit.type) -- this is the ID, not the string that's intended for display
+    widget_handle.marked_up_text = string.format("<span size='large' color='#88dddd'> %s </span>", unit.language_name)
     widget_handle = self:find('the_unit_level')
     widget_handle.marked_up_text = string.format("<span size='small' color='#88dddd'> Level: %d </span>", unit.level)
     widget_handle = self:find('the_unit_alignment')
