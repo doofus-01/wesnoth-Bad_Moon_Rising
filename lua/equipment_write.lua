@@ -354,6 +354,7 @@ bmr_equipment.item_drop = function(x_1, y_1, gear_item)
         wml.variables["gear_map_items["..item_index.."].cost"] = gear_item.cost
         wml.variables["gear_map_items["..item_index.."].x"] = x_1
         wml.variables["gear_map_items["..item_index.."].y"] = y_1
+        wml.variables["gear_map_items["..item_index.."].icon"] = icon
     end    
    return icon
 end
