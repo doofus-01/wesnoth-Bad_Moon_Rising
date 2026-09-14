@@ -1,5 +1,5 @@
 -- to help balance the dynamic difficulty grading; whether that's me or the player doing the balancing
-    
+-- 20260705 - this is no longer in use, will be removed    
 bmr_debug_menu = {}
 bmr_debug_menu.new = function()
         local self = {}      
